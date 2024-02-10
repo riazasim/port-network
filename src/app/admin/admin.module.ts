@@ -28,6 +28,8 @@ import { CardModule } from "../shared/components/cards/card.module";
 import {MatMenuModule} from "@angular/material/menu";
 import {HttpClientModule} from "@angular/common/http";
 import {TranslateModule} from "@ngx-translate/core";
+import { MapComponent } from './map/map.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 
 
@@ -35,6 +37,7 @@ import {TranslateModule} from "@ngx-translate/core";
 @NgModule({
   declarations: [
     DashboardComponent,
+    MapComponent,
     AdminComponent,
     AdminHeaderComponent,
     NavigationMenuComponent,
@@ -63,6 +66,8 @@ import {TranslateModule} from "@ngx-translate/core";
         TranslateModule,
         MatMenuModule,
         ReactiveFormsModule,
+        GoogleMapsModule,
+        
     ],
   providers: [
     AssetsProviderService,

@@ -1,0 +1,29 @@
+<section>
+    <header
+        class="tw-flex min-md:tw-flex-row tw-flex-col tw-justify-between tw-pb-2"
+    >
+        <h3 class="heading-3 tw-font-bold">Map</h3>
+    </header>
+</section>
+<google-map
+    height="470px"
+    width="100%"
+    [center]="center"
+    [zoom]="zoom"
+    (mapClick)="addMarker($event)"
+    (mapMousemove)="move($event)"
+>
+    <map-marker
+        #marker="mapMarker"
+        *ngFor="let markerPosition of markerPositions"
+        [position]="markerPosition"
+        (mapClick)="openInfoWindow(marker)"
+    ></map-marker>
+    <map-info-window *ngFor="let markerPosition of markerPositions">
+        {{ markerPosition.lat }}
+        {{ markerPosition.lng }}
+    </map-info-window>
+</google-map>
+
+<!-- <div>Latitude: {{ display?.lat }}</div>
+<div>Longitude: {{ display?.lng }}</div> -->

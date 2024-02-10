@@ -61,7 +61,7 @@ export class LoginComponent {
         this.auth.saveAuth(response);
         this.rolesService.setUserRoles([response.roles])
         // const redirectRoute = !isTutorialTrue ? '../onboarding' : response.roles.includes("ROLE_ADMIN") ? '../admin' : '../operator';
-        this.router.navigate(['../onboarding'], { relativeTo: this.route }).then(() => {
+        this.router.navigate(['../admin'], { relativeTo: this.route }).then(() => {
             // this.snackBar.open("Login success!", "", {
             //   duration: 3000,
             //   horizontalPosition: 'end',

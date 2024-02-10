@@ -4,6 +4,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { BrandingComponent } from "./branding/branding.component";
 import { LocationSettingsComponent } from "./location-settings/location-settings.component";
 import { AdminComponent } from "./admin.component";
+import { MapComponent } from './map/map.component';
 
 
 const routes: Routes = [
@@ -19,6 +20,10 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent
+      },
+      {
+        path: 'map',
+        component: MapComponent
       },
       {
         path: 'branding',
