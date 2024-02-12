@@ -32,7 +32,8 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "rfdc"
+              "rfdc",
+              "lodash"
             ]
           },
           "configurations": {
