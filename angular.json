@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ui-truck-app": {
+    "ui-port-network-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ui-truck-app",
+            "outputPath": "dist/ui-port-network-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -73,14 +73,14 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "proxyConfig": "proxy.conf.json",
-            "buildTarget": "ui-truck-app:build"
+            "buildTarget": "ui-port-network-app:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "ui-truck-app:build:production"
+              "buildTarget": "ui-port-network-app:build:production"
             },
             "development": {
-              "buildTarget": "ui-truck-app:build:development"
+              "buildTarget": "ui-port-network-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -88,7 +88,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "ui-truck-app:build"
+            "buildTarget": "ui-port-network-app:build"
           }
         },
         "test": {
