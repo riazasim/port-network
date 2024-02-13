@@ -46,20 +46,16 @@
 }
 
 
-// menu
-
 .upper-menu-items .layout-wrapper,
 .lower-menu-items .layout-wrapper {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  // justify-content: center;
   align-items: center;
   padding-top: 1rem;
   padding-bottom: 1rem;
   min-width: 50px;
   height: auto;
-  // position: relative;
 
   > fa-icon {
     color: var(--primary-color);
@@ -92,14 +88,4 @@
       background: #FFF;
     }
   }
-//   ::ng-deep.iconic-layout-wrapper > .input-container {
-//     background-color: white !important;
-//     position: relative!important;
-//     display: flex !important;
-//     align-items: center !important;
-//     border: 0px !important; 
-//     border-radius: 0px !important; 
-//     padding: 0px !important; 
-//     min-height: 0px !important; 
-// }
 }

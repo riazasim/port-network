@@ -44,8 +44,6 @@
 .lower-menu-items {
   @apply min-md:tw-flex-col min-md:tw-justify-end min-md:tw-flex-grow;
 }
-
-
 // menu
 
 .upper-menu-items .layout-wrapper,
@@ -53,13 +51,11 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  // justify-content: center;
   align-items: center;
   padding-top: 1rem;
   padding-bottom: 1rem;
   min-width: 50px;
   height: auto;
-  // position: relative;
 
   > fa-icon {
     color: var(--primary-color);

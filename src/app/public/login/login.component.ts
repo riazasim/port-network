@@ -25,7 +25,7 @@ export class LoginComponent {
   }
 
   loginForm: UntypedFormGroup = new UntypedFormGroup({
-    email: new UntypedFormControl(null, [Validators.required, Validators.email]),
+    username: new UntypedFormControl(null, [Validators.required, Validators.email]),
     password: new UntypedFormControl(null, [Validators.required, Validators.pattern('')]),
   })
   constructor(private readonly router: Router,
