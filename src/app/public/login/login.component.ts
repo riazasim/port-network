@@ -47,8 +47,10 @@ export class LoginComponent {
 
     if (!environment.production) {
       this.loginForm = new UntypedFormGroup({
-        username: new UntypedFormControl('mrumari@gmail.com', [Validators.required, Validators.email]),
-        password: new UntypedFormControl('12345678', [Validators.required, Validators.pattern('')]),
+        // username: new UntypedFormControl('mrumari@gmail.com', [Validators.required, Validators.email]),
+        // password: new UntypedFormControl('12345678', [Validators.required, Validators.pattern('')]),
+        username: new UntypedFormControl('iqbalchannar796@gmail.com', [Validators.required, Validators.email]),
+        password: new UntypedFormControl('00000000', [Validators.required, Validators.pattern('')]),
       })
     }
   }
@@ -62,6 +64,7 @@ export class LoginComponent {
         this.rolesService.setUserRoles([response.roles])
         // const redirectRoute = !isTutorialTrue ? '../onboarding' : response.roles.includes("ROLE_ADMIN") ? '../admin' : '../operator';
         this.router.navigate(['../admin'], { relativeTo: this.route }).then(() => {
+               this.loginForm.enable();
             // this.snackBar.open("Login success!", "", {
             //   duration: 3000,
             //   horizontalPosition: 'end',

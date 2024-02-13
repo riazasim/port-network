@@ -2,13 +2,13 @@
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LocationService } from 'src/app/core/services/location.service';
 import { compare } from 'src/app/shared/utils/sort.function';
 import { BerthsDeleteModalComponent } from '../berths-delete-modal/berths-delete-modal.component';
-import { LocationModel } from 'src/app/core/models/location.model';
-import {PageEvent} from "@angular/material/paginator";
-import {BehaviorSubject} from "rxjs";
-import {BerthsImportModalComponent} from "../berths-import-modal/berths-import-modal.component";
+import { PageEvent } from "@angular/material/paginator";
+import { BehaviorSubject } from "rxjs";
+import { BerthsImportModalComponent } from "../berths-import-modal/berths-import-modal.component";
+import { BerthService } from 'src/app/core/services/berth.service';
+import { BerthModel } from 'src/app/core/models/berth.model';
 
 @Component({
   selector: 'app-berths-list',
@@ -16,117 +16,62 @@ import {BerthsImportModalComponent} from "../berths-import-modal/berths-import-m
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BerthsListComponent {
- // isLoading: boolean = true;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    displayedColumns: string[] = ['name', 'addrStreet', 'addrNumber', 'addrCounty', 'addrCity', 'addrCountry', 'addrZipCode', 'contact', 'actions'];
-  // originalColumns: string[] = ['id', 'name', 'addrStreet', 'addrNumber', 'addrCounty', 'addrCity', 'addrCountry', 'addrZipCode', 'contact', 'actions'];
-  //displayedColumns: string[] = [];
-  // dataSource: any = []
-  // originalSource: any = [];
-    dataSource: LocationModel[] = [];
-    originalSource: LocationModel[] = [];
-    appliedFilters: any = {};
+  displayedColumns: string[] = ['name', 'status', 'addrCoordinates', 'length', 'width', 'depth', 'actions'];
+  dataSource: BerthModel[] = [];
+  originalSource: BerthModel[] = [];
+  appliedFilters: any = {};
 
-    pageSizeOptions: number[] = [5, 10, 12, 15];
-    pageIndex: number;
-    pageSize: number;
-    length: number;
+  pageSizeOptions: number[] = [5, 10, 12, 15];
+  pageIndex: number;
+  pageSize: number;
+  length: number;
 
   constructor(private readonly dialogService: MatDialog,
-              private readonly router: Router,
-              private readonly route: ActivatedRoute,
-              private readonly locationService: LocationService,
-              private readonly cd: ChangeDetectorRef) {
-                this.retrieveLocations();
-               }
-
-  // retrieveLocations(): void {
-  //   this.locationService.listTable({}).subscribe((response: any[]) => {
-  //     const existColumns = this.initializeColumns(response);
-  //     if (existColumns) {
-  //       this.dataSource = response;
-  //       this.originalSource = response;
-  //     }
-  //     this.isLoading = false;
-  //     this.cd.detectChanges();
-  //   });
-  // }
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly berthService: BerthService,
+    private readonly cd: ChangeDetectorRef) {
+    this.retrieveBerths();
+  }
 
 
-    retrieveLocations(): void {
+  retrieveBerths(): void {
 
-        this.pageIndex=0;
-        this.pageSize=5;
+    this.pageIndex = 0;
+    this.pageSize = 5;
 
-        let data={
-            "start": this.pageIndex,
-            "length": this.pageSize,
-            "filters": ["","","","","",""],//["firstname/lastname", "status", "role", "phone", "email"]
-            "order": [{"dir": "DESC", "column": 0}]
-        }
-        this.locationService.pagination(data).subscribe(response => {
-            //console.log(response)
-            // let result =(<any>response.items).map(((c: CustomFieldData) => c.attributes));
-            this.dataSource = response.items;
-            this.originalSource = response.items;
-            this.length=response.noTotal;
-            this.isLoading$.next(false);
-            this.cd.detectChanges();
-        })
+    let data = {
+      "start": this.pageIndex,
+      "length": this.pageSize,
+      "filters": ["", "", "", "", "", ""],
+      "order": [{ "dir": "DESC", "column": 0 }]
     }
+    this.berthService.pagination(data).subscribe(response => {
+      this.dataSource = response.items;
+      this.originalSource = response.items;
+      this.length = response.noTotal;
+      this.isLoading$.next(false);
+      this.cd.detectChanges();
+    })
+  }
 
-    onPaginateChange(event: PageEvent) {
-        this.isLoading$.next(true);
-        //  console.log("API call");
-        let data={
-          "start": event.pageIndex ? event.pageIndex * event.pageSize : event.pageIndex,
+  onPaginateChange(event: PageEvent) {
+    this.isLoading$.next(true);
+    let data = {
+      "start": event.pageIndex ? event.pageIndex * event.pageSize : event.pageIndex,
 
-            "length": event.pageSize,
-            "filters": ["","","","","",""],//["firstname/lastname", "status", "role", "phone", "email"]
-            "order": [{"dir": "DESC", "column": 0}]
-        }
-        this.locationService.pagination(data).subscribe(response => {
-            // let result =(<any>response.items).map(((c: CustomFieldData) => c.attributes));
-            // console.log('Api call')
-            this.dataSource = response.items;
-            this.originalSource = response.items;
-            this.isLoading$.next(false);
-            this.cd.detectChanges();
-        })
+      "length": event.pageSize,
+      "filters": ["", "", "", "", "", ""],
+      "order": [{ "dir": "DESC", "column": 0 }]
     }
-
-
-
-
-  // retrieveLocations(): void {
-  //   this.locationService.pagination({}).subscribe((response) => {
-  //     const existColumns = this.initializeColumns(response);
-  //     if (existColumns) {
-  //       this.dataSource = response;
-  //       this.originalSource = response;
-  //     }
-  //     this.isLoading = false;
-  //     this.cd.detectChanges();
-  //   });
-  // }
-
-  // initializeColumns(response: LocationModel[]) {
-  //   if (!response.length || !Object.keys(response[0]).length) {
-  //     return false;
-  //   }
-  //
-  //   let contactAdded = false;
-  //   this.displayedColumns = [...Object.keys(response[0]), 'actions'].map(x => {
-  //     if (!contactAdded && ['firstName', 'lastName', 'mobile', 'email'].includes(x)) {
-  //       contactAdded = true;
-  //       return 'contact';
-  //     }
-  //
-  //     return x;
-  //   }).filter(x => this.originalColumns.includes(x))
-  //
-  //   return true;
-  // }
+    this.berthService.pagination(data).subscribe(response => {
+      this.dataSource = response.items;
+      this.originalSource = response.items;
+      this.isLoading$.next(false);
+      this.cd.detectChanges();
+    })
+  }
 
   openDeleteModal(id: number) {
     this.dialogService.open(BerthsDeleteModalComponent, {
@@ -136,9 +81,9 @@ export class BerthsListComponent {
       .subscribe({
         next: (isDelete: boolean) => {
           if (isDelete) {
-              this.isLoading$.next(true);
-              this.locationService.delete(id).subscribe(() => {
-              this.retrieveLocations();
+            this.isLoading$.next(true);
+            this.berthService.delete(id).subscribe(() => {
+              this.retrieveBerths();
               this.cd.detectChanges();
             })
           }
@@ -149,21 +94,23 @@ export class BerthsListComponent {
   applyFilter(target: any, column: string, isMultipleSearch = false): void {
     if (target.value) {
       if (isMultipleSearch) {
-        this.appliedFilters['contactFirstName'] = target.value;
-        this.appliedFilters['contactLastName'] = target.value;
-        this.appliedFilters['contactPhoneRegionCode'] = target.value;
-        this.appliedFilters['contactPhone'] = target.value;
-        this.appliedFilters['contactEmail'] = target.value;
+        this.appliedFilters['name'] = target.value;
+        this.appliedFilters['status'] = target.value;
+        // this.appliedFilters['port'] = target.value;
+        this.appliedFilters['length'] = target.value;
+        this.appliedFilters['width'] = target.value;
+        this.appliedFilters['depth'] = target.value;
       } else {
         this.appliedFilters[column] = target.value;
       }
     } else {
       if (isMultipleSearch) {
-        delete this.appliedFilters['contactFirstName']
-        delete this.appliedFilters['contactLastName']
-        delete this.appliedFilters['contactPhoneRegionCode']
-        delete this.appliedFilters['contactPhone']
-        delete this.appliedFilters['contactEmail']
+        delete this.appliedFilters['name']
+        delete this.appliedFilters['status']
+        // delete this.appliedFilters['port']
+        delete this.appliedFilters['length']
+        delete this.appliedFilters['width']
+        delete this.appliedFilters['depth']
       } else {
         delete this.appliedFilters[column];
       }
@@ -174,11 +121,12 @@ export class BerthsListComponent {
         let expression = false;
         if (isMultipleSearch && target.value) {
           expression =
-              el['contactFirstName'].concat(' ', el['contactLastName']).toLowerCase().includes(this.appliedFilters['contactFirstName'].toLowerCase()) ||
-              el['contactLastName'].concat(' ', el['contactFirstName']).toLowerCase().includes(this.appliedFilters['contactLastName'].toLowerCase()) ||
-              el['contactPhoneRegionCode'].toLowerCase().includes(this.appliedFilters['contactPhoneRegionCode'].toLowerCase()) ||
-              el['contactPhone'].toLowerCase().includes(this.appliedFilters['contactPhone'].toLowerCase()) ||
-              el['contactEmail'].toLowerCase().includes(this.appliedFilters['contactEmail'].toLowerCase());
+            el['name'].toLowerCase().includes(this.appliedFilters['name'].toLowerCase()) ||
+            el['status'].toLowerCase().includes(this.appliedFilters['status'].toLowerCase()) ||
+            // el['port'].toLowerCase().includes(this.appliedFilters['port'].toLowerCase()) ||
+            el['length'].toLowerCase().includes(this.appliedFilters['length'].toLowerCase()) ||
+            el['width'].toLowerCase().includes(this.appliedFilters['width'].toLowerCase())  ||
+          el['depth'].toLowerCase().includes(this.appliedFilters['depth'].toLowerCase());
 
           return expression;
         } else {
@@ -206,34 +154,34 @@ export class BerthsListComponent {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'name': return compare(a.name, b.name, isAsc);
-        case 'addrStreet': return compare(a.addrStreet, b.addrStreet, isAsc);
-        case 'addrNumber': return compare(a.addrNumber, b.addrNumber, isAsc);
-        case 'addrCounty': return compare(a.addrCounty, b.addrCounty, isAsc);
-        case 'addrCity': return compare(a.addrCity, b.addrCity, isAsc);
-        case 'addrCountry': return compare(a.addrCountry, b.addrCountry, isAsc);
-        case 'addrZipCode': return compare(a.addrZipCode, b.addrZipCode, isAsc);
+        case 'addrCoordinates': return compare(a.addrCoordinates, b.addrCoordinates, isAsc);
+        // case 'port': return compare(a.port, b.port, isAsc);
+        case 'length': return compare(a.length, b.length, isAsc);
+        case 'width': return compare(a.width, b.width, isAsc);
+        case 'depth': return compare(a.depth, b.depth, isAsc);
+        case 'status': return compare(a.status, b.status, isAsc);
         default: return 0;
       }
     });
   }
 
-  redirectAddLocation(): void {
+  redirectAddBerth(): void {
     this.router.navigate(['../add'], { relativeTo: this.route });
   }
-    openImportModal(): void {
-        this.isLoading$.next(true);
-        this.dialogService.open(BerthsImportModalComponent, {
-            disableClose: true,
-            data: {}
-        }).afterClosed()
-            .subscribe({
-                next: (isImported) => {
-                    if (isImported) {
-                        this.retrieveLocations();
-                    } else {
-                        this.isLoading$.next(false);
-                    }
-                }
-            });
-    }
+  openImportModal(): void {
+    this.isLoading$.next(true);
+    this.dialogService.open(BerthsImportModalComponent, {
+      disableClose: true,
+      data: {}
+    }).afterClosed()
+      .subscribe({
+        next: (isImported) => {
+          if (isImported) {
+            this.retrieveBerths();
+          } else {
+            this.isLoading$.next(false);
+          }
+        }
+      });
+  }
 }

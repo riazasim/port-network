@@ -1,6 +1,3 @@
-import {ResponseDataItem} from "./response-wrappers.types";
-import {BuildingModel} from "./building.model";
-
 export enum VehicleTypesEnum {
     'Truck',
     'Trailer'

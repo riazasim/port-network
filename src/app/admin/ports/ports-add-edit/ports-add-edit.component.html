@@ -6,17 +6,17 @@
             <div>
                 <h6 class="tw-font-bold">Details</h6>
                 <div class="min-xl:tw-columns-3">
-                    <div class="tw-h-[90px]">
+                    <div class="tw-h-[75px]">
                         <div iconic-input-wrapper leftIcon="location-dot">
                             <input placeholder="Location Name" inputRef type="text" id="locationName" formControlName="name">
                         </div>
                     </div>
-                    <div class="tw-h-[90px]">
+                    <div class="tw-h-[75px]">
                         <div iconic-input-wrapper leftIcon="compass">
                             <input placeholder="Google Maps coordinates (Plus code)" inputRef type="text" formControlName="addrCoordinates">
                         </div>
                     </div>
-                    <div class="tw-h-[90px]">
+                    <div class="tw-h-[75px]">
                         <div *ngIf="(location$ | async)?.imgPreview">
                             <label >&nbsp;</label>
                             <div class="tw-relative tw-w-[50px]">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            <div class="min-xl:tw-columns-3">
+            <div class="min-xl:tw-columns-3 tw-mb-10">
                 <div>&nbsp;</div>
                 <div><div class="tw-text-right tw-font-bold tw-cursor-pointer">How do I find Google maps coordinates?</div></div>
                 <div>&nbsp;</div>
@@ -112,46 +112,6 @@
                 </div>
             </div>
 
-            <div>
-                <div>
-                    <div>
-                        <div iconic-input-wrapper leftIcon="envelope">
-                            <input inputRef placeholder="Email" type="text" id="contactEmail" formControlName="contactEmail">
-                        </div>
-                    </div>
-
-
-
-                    <div>
-                        <div iconic-select-wrapper leftIcon="eye" [rightIcon]="['fas', 'caret-down']">
-                            <select inputRef name="addrTimezone" id="timezone" formControlName="addrTimezone">
-                                <option value="" disabled>Select Timezone</option>
-                                <option value="Europe/Bucharest">Europe/Bucharest</option>
-                                <option value="Asia/Karachi">Asia/Karachi</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-
-
-
-                    <div>
-                        <div textarea-wrapper leftIcon="message-lines">
-                            <textarea inputRef cols="137" rows="10" type="text" placeholder="Comments" formControlName="comments"></textarea>
-                        </div>
-                        <!--                        <div textarea-wrapper class="min-xl:tw-columns-12">-->
-                        <!--                            <textarea style="width: auto" placeholder="Comments" inputRef type="textarea" formControlName="comments"></textarea>-->
-                        <!--                        </div>-->
-                    </div>
-
-            </div>
-<!--          <div>-->
-<!--            <h6 class="tw-font-bold">Custom Fileds</h6>-->
-<!--            <h6 *ngIf="true">There are no custom fields defined for this form</h6>-->
-<!--          </div>-->
         </div>
 
         <div class="tw-flex tw-justify-end tw-pt-5">

@@ -26,7 +26,7 @@ export class OnboardingComponent implements OnInit {
 
   @HostListener('document:keydown.enter', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     const nr = document?.getElementsByClassName('swiper-slide swiper-slide-active')[0]?.getAttribute('data-swiper-slide-index')
-    if (+ (nr ?? 0) === 6) {
+    if (+ (nr ?? 0) === 5) {
       this.setTutorialTrue();
       this.navigate();
     }

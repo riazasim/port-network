@@ -1,7 +1,5 @@
 import { BuildingModel } from "./building.model";
 import { ResponseDataItem } from "./response-wrappers.types";
-import {CustomFieldModel} from "./custom-field.model";
-import {VehicleModel} from "./vehicle.model";
 
 export type LocationModel = {
     locationId?: number;

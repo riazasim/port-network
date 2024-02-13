@@ -1,34 +1,52 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { LocationModel } from 'src/app/core/models/location.model';
-import { LocationService } from 'src/app/core/services/location.service';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { BerthModel } from 'src/app/core/models/berth.model';
+import { PortModel } from 'src/app/core/models/port.model';
+import { BerthService } from 'src/app/core/services/berth.service';
+import { PortService } from 'src/app/core/services/port.service';
 
 @Component({
   selector: 'app-berths-add-edit',
   templateUrl: './berths-add-edit.component.html'
 })
 export class BerthsAddEditComponent implements OnInit {
-  locationForm: FormGroup;
+  berthForm: FormGroup;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  location$: BehaviorSubject<LocationModel|null> = new BehaviorSubject<LocationModel|null>(null);
+  berth$: BehaviorSubject<BerthModel|null> = new BehaviorSubject<BerthModel|null>(null);
   id: number;
+  ports: PortModel[] = [];
+  portList : any
   constructor(private fb: UntypedFormBuilder,
-              private locationService: LocationService,
+              private berthService: BerthService,
+              private readonly portService: PortService,
               private router: Router,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.subscribeForQueryParams();
+    this.retrievePorts()
+    // console.log(this.portList)
+    // combineLatest([
+    //     this.retrievePorts(),
+    //   ])
+    //   .subscribe(([portId]) => {
+    //     this.ports = portId;
+    //     console.log(this.ports,'ports')
+    //     this.initForm();
+    //     this.subscribeForPortChanges();
+    //   //   this.filterName = this.filterName.bind(this);
+    //     this.isLoading$.next(false);
+    //   });
   }
 
   subscribeForQueryParams(): void {
     this.id = this.route.snapshot.params['id'];
     if (this.id) {
-      this.locationService.get(this.id).subscribe(async response => {
+      this.berthService.get(this.id).subscribe(async response => {
         this.initForm(response);
-        this.location$.next({...response })
+        this.berth$.next({...response })
         this.isLoading$.next(false);
       });
     } else {
@@ -37,61 +55,56 @@ export class BerthsAddEditComponent implements OnInit {
     }
   }
 
-  clearImgPreview(): void {
-    const location = this.location$.value;
-    if (location) {
-      location.imgPreview = null as any;
-    }
-    this.locationForm.get('imgPreview')?.patchValue(null);
-  }
-
-  initForm(data: LocationModel = <LocationModel>{}): void {
-    this.locationForm = this.fb.group({
-      //locationId: this.fb.control(data?.id),
+  initForm(data: BerthModel = <BerthModel>{}): void {
+    this.berthForm = this.fb.group({
+      //berthIdId: this.fb.control(data?.id),
       name: this.fb.control(data?.name || '', [Validators.required]),
       addrCoordinates: this.fb.control(data?.addrCoordinates || '', [Validators.required]),
-      addrStreet: this.fb.control(data?.addrStreet || '', [Validators.required]),
-      addrNumber: this.fb.control(data?.addrNumber || '', [Validators.required]),
-      addrCity: this.fb.control(data?.addrCity || '', [Validators.required]),
-      addrCountry: this.fb.control(data?.addrCountry || '', [Validators.required]),
-      addrCounty: this.fb.control(data?.addrCounty || '', [Validators.required]),
-      addrZipCode: this.fb.control(data?.addrZipCode || '', [Validators.required]),
-      addrTimezone: this.fb.control(data?.addrTimezone || '', [Validators.required]),
-      contactFirstName: this.fb.control(data?.contactFirstName || '', [Validators.required]),
-      contactLastName: this.fb.control(data?.contactLastName || '', [Validators.required]),
-      contactPhone : this.fb.control(data?.contactPhone || '', [Validators.required]),
-      contactPhoneRegionCode: this.fb.control(data?.contactPhoneRegionCode || '', [Validators.required]),
-      contactEmail: this.fb.control(data?.contactEmail || '', [Validators.required, Validators.email]),
-      comments: this.fb.control(data?.comments || '', []),
-      imgPreview: this.fb.control(data?.imgPreview, []),
-     // customFields: this.fb.control(data?.customFields, []),
+      portId: this.fb.control(data?.portId || '', [Validators.required]),
+      length: this.fb.control(data?.length || '', [Validators.required]),
+      width: this.fb.control(data?.width || '', [Validators.required]),
+      depth: this.fb.control(data?.depth || '', [Validators.required]),
     });
   }
 
-  setImgPreview(target: any, input: any): void {
-    if (target.files.item(0)) {
-      input.value = target.files.item(0).name
-      this.locationForm.get('imgPreview')?.patchValue(target.files.item(0));
-    }
+  subscribeForPortChanges(): void {
+    this.berthForm.get('portId')?.valueChanges.subscribe((id: number) => {
+      const port = this.ports.find(o => o.portId === +id);
+      this.berthForm.get('portId')?.patchValue(port?.name);
+    })
   }
 
-  saveLocation(): void {
+  
+  retrievePorts() {
+        this.portService.pagination({
+          "start": 0,
+          "length": 0,
+          "filters": ["","","","","","","","",""],
+          "order": [{"dir": "DESC", "column": 0}]
+      }).subscribe(response =>{
+        console.log(response)
+        this.portList = response.items
+        console.log(this.portList)
+      })
+      }
+
+  saveBerth(): void {
+    this.isLoading$.next(true);
     if (this.id) {
-      this.locationService.edit(this.id, this.parseData(this.locationForm.value)).subscribe(() => {
+      this.berthService.edit(this.id,this.parseData(this.berthForm.value)).subscribe(() => {
+        this.isLoading$.next(false);
         this.router.navigate(['../../success'], { relativeTo: this.route });
       });
     } else {
-      this.locationService.create(this.locationForm.value).subscribe(() => {
+      this.berthService.create(this.parseData(this.berthForm.value)).subscribe(() => {
+        this.isLoading$.next(false);
         this.router.navigate(['../success'], { relativeTo: this.route });
       });
     }
   }
 
-  parseData(location: any): any {
-    const data = {...location};
-    if (!data.imgPreview) {
-      delete data.imgPreview;
-    }
-    return location;
+  private parseData(data: BerthModel): BerthModel {
+    if (!data.berthId) delete data.berthId;
+    return data;
   }
 }
