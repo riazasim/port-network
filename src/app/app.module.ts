@@ -11,7 +11,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpLoaderFactory } from './core/factories/http-loader.factory';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {Location} from "@angular/common";
-
+import { register } from 'swiper/element/bundle';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+register();
 @NgModule({
   declarations: [
     AppComponent
@@ -33,6 +35,8 @@ import {Location} from "@angular/common";
     FontAwesomeModule,
   ],
   providers: [TranslatePipe, Location],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule { }
+export class AppModule {
+ }

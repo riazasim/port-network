@@ -43,7 +43,7 @@
     "ngx-scrollbar": "^13.0.3",
     "read-excel-file": "^5.7.1",
     "rxjs": "~7.5.7",
-    "swiper": "^8.4.7",
+    "swiper": "^11.0.6",
     "tslib": "^2.6.2",
     "zone.js": "~0.14.3"
   },

@@ -4,7 +4,7 @@ import { OnboardingComponent } from './onboarding.component';
 
 
 const routes: Routes = [
-  { path: 'onboarding', pathMatch: 'full', component: OnboardingComponent },
+  { path: '', pathMatch: 'full', component: OnboardingComponent },
   { path: '**', redirectTo: '' }
 ];
 
