@@ -1,5 +1,5 @@
 import { ContactsModel } from "./contact.model";
-export type PortModel = {
+export type CompanyModel = {
     portId?: number;
     name: string;
     addrCoordinates: string;
@@ -10,17 +10,17 @@ export type PortModel = {
     addrCounty: string;
     addrZipCode: string;
     addrTimezone:string;
-    contacts: ContactsModel;
+    contacts?: ContactsModel;
     imgPreview: File;
 }
 
-export interface PortTable {
-    items: PortModel[];
+export interface CompanyTable {
+    items: CompanyModel[];
     noFiltered: number;
     noTotal: number;
 }
 
-export interface PortCustomField {
+export interface CompanyCustomField {
     customField: number;
     name: string;
     value: string | string[] | number;

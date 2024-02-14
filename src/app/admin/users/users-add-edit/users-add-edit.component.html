@@ -32,9 +32,9 @@
                         <input inputRef type="text" id="email" placeholder="Email" formControlName="email">
                     </div>
                 </div>
-                <div formGroupName="user" [hidden]="this.userForm.get('userId')?.value">
+                <div formGroupName="userSetting">
                     <div iconic-input-wrapper leftIcon="building">
-                        <input inputRef type="text" id="email" placeholder="Department" formControlName="email">
+                        <input inputRef type="text" id="department" placeholder="Department" formControlName="department">
                     </div>
                 </div>
                 <!-- <div formGroupName="user">
@@ -92,10 +92,10 @@
 
             </div>
 
-            <div class="tw-flex tw-justify-end tw-pt-5">
-                <div class="tw-flex tw-gap-4">
-                    <button [routerLink]="id ? '../../list': '../list'" class="btn btn-outline-primary" type="button">Cancel</button>
-                    <button class="btn btn-primary" type="button" (click)="saveUser()" [disabled]="userForm.invalid || (isLoading$ | async)">Save</button>
+            <div class="tw-flex tw-justify-center tw-pt-5">
+                <div class="tw-flex tw-gap-20">
+                    <button [routerLink]="id ? '../../list': '../list'" class="btn btn-outline-primary min-lg:tw-min-w-[200px]" type="button">Cancel</button>
+                    <button class="btn btn-primary min-lg:tw-min-w-[200px]" type="button" (click)="saveUser()" [disabled]="userForm.invalid || (isLoading$ | async)">Save</button>
                 </div>
             </div>
     </form>

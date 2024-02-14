@@ -4,6 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { LocationModel } from 'src/app/core/models/location.model';
 import { LocationService } from 'src/app/core/services/location.service';
+import { PortAddContactModalComponent } from '../ports-add-contact-modal/ports-add-contact-modal.component';
+import { ContactsModel } from 'src/app/core/models/contact.model';
+import { MatDialog } from '@angular/material/dialog';
+import { SchedulingCustomField } from 'src/app/core/models/scheduling.model';
+import { PortCustomField } from 'src/app/core/models/port.model';
+import { CustomFieldModel } from 'src/app/core/models/custom-field.model';
 
 @Component({
   selector: 'app-ports-add-edit',
@@ -14,9 +20,14 @@ export class PortsAddEditComponent implements OnInit {
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   location$: BehaviorSubject<LocationModel|null> = new BehaviorSubject<LocationModel|null>(null);
   id: number;
+  contacts: ContactsModel[] = [];
+  listContacts: ContactsModel[] = [];
+  customFieldPortData: PortCustomField[] = [];
+  portData: CustomFieldModel[]|undefined;
   constructor(private fb: UntypedFormBuilder,
               private locationService: LocationService,
               private router: Router,
+              private readonly dialogService: MatDialog,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -75,7 +86,36 @@ export class PortsAddEditComponent implements OnInit {
     }
   }
 
-  saveLocation(): void {
+  openAddContactModal(contact?: ContactsModel): void {
+    this.dialogService.open(PortAddContactModalComponent, {
+      disableClose: true,
+      data: {
+        contact,
+        contacts: [...this.listContacts],
+        portData: this.portData,
+        customFieldPortData: [...this.customFieldPortData]
+      }
+    }).afterClosed()
+      .subscribe({
+        next: (body: { contact: ContactsModel, customFieldPortData: PortCustomField[] }) => {
+          if (body?.contact) {
+            this.isLoading$.next(true);
+            this.contacts.push(body?.contact);
+            this.contacts = [...this.contacts];
+            if (body?.customFieldPortData) {
+              this.customFieldPortData = [...body.customFieldPortData];
+            }
+            this.isLoading$.next(false);
+          }
+        }
+      });
+  }
+
+  removeContact(index: number): void {
+    this.contacts.splice(index, 1);
+  }
+
+  savePort(): void {
     if (this.id) {
       this.locationService.edit(this.id, this.parseData(this.locationForm.value)).subscribe(() => {
         this.router.navigate(['../../success'], { relativeTo: this.route });

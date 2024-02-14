@@ -20,7 +20,7 @@ import { PortModel, PortTable } from '../models/port.model';
 @Injectable({
   providedIn: 'root'
 })
-export class PortService {
+export class CompanyService {
   // private route: string = '/port/';
   // private ports: string = '/change-ports';
   constructor(private http: HttpClient) {}
@@ -30,7 +30,7 @@ export class PortService {
     const formData = convertJsonToFormData(data,'');
     formData.delete('data[imgPreview]');
     formData.append('imgPreview', data.imgPreview);
-    return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/create`, formData);
+    return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/create`, formData);
   }
 
   edit(id:number,data: PortModel): Observable<any> {
@@ -39,14 +39,14 @@ export class PortService {
     formData.delete('data[imgPreview]');
     formData.delete('data[portId]');
     if (data.imgPreview) formData.append('imgPreview', data.imgPreview);
-    return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/update`, formData);
+    return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/update`, formData);
   }
 
   get(id: number): Observable<any> {
       let data={
           portId:id
       }
-    return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/get`,data)
+    return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/get`,data)
                     .pipe(pluckItemWrapperData<any, ResponseItemWrapper<any>>())
   }
 
@@ -54,11 +54,11 @@ export class PortService {
       let data={
           locationId:id
       }
-    return this.http.post(`${environment.apiUrl}${environment.apiVersion}/port/delete`,data)
+    return this.http.post(`${environment.apiUrl}${environment.apiVersion}/company/delete`,data)
   }
 
   list(data: any): Observable<PortModel[]> {
-    return this.http.post<ResponseArrayWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/paginate`,data)
+    return this.http.post<ResponseArrayWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/paginate`,data)
     .pipe(
       pluckArrayWrapperData<any, ResponseArrayWrapper<any>>(),
       catchError(() => [])
@@ -75,7 +75,7 @@ export class PortService {
 
 
   pagination(data: any): Observable<PortTable> {
-    return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/paginate`, wrapJsonForRequest(data))
+    return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/paginate`, wrapJsonForRequest(data))
         .pipe(pluckArrayPaginationWrapperData<any, ResponseArrayPaginationWrapper<any>>(),
             map((u: PortTable) => {
               u.items = (<any>u.items).map(((c: CustomFieldData) => c.attributes));
@@ -85,6 +85,6 @@ export class PortService {
   }
 
     importLocaitons(list: PortModel[]): Observable<any> {
-        return this.http.post(`${environment.apiUrl}${environment.apiVersion}/port/import`, wrapJsonListForRequest('port', list));
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}/company/import`, wrapJsonListForRequest('port', list));
     }
 }

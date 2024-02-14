@@ -1,5 +1,3 @@
-import {VehicleModel} from "./vehicle.model";
-
 export interface UserModel {
     userId?: number;
     user:{
@@ -15,8 +13,7 @@ export interface UserModel {
         language: "EN" | "RO";
         phone: string;
         phoneRegionCode: string;
-        identityDocumentType?: string;
-        idNumber?: string;
+        department: string;
     }
 
 }
