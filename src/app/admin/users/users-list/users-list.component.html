@@ -1,4 +1,40 @@
 <section *ngIf="(isLoading$ | async) || originalSource.length; else empty">
+    <div class="tw-flex tw-items-center">
+        <mat-button-toggle-group
+            class="tw-flex tw-w-full tw-justify-end tw-items-center"
+        >
+            <button
+                routerLink="../add"
+                [disabled]="(isLoading$ | async) || false"
+                class="tw-bg-primary tw-text-white hover:tw-bg-primary-dark tw-py-2 tw-min-h-[35px] min-md:tw-min-w-[120px] max-sm:tw-w-full tw-rounded-l max-lg:tw-w-full"
+                type="button"
+            >
+                Add Berth
+            </button>
+            <button
+                [disabled]="(isLoading$ | async) || false"
+                class="tw-bg-primary tw-text-white hover:tw-bg-primary-dark tw-min-h-[35px] min-md:tw-min-w-[30px] max-sm:tw-w-full tw-rounded-r"
+                type="button"
+                [matMenuTriggerFor]="menu"
+            >
+                <fa-icon
+                    [icon]="['fas', 'caret-down']"
+                    size="2x"
+                    class="tw-mx-2 tw-cursor-pointer tw-text-white"
+                >
+                </fa-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before" class="!tw-bg-white">
+                <button
+                    [disabled]="(isLoading$ | async) || false"
+                    (click)="openImportModal()"
+                    mat-menu-item
+                >
+                    Import .xlsx
+                </button>
+            </mat-menu>
+        </mat-button-toggle-group>
+    </div>
     <material-panel-table
         [showSearchbar]="false"
         [showHeader]="true"
@@ -84,9 +120,8 @@
                                     filter-select
                                 >
                                     <option value="" selected>Select</option>
+                                    <option value="ADMIN">ADMIN</option>
                                     <option value="OPERATOR">OPERATOR</option>
-                                    <option value="DRIVER">DRIVER</option>
-                                    <option value="PARTNER">PARTNER</option>
                                     <!--                    <option *ngFor="let role of roles" [value]="role.id">{{role.name}}</option>-->
                                 </select>
                             </section>
@@ -166,23 +201,23 @@
                     <ng-container cdkColumnDef="department">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col">
-                                <div mat-sort-header="email">Department</div>
+                                <div mat-sort-header="department">Department</div>
                                 <searchbar>
                                     <fa-icon icon="search"></fa-icon>
                                     <input
-                                        #searchEmail
+                                        #searchDepartment
                                         input
                                         type="text"
                                         (keyup)="
-                                            applyFilter($event.target, 'email')
+                                            applyFilter($event.target, 'department')
                                         "
                                     />
                                     <div
-                                        *ngIf="searchEmail.value"
+                                        *ngIf="searchDepartment.value"
                                         close
                                         (click)="
-                                            searchEmail.value = '';
-                                            applyFilter({ value: '' }, 'email')
+                                            searchDepartment.value = '';
+                                            applyFilter({ value: '' }, 'department')
                                         "
                                     >
                                         <fa-icon icon="close"></fa-icon>
@@ -191,7 +226,7 @@
                             </section>
                         </th>
                         <td cdk-cell *cdkCellDef="let row">
-                            {{ row.user.email }}
+                            {{ row.department }}
                         </td>
                     </ng-container>
 

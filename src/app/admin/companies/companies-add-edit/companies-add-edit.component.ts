@@ -2,8 +2,13 @@
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { ContactsModel } from 'src/app/core/models/contact.model';
 import { LocationModel } from 'src/app/core/models/location.model';
-import { LocationService } from 'src/app/core/services/location.service';
+import { CompanyAddContactModalComponent } from '../companies-add-contact-modal/companies-add-contact-modal.component';
+import { CompanyCustomField, CompanyModel } from 'src/app/core/models/company.model';
+import { CustomFieldModel } from 'src/app/core/models/custom-field.model';
+import { MatDialog } from '@angular/material/dialog';
+import { CompanyService } from 'src/app/core/services/company.service';
 
 @Component({
   selector: 'app-companies-add-edit',
@@ -12,11 +17,16 @@ import { LocationService } from 'src/app/core/services/location.service';
 export class CompaniesAddEditComponent implements OnInit {
   locationForm: FormGroup;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  location$: BehaviorSubject<LocationModel|null> = new BehaviorSubject<LocationModel|null>(null);
+  location$: BehaviorSubject<CompanyModel|null> = new BehaviorSubject<CompanyModel|null>(null);
   id: number;
+  contacts: ContactsModel[] = [];
+  listContacts: ContactsModel[] = [];
+  customFieldCompanyData: CompanyCustomField[] = [];
+  companyData: CustomFieldModel[]|undefined;
   constructor(private fb: UntypedFormBuilder,
-              private locationService: LocationService,
+              private companyService: CompanyService,
               private router: Router,
+              private readonly dialogService: MatDialog,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -26,7 +36,7 @@ export class CompaniesAddEditComponent implements OnInit {
   subscribeForQueryParams(): void {
     this.id = this.route.snapshot.params['id'];
     if (this.id) {
-      this.locationService.get(this.id).subscribe(async response => {
+      this.companyService.get(this.id).subscribe(async response => {
         this.initForm(response);
         this.location$.next({...response })
         this.isLoading$.next(false);
@@ -45,7 +55,7 @@ export class CompaniesAddEditComponent implements OnInit {
     this.locationForm.get('imgPreview')?.patchValue(null);
   }
 
-  initForm(data: LocationModel = <LocationModel>{}): void {
+  initForm(data: CompanyModel = <CompanyModel>{}): void {
     this.locationForm = this.fb.group({
       //locationId: this.fb.control(data?.id),
       name: this.fb.control(data?.name || '', [Validators.required]),
@@ -57,12 +67,7 @@ export class CompaniesAddEditComponent implements OnInit {
       addrCounty: this.fb.control(data?.addrCounty || '', [Validators.required]),
       addrZipCode: this.fb.control(data?.addrZipCode || '', [Validators.required]),
       addrTimezone: this.fb.control(data?.addrTimezone || '', [Validators.required]),
-      contactFirstName: this.fb.control(data?.contactFirstName || '', [Validators.required]),
-      contactLastName: this.fb.control(data?.contactLastName || '', [Validators.required]),
-      contactPhone : this.fb.control(data?.contactPhone || '', [Validators.required]),
-      contactPhoneRegionCode: this.fb.control(data?.contactPhoneRegionCode || '', [Validators.required]),
-      contactEmail: this.fb.control(data?.contactEmail || '', [Validators.required, Validators.email]),
-      comments: this.fb.control(data?.comments || '', []),
+      contacts: this.fb.control(data?.contacts || ''),
       imgPreview: this.fb.control(data?.imgPreview, []),
      // customFields: this.fb.control(data?.customFields, []),
     });
@@ -75,13 +80,42 @@ export class CompaniesAddEditComponent implements OnInit {
     }
   }
 
+  openAddContactModal(contact?: ContactsModel): void {
+    this.dialogService.open(CompanyAddContactModalComponent, {
+      disableClose: true,
+      data: {
+        contact,
+        contacts: [...this.listContacts],
+        companyData: this.companyData,
+        customFieldCompanyData: [...this.customFieldCompanyData]
+      }
+    }).afterClosed()
+      .subscribe({
+        next: (body: { contact: ContactsModel, customFieldCompanyData: CompanyCustomField[] }) => {
+          if (body?.contact) {
+            this.isLoading$.next(true);
+            this.contacts.push(body?.contact);
+            this.contacts = [...this.contacts];
+            if (body?.customFieldCompanyData) {
+              this.customFieldCompanyData = [...body.customFieldCompanyData];
+            }
+            this.isLoading$.next(false);
+          }
+        }
+      });
+  }
+
+  removeContact(index: number): void {
+    this.contacts.splice(index, 1);
+  }
+
   saveLocation(): void {
     if (this.id) {
-      this.locationService.edit(this.id, this.parseData(this.locationForm.value)).subscribe(() => {
+      this.companyService.edit(this.id, this.parseData(this.locationForm.value)).subscribe(() => {
         this.router.navigate(['../../success'], { relativeTo: this.route });
       });
     } else {
-      this.locationService.create(this.locationForm.value).subscribe(() => {
+      this.companyService.create(this.locationForm.value).subscribe(() => {
         this.router.navigate(['../success'], { relativeTo: this.route });
       });
     }

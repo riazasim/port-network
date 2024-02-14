@@ -20,6 +20,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { NoCompaniesComponent } from './no-companies/no-companies.component';
+import { CompanyAddContactModalComponent } from './companies-add-contact-modal/companies-add-contact-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NoCompaniesComponent } from './no-companies/no-companies.component';
     CompaniesDeleteModalComponent,
     CompaniesSuccessComponent,
     NoCompaniesComponent,
-    CompaniesImportModalComponent
+    CompaniesImportModalComponent,
+    CompanyAddContactModalComponent,
   ],
     imports: [
         CommonModule,

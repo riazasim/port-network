@@ -1,18 +1,13 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {FormControl, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { LocationModel } from 'src/app/core/models/location.model';
-import { NativeResponseWrapper } from 'src/app/core/models/response-wrappers.types';
-import { UserRoleModel } from 'src/app/core/models/user-role.model';
 import { UserModel } from 'src/app/core/models/user.model';
 import { LocationService } from 'src/app/core/services/location.service';
 import { UserRoleService } from 'src/app/core/services/user-role.service';
 import { UserService } from 'src/app/core/services/user.service';
-import {SignupModel} from "../../../core/models/signup.model";
-import {handleSuccess} from "../../../shared/utils/success-handling.function";
-import {handleError} from "../../../shared/utils/error-handling.function";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
@@ -37,8 +32,8 @@ export class UsersAddEditComponent {
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   selectedRole$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   userForm: UntypedFormGroup;
-  displayedColumns = ['name', 'city', 'county', 'country', 'status', 'assigned'];
-  dataSource: LocationModel[] = [];
+  // displayedColumns = ['name', 'city', 'county', 'country', 'status', 'assigned'];
+  // dataSource: LocationModel[] = [];
   locations: number[] = [];
   //userRoles: UserRoleModel[] = [];
   //selectedRole = '';
@@ -53,48 +48,9 @@ export class UsersAddEditComponent {
 
   ngOnInit(): void {
       this.subscribeForQueryParams();
-    // combineLatest([
-    //   this.retrieveUserRoles(),
-    //   this.retrieveLocations()
-    // ]).subscribe(([userRoles, locations]) => {
-    //   this.userRoles = userRoles;
-    //   this.dataSource = locations;
-    //   this.subscribeForQueryParams();
-    // })
-      // combineLatest([
-      //   this.retrieveUserRoles(),
-      //   this.retrieveLocations()
-      // ]).subscribe(([userRoles, locations]) => {
-      //   this.userRoles = userRoles;
-      //   this.dataSource = locations;
-      //   this.subscribeForQueryParams();
-      // })
       this.initForm();
   }
 
-  // toggleLocation(id: number): void {
-  //   if (this.locations.includes(id)) {
-  //     this.locations = this.locations.filter(location => location !== id);
-  //   } else {
-  //     this.locations.push(id);
-  //   }
-  // }
-
-  // retrieveUserRoles(): Observable<UserRoleModel[]> {
-  //   return this.userRolesService.list({});
-  // }
-  //
-  // retrieveLocations(): Observable<LocationModel[]> {
-  //   return this.locationService.list({})
-  // }
-
-  // getAssignedLocations(id: number): void {
-  //   this.userService.getLocations(id).subscribe((response: LocationModel[]) => {
-  //     if (response) {
-  //       this.locations = response.map(el => el.id || 0);
-  //     }
-  //   });
-  // }
     onRoleChange(value: any) {
         this.selectedRole$.next(value.target.value);
     }
@@ -131,8 +87,7 @@ export class UsersAddEditComponent {
               language: this.fb.control(data?.userSetting?.language || '', {nonNullable: false}),
               phone: this.fb.control(data?.userSetting?.phone || '', {nonNullable: false}),
               phoneRegionCode: this.fb.control(data?.userSetting?.phoneRegionCode || '', {nonNullable: false}),
-              identityDocumentType: this.fb.control(data?.userSetting?.identityDocumentType || '', {nonNullable: false}),
-              idNumber: this.fb.control(data?.userSetting?.idNumber || '', {nonNullable: false})
+              department: this.fb.control(data?.userSetting?.department || '', {nonNullable: false}),
           })
       });
 

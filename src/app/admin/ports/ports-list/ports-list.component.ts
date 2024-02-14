@@ -9,6 +9,8 @@ import { LocationModel } from 'src/app/core/models/location.model';
 import {PageEvent} from "@angular/material/paginator";
 import {BehaviorSubject} from "rxjs";
 import {PortsImportModalComponent} from "../ports-import-modal/ports-import-modal.component";
+import { PortModel } from 'src/app/core/models/port.model';
+import { PortService } from 'src/app/core/services/port.service';
 
 @Component({
   selector: 'app-ports-list',
@@ -18,13 +20,13 @@ import {PortsImportModalComponent} from "../ports-import-modal/ports-import-moda
 export class PortsListComponent {
  // isLoading: boolean = true;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    displayedColumns: string[] = ['name', 'addrStreet', 'addrNumber', 'addrCounty', 'addrCity', 'addrCountry', 'addrZipCode', 'contact', 'actions'];
+    displayedColumns: string[] = ['name', 'addrStreet', 'addrNumber', 'addrCity', 'addrCountry', 'addrZipCode', 'addrCoordinates', 'actions'];
   // originalColumns: string[] = ['id', 'name', 'addrStreet', 'addrNumber', 'addrCounty', 'addrCity', 'addrCountry', 'addrZipCode', 'contact', 'actions'];
   //displayedColumns: string[] = [];
   // dataSource: any = []
   // originalSource: any = [];
-    dataSource: LocationModel[] = [];
-    originalSource: LocationModel[] = [];
+    dataSource: PortModel[] = [];
+    originalSource: PortModel[] = [];
     appliedFilters: any = {};
 
     pageSizeOptions: number[] = [5, 10, 12, 15];
@@ -35,9 +37,9 @@ export class PortsListComponent {
   constructor(private readonly dialogService: MatDialog,
               private readonly router: Router,
               private readonly route: ActivatedRoute,
-              private readonly locationService: LocationService,
+              private readonly portService: PortService,
               private readonly cd: ChangeDetectorRef) {
-                this.retrieveLocations();
+                this.retrievePorts();
                }
 
   // retrieveLocations(): void {
@@ -53,7 +55,7 @@ export class PortsListComponent {
   // }
 
 
-    retrieveLocations(): void {
+    retrievePorts(): void {
 
         this.pageIndex=0;
         this.pageSize=5;
@@ -64,7 +66,7 @@ export class PortsListComponent {
             "filters": ["","","","","",""],//["firstname/lastname", "status", "role", "phone", "email"]
             "order": [{"dir": "DESC", "column": 0}]
         }
-        this.locationService.pagination(data).subscribe(response => {
+        this.portService.pagination(data).subscribe(response => {
             //console.log(response)
             // let result =(<any>response.items).map(((c: CustomFieldData) => c.attributes));
             this.dataSource = response.items;
@@ -85,7 +87,7 @@ export class PortsListComponent {
             "filters": ["","","","","",""],//["firstname/lastname", "status", "role", "phone", "email"]
             "order": [{"dir": "DESC", "column": 0}]
         }
-        this.locationService.pagination(data).subscribe(response => {
+        this.portService.pagination(data).subscribe(response => {
             // let result =(<any>response.items).map(((c: CustomFieldData) => c.attributes));
             // console.log('Api call')
             this.dataSource = response.items;
@@ -137,8 +139,8 @@ export class PortsListComponent {
         next: (isDelete: boolean) => {
           if (isDelete) {
               this.isLoading$.next(true);
-              this.locationService.delete(id).subscribe(() => {
-              this.retrieveLocations();
+              this.portService.delete(id).subscribe(() => {
+              this.retrievePorts();
               this.cd.detectChanges();
             })
           }
@@ -217,9 +219,9 @@ export class PortsListComponent {
     });
   }
 
-  redirectAddLocation(): void {
-    this.router.navigate(['../add'], { relativeTo: this.route });
-  }
+  // redirectAddPort(): void {
+  //   this.router.navigate(['../add'], { relativeTo: this.route });
+  // }
     openImportModal(): void {
         this.isLoading$.next(true);
         this.dialogService.open(PortsImportModalComponent, {
@@ -229,7 +231,7 @@ export class PortsListComponent {
             .subscribe({
                 next: (isImported) => {
                     if (isImported) {
-                        this.retrieveLocations();
+                        this.retrievePorts();
                     } else {
                         this.isLoading$.next(false);
                     }

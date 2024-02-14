@@ -18,12 +18,16 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProfileComponent } from './profile/profile.component';
+import {MatMenuModule} from "@angular/material/menu";
+import { UsersImportModalComponent } from './userss-import-modal/users-import-modal.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
     UsersComponent,
     UsersListComponent,
     UsersAddEditComponent,
+    UsersImportModalComponent,
     UsersSuccessComponent,
     UsersDeleteModalComponent,
     NoUsersComponent,
@@ -42,7 +46,9 @@ import { ProfileComponent } from './profile/profile.component';
     SearchbarModule,
     SharedModule,
     FontAwesomeModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatMenuModule,
+    MatButtonToggleModule,
   ]
 })
 export class UsersModule { }

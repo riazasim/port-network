@@ -141,8 +141,23 @@
               </th>
               <td cdk-cell *cdkCellDef="let row">{{row.addrZipCode}}</td>
             </ng-container>
+            <ng-container cdkColumnDef="addrCoordinates">
+              <th cdk-header-cell *cdkHeaderCellDef scope="col">
+                  <section class="tw-flex tw-flex-col tw-gap-4">
+                    <div mat-sort-header="addrCoordinates">Coordinates</div>
+                    <searchbar [maxWidth]="85">
+                      <fa-icon icon="search"></fa-icon>
+                      <input #searchCoordinates input type="text" (keyup)="applyFilter($event.target, 'addrCoordinates')">
+                      <div [style.visibility]="searchCoordinates.value ? 'visible': 'hidden'" close (click)="searchCoordinates.value=''; applyFilter({ value: '' }, 'addrCoordinates')">
+                        <fa-icon icon="close"></fa-icon>
+                      </div>
+                  </searchbar>
+                  </section>
+              </th>
+              <td cdk-cell *cdkCellDef="let row">{{row.addrCoordinates}}</td>
+            </ng-container>
 
-            <ng-container cdkColumnDef="contact">
+            <!-- <ng-container cdkColumnDef="contact">
                 <th cdk-header-cell *cdkHeaderCellDef scope="col">
                     <section class="tw-flex tw-flex-col tw-gap-4">
                       <div>Contact</div>
@@ -162,7 +177,7 @@
                     <div class="tw-text-left tw-pl-10">{{row.contactEmail}}</div>
                   </div>
                 </td>
-              </ng-container>
+              </ng-container> -->
 
             <ng-container cdkColumnDef="actions">
               <th cdk-header-cell *cdkHeaderCellDef scope="col">

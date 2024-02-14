@@ -87,71 +87,39 @@
             </div>
             <div>
                 <h6 class="tw-font-bold">Contact</h6>
-                <div class="min-xl:tw-columns-4">
-                  <div>
-                    <div iconic-input-wrapper leftIcon="user">
-                      <input inputRef placeholder="First Name" type="text" id="contactFirstName" formControlName="contactFirstName">
-                    </div>
+                <div class="tw-py-[100px]">
+                    <table class="table tw-border tw-border-lightgray">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Capacity</th>
+                          <th>Occupied Capacity</th>
+                          <th>Client</th>
+                          <th>Product</th>
+                          <!-- <th>Greutate (kg)</th> -->
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let contact of contacts; let i = index">
+                          <td>{{contact.name || '-'}}</td>
+                          <td>{{contact.capacity || '-'}}</td>
+                          <td>{{contact.occupiedCapacity || '-'}}</td>
+                          <td>{{contact.client || '-'}}</td>
+                          <td>{{contact.product || '-'}}</td>
+                          <!-- <td>{{contact.weight || '-'}}</td> -->
+                          <td class="tw-flex tw-gap-2">
+                            <fa-icon (click)="openAddContactModal(contact)" icon="pen" class="tw-text-primary tw-cursor-pointer"></fa-icon>
+                            <fa-icon (click)="removeContact(i)" icon="trash" class="tw-text-primary tw-cursor-pointer"></fa-icon>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <button type="button" class="tw-text-primary tw-font-bold tw-py-5" (click)="openAddContactModal()">
+                      <fa-icon icon="circle-plus"></fa-icon> Add New contact
+                    </button>
                   </div>
-                  <div class="tw-flex tw-flex-col">
-                    <div iconic-input-wrapper leftIcon="user">
-                      <input inputRef placeholder="Last Name" type="text" id="contactLastName" formControlName="contactLastName">
-                    </div>
-                  </div>
-                  <div>
-                    <div iconic-input-wrapper leftIcon="mobile">
-                      <input inputRef placeholder="Phone" type="text" id="contactPhone" formControlName="contactPhone">
-                    </div>
-                  </div>
-
-                    <div>
-                        <div iconic-input-wrapper leftIcon="mobile">
-                            <input inputRef placeholder="Phone Region Code" type="text" id="contactPhoneRegionCode" formControlName="contactPhoneRegionCode">
-                        </div>
-                    </div>
-                </div>
             </div>
-
-            <div>
-                <div>
-                    <div>
-                        <div iconic-input-wrapper leftIcon="envelope">
-                            <input inputRef placeholder="Email" type="text" id="contactEmail" formControlName="contactEmail">
-                        </div>
-                    </div>
-
-
-
-                    <div>
-                        <div iconic-select-wrapper leftIcon="eye" [rightIcon]="['fas', 'caret-down']">
-                            <select inputRef name="addrTimezone" id="timezone" formControlName="addrTimezone">
-                                <option value="" disabled>Select Timezone</option>
-                                <option value="Europe/Bucharest">Europe/Bucharest</option>
-                                <option value="Asia/Karachi">Asia/Karachi</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-
-
-
-                    <div>
-                        <div textarea-wrapper leftIcon="message-lines">
-                            <textarea inputRef cols="137" rows="10" type="text" placeholder="Comments" formControlName="comments"></textarea>
-                        </div>
-                        <!--                        <div textarea-wrapper class="min-xl:tw-columns-12">-->
-                        <!--                            <textarea style="width: auto" placeholder="Comments" inputRef type="textarea" formControlName="comments"></textarea>-->
-                        <!--                        </div>-->
-                    </div>
-
-            </div>
-<!--          <div>-->
-<!--            <h6 class="tw-font-bold">Custom Fileds</h6>-->
-<!--            <h6 *ngIf="true">There are no custom fields defined for this form</h6>-->
-<!--          </div>-->
         </div>
 
         <div class="tw-flex tw-justify-end tw-pt-5">

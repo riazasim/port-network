@@ -20,6 +20,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { NoPortsComponent } from './no-ports/no-ports.component';
+import { PortAddContactModalComponent } from './ports-add-contact-modal/ports-add-contact-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NoPortsComponent } from './no-ports/no-ports.component';
     PortsDeleteModalComponent,
     PortsSuccessComponent,
     NoPortsComponent,
-    PortsImportModalComponent
+    PortsImportModalComponent,
+    PortAddContactModalComponent
   ],
     imports: [
         CommonModule,

@@ -9,6 +9,8 @@ import { LocationModel } from 'src/app/core/models/location.model';
 import {PageEvent} from "@angular/material/paginator";
 import {BehaviorSubject} from "rxjs";
 import {CompaniesImportModalComponent} from "../companies-import-modal/companies-import-modal.component";
+import { CompanyModel } from 'src/app/core/models/company.model';
+import { CompanyService } from 'src/app/core/services/company.service';
 
 @Component({
   selector: 'app-companies-list',
@@ -18,13 +20,13 @@ import {CompaniesImportModalComponent} from "../companies-import-modal/companies
 export class CompaniesListComponent {
  // isLoading: boolean = true;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    displayedColumns: string[] = ['name', 'addrStreet', 'addrNumber', 'addrCounty', 'addrCity', 'addrCountry', 'addrZipCode', 'contact', 'actions'];
+    displayedColumns: string[] = ['name', 'addrStreet', 'addrNumber', 'addrCity', 'addrCountry', 'addrZipCode', 'addrCoordinates', 'actions'];
   // originalColumns: string[] = ['id', 'name', 'addrStreet', 'addrNumber', 'addrCounty', 'addrCity', 'addrCountry', 'addrZipCode', 'contact', 'actions'];
   //displayedColumns: string[] = [];
   // dataSource: any = []
   // originalSource: any = [];
-    dataSource: LocationModel[] = [];
-    originalSource: LocationModel[] = [];
+    dataSource: CompanyModel[] = [];
+    originalSource: CompanyModel[] = [];
     appliedFilters: any = {};
 
     pageSizeOptions: number[] = [5, 10, 12, 15];
@@ -35,7 +37,7 @@ export class CompaniesListComponent {
   constructor(private readonly dialogService: MatDialog,
               private readonly router: Router,
               private readonly route: ActivatedRoute,
-              private readonly locationService: LocationService,
+              private readonly companyService: CompanyService,
               private readonly cd: ChangeDetectorRef) {
                 this.retrieveLocations();
                }
@@ -64,7 +66,7 @@ export class CompaniesListComponent {
             "filters": ["","","","","",""],//["firstname/lastname", "status", "role", "phone", "email"]
             "order": [{"dir": "DESC", "column": 0}]
         }
-        this.locationService.pagination(data).subscribe(response => {
+        this.companyService.pagination(data).subscribe(response => {
             //console.log(response)
             // let result =(<any>response.items).map(((c: CustomFieldData) => c.attributes));
             this.dataSource = response.items;
@@ -85,7 +87,7 @@ export class CompaniesListComponent {
             "filters": ["","","","","",""],//["firstname/lastname", "status", "role", "phone", "email"]
             "order": [{"dir": "DESC", "column": 0}]
         }
-        this.locationService.pagination(data).subscribe(response => {
+        this.companyService.pagination(data).subscribe(response => {
             // let result =(<any>response.items).map(((c: CustomFieldData) => c.attributes));
             // console.log('Api call')
             this.dataSource = response.items;
@@ -137,7 +139,7 @@ export class CompaniesListComponent {
         next: (isDelete: boolean) => {
           if (isDelete) {
               this.isLoading$.next(true);
-              this.locationService.delete(id).subscribe(() => {
+              this.companyService.delete(id).subscribe(() => {
               this.retrieveLocations();
               this.cd.detectChanges();
             })
@@ -212,6 +214,7 @@ export class CompaniesListComponent {
         case 'addrCity': return compare(a.addrCity, b.addrCity, isAsc);
         case 'addrCountry': return compare(a.addrCountry, b.addrCountry, isAsc);
         case 'addrZipCode': return compare(a.addrZipCode, b.addrZipCode, isAsc);
+        case 'addrCoordinates': return compare(a.addrCoordinates, b.addrCoordinates, isAsc);
         default: return 0;
       }
     });

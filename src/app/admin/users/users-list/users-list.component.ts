@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserRoleModel } from 'src/app/core/models/user-role.model';
 import { UserRoleService } from 'src/app/core/services/user-role.service';
 import {PageEvent} from "@angular/material/paginator";
+import { UsersImportModalComponent } from '../userss-import-modal/users-import-modal.component';
 
 @Component({
   selector: 'app-users-list',
@@ -20,7 +21,7 @@ import {PageEvent} from "@angular/material/paginator";
 })
 export class UsersListComponent {
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  displayedColumns = ['fullName', 'status', 'userRole', 'phone', 'email', 'actions'];
+  displayedColumns = ['fullName', 'status', 'userRole', 'phone', 'email', 'department', 'actions'];
   dataSource: UserModel[] = []
   originalSource: UserModel[] = [];
   appliedFilters: any = {};
@@ -169,6 +170,7 @@ export class UsersListComponent {
         case 'userRole': return compare(a?.userRole, b?.userRole, isAsc);
         case 'phone': return compare(a?.phone, b?.phone, isAsc);
         case 'email': return compare(a?.email, b?.email, isAsc);
+        case 'department': return compare(a?.department, b?.department, isAsc);
         default: return 0;
       }
     });
@@ -212,5 +214,21 @@ export class UsersListComponent {
             this.originalSource = response.items;
             this.isLoading$.next(false);
         })
+    }
+    openImportModal(): void {
+      this.isLoading$.next(true);
+      this.dialogService.open(UsersImportModalComponent, {
+        disableClose: true,
+        data: {}
+      }).afterClosed()
+        .subscribe({
+          next: (isImported) => {
+            if (isImported) {
+              this.retrieveUsers();
+            } else {
+              this.isLoading$.next(false);
+            }
+          }
+        });
     }
 }
