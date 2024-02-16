@@ -56,7 +56,7 @@ export class PortsAddEditComponent implements OnInit {
 
   initForm(data: PortModel = <PortModel>{}): void {
     this.portForm = this.fb.group({
-      //portId: this.fb.control(data?.id),
+      // portId: this.fb.control(data?.id),
       name: this.fb.control(data?.name || '', [Validators.required]),
       addrCoordinates: this.fb.control(data?.addrCoordinates || '', [Validators.required]),
       addrStreet: this.fb.control(data?.addrStreet || '', [Validators.required]),
