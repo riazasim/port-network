@@ -5,6 +5,7 @@ import { BrandingComponent } from "./branding/branding.component";
 import { LocationSettingsComponent } from "./location-settings/location-settings.component";
 import { AdminComponent } from "./admin.component";
 import { MapComponent } from './map/map.component';
+import { SearchComponent } from './map/search/search.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'map',
         component: MapComponent
+      },
+      {
+        path: 'search',
+        component: SearchComponent
       },
       {
         path: 'branding',

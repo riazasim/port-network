@@ -34,7 +34,7 @@ export class PortService {
   }
 
   edit(id:number,data: PortModel): Observable<any> {
-    data['portId']=id;
+    data['id']=id;
     const formData = convertJsonToFormData(data, '');
     formData.delete('data[imgPreview]');
     formData.delete('data[portId]');
@@ -52,18 +52,18 @@ export class PortService {
 
   delete(id: number): Observable<any> {
       let data={
-          locationId:id
+          portId:id
       }
     return this.http.post(`${environment.apiUrl}${environment.apiVersion}/port/delete`,data)
   }
 
-  list(data: any): Observable<PortModel[]> {
-    return this.http.post<ResponseArrayWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/paginate`,data)
-    .pipe(
-      pluckArrayWrapperData<any, ResponseArrayWrapper<any>>(),
-      catchError(() => [])
-      )
-  }
+  // list(data: any): Observable<PortModel[]> {
+  //   return this.http.post<ResponseArrayWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/paginate`,data)
+  //   .pipe(
+  //     pluckArrayWrapperData<any, ResponseArrayWrapper<any>>(),
+  //     catchError(() => [])
+  //     )
+  // }
 
   // listTable(data: any): Observable<PortModel[]> {
   //   return this.http.get<ResponseArrayWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}${this.route}/table`)

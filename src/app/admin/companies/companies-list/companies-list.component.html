@@ -62,20 +62,20 @@
               <td cdk-cell *cdkCellDef="let row">{{row.addrStreet}}</td>
             </ng-container>
 
-            <ng-container cdkColumnDef="addrNumber">
+            <ng-container cdkColumnDef="addrStreetNo">
               <th cdk-header-cell *cdkHeaderCellDef scope="col">
                   <section class="tw-flex tw-flex-col tw-gap-4">
-                    <div mat-sort-header="addrNumber">No.</div>
+                    <div mat-sort-header="addrStreetNo">Street No.</div>
                     <searchbar [maxWidth]="76">
                       <fa-icon icon="search"></fa-icon>
-                      <input #searchStreetNo input type="text" (keyup)="applyFilter($event.target, 'addrNumber')">
-                      <div [style.visibility]="searchStreetNo.value ? 'visible': 'hidden'" close (click)="searchStreetNo.value=''; applyFilter({ value: '' }, 'addrNumber')">
+                      <input #searchStreetNo input type="text" (keyup)="applyFilter($event.target, 'addrStreetNo')">
+                      <div [style.visibility]="searchStreetNo.value ? 'visible': 'hidden'" close (click)="searchStreetNo.value=''; applyFilter({ value: '' }, 'addrStreetNo')">
                         <fa-icon icon="close"></fa-icon>
                       </div>
                   </searchbar>
                 </section>
               </th>
-              <td cdk-cell *cdkCellDef="let row">{{row.addrNumber}}</td>
+              <td cdk-cell *cdkCellDef="let row">{{row.addrStreetNo}}</td>
             </ng-container>
 
             <ng-container cdkColumnDef="addrCounty">

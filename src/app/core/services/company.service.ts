@@ -15,17 +15,16 @@ import {
   ResponseItemWrapper
 } from '../models/response-wrappers.types';
 import {CustomFieldData} from "../models/custom-field.model";
-import { PortModel, PortTable } from '../models/port.model';
+import { CompanyModel, CompanyTable, ContactsTable } from '../models/company.model';
+import { ContactsModel } from '../models/contact.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
-  // private route: string = '/port/';
-  // private ports: string = '/change-ports';
   constructor(private http: HttpClient) {}
 
-  create(data: PortModel): Observable<any> {
+  create(data: CompanyModel): Observable<any> {
     //const formData = convertJsonToFormData(data, 'data[attributes]');
     const formData = convertJsonToFormData(data,'');
     formData.delete('data[imgPreview]');
@@ -33,18 +32,18 @@ export class CompanyService {
     return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/create`, formData);
   }
 
-  edit(id:number,data: PortModel): Observable<any> {
-    data['portId']=id;
+  edit(id:number,data: CompanyModel): Observable<any> {
+    data['companyId']=id;
     const formData = convertJsonToFormData(data, '');
     formData.delete('data[imgPreview]');
-    formData.delete('data[portId]');
+    formData.delete('data[companyId]');
     if (data.imgPreview) formData.append('imgPreview', data.imgPreview);
     return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/update`, formData);
   }
 
   get(id: number): Observable<any> {
       let data={
-          portId:id
+          companyId:id
       }
     return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/get`,data)
                     .pipe(pluckItemWrapperData<any, ResponseItemWrapper<any>>())
@@ -57,7 +56,7 @@ export class CompanyService {
     return this.http.post(`${environment.apiUrl}${environment.apiVersion}/company/delete`,data)
   }
 
-  list(data: any): Observable<PortModel[]> {
+  list(data: any): Observable<CompanyModel[]> {
     return this.http.post<ResponseArrayWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/paginate`,data)
     .pipe(
       pluckArrayWrapperData<any, ResponseArrayWrapper<any>>(),
@@ -65,26 +64,27 @@ export class CompanyService {
       )
   }
 
-  // listTable(data: any): Observable<PortModel[]> {
-  //   return this.http.get<ResponseArrayWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}${this.route}/table`)
-  //   .pipe(
-  //     pluckArrayWrapperData<any, ResponseArrayWrapper<any>>(),
-  //     catchError(() => [])
-  //     )
-  // }
 
-
-  pagination(data: any): Observable<PortTable> {
+  pagination(data: any): Observable<CompanyTable> {
     return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/paginate`, wrapJsonForRequest(data))
         .pipe(pluckArrayPaginationWrapperData<any, ResponseArrayPaginationWrapper<any>>(),
-            map((u: PortTable) => {
+            map((u: CompanyTable) => {
+              u.items = (<any>u.items).map(((c: CustomFieldData) => c.attributes));
+              return u;
+            })
+        );
+  }
+  addCompanyContact(data: any): Observable<ContactsTable> {
+    return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/contact/create`, wrapJsonForRequest(data))
+        .pipe(pluckArrayPaginationWrapperData<any, ResponseArrayPaginationWrapper<any>>(),
+            map((u: ContactsTable) => {
               u.items = (<any>u.items).map(((c: CustomFieldData) => c.attributes));
               return u;
             })
         );
   }
 
-    importLocaitons(list: PortModel[]): Observable<any> {
-        return this.http.post(`${environment.apiUrl}${environment.apiVersion}/company/import`, wrapJsonListForRequest('port', list));
+    importLocaitons(list: CompanyModel[]): Observable<any> {
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}/company/import`, wrapJsonListForRequest('company', list));
     }
 }

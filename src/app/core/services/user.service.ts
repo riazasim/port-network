@@ -41,8 +41,8 @@ export class UserService {
   }
 
   delete(id: number): Observable<any> {
-      let data = {'userId':id};
-    return this.http.post(`${environment.apiUrl}${environment.apiVersion}/user/delete`, wrapJsonForRequest(data))
+      // let data = {'userId':id};
+    return this.http.post(`${environment.apiUrl}${environment.apiVersion}/user/delete`, wrapJsonForRequest(id))
   }
 
   list(data: any): Observable<UserModel[]> {

@@ -20,8 +20,8 @@ import { CompanyService } from 'src/app/core/services/company.service';
 export class CompaniesListComponent {
  // isLoading: boolean = true;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    displayedColumns: string[] = ['name', 'addrStreet', 'addrNumber', 'addrCity', 'addrCountry', 'addrZipCode', 'addrCoordinates', 'actions'];
-  // originalColumns: string[] = ['id', 'name', 'addrStreet', 'addrNumber', 'addrCounty', 'addrCity', 'addrCountry', 'addrZipCode', 'contact', 'actions'];
+    displayedColumns: string[] = ['name', 'addrStreet', 'addrStreetNo', 'addrCity', 'addrCountry', 'addrZipCode', 'addrCoordinates', 'actions'];
+  // originalColumns: string[] = ['id', 'name', 'addrStreet', 'addrStreetNo', 'addrCounty', 'addrCity', 'addrCountry', 'addrZipCode', 'contact', 'actions'];
   //displayedColumns: string[] = [];
   // dataSource: any = []
   // originalSource: any = [];
@@ -39,10 +39,10 @@ export class CompaniesListComponent {
               private readonly route: ActivatedRoute,
               private readonly companyService: CompanyService,
               private readonly cd: ChangeDetectorRef) {
-                this.retrieveLocations();
+                this.retrieveCompanies();
                }
 
-  // retrieveLocations(): void {
+  // retrieveCompanies(): void {
   //   this.locationService.listTable({}).subscribe((response: any[]) => {
   //     const existColumns = this.initializeColumns(response);
   //     if (existColumns) {
@@ -55,8 +55,7 @@ export class CompaniesListComponent {
   // }
 
 
-    retrieveLocations(): void {
-
+    retrieveCompanies(): void {
         this.pageIndex=0;
         this.pageSize=5;
 
@@ -100,7 +99,7 @@ export class CompaniesListComponent {
 
 
 
-  // retrieveLocations(): void {
+  // retrieveCompanies(): void {
   //   this.locationService.pagination({}).subscribe((response) => {
   //     const existColumns = this.initializeColumns(response);
   //     if (existColumns) {
@@ -140,7 +139,7 @@ export class CompaniesListComponent {
           if (isDelete) {
               this.isLoading$.next(true);
               this.companyService.delete(id).subscribe(() => {
-              this.retrieveLocations();
+              this.retrieveCompanies();
               this.cd.detectChanges();
             })
           }
@@ -209,7 +208,7 @@ export class CompaniesListComponent {
       switch (sort.active) {
         case 'name': return compare(a.name, b.name, isAsc);
         case 'addrStreet': return compare(a.addrStreet, b.addrStreet, isAsc);
-        case 'addrNumber': return compare(a.addrNumber, b.addrNumber, isAsc);
+        case 'addrStreetNo': return compare(a.addrStreetNo, b.addrStreetNo, isAsc);
         case 'addrCounty': return compare(a.addrCounty, b.addrCounty, isAsc);
         case 'addrCity': return compare(a.addrCity, b.addrCity, isAsc);
         case 'addrCountry': return compare(a.addrCountry, b.addrCountry, isAsc);
@@ -220,9 +219,9 @@ export class CompaniesListComponent {
     });
   }
 
-  redirectAddLocation(): void {
-    this.router.navigate(['../add'], { relativeTo: this.route });
-  }
+  // redirectAddCompany(): void {
+  //   this.router.navigate(['../add'], { relativeTo: this.route });
+  // }
     openImportModal(): void {
         this.isLoading$.next(true);
         this.dialogService.open(CompaniesImportModalComponent, {
@@ -232,7 +231,7 @@ export class CompaniesListComponent {
             .subscribe({
                 next: (isImported) => {
                     if (isImported) {
-                        this.retrieveLocations();
+                        this.retrieveCompanies();
                     } else {
                         this.isLoading$.next(false);
                     }

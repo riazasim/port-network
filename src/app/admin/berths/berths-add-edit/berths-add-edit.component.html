@@ -34,9 +34,9 @@
                 <h6 class="tw-font-bold">Port</h6>
                 <div class="tw-h-[75px]">
                     <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']">
-                        <select inputRef name="shipType" id="portId" formControlName="portId">
+                        <select inputRef name="portId" id="portId" formControlName="portId" (change)="onPortChange($event)">
                             <!-- <option value="null" disabled>Port*</option> -->
-                            <option *ngFor="let port of portList" [value]="port.portId">{{port.name}}</option>
+                            <option *ngFor="let port of ports;" [value]="port.id">{{port.name}}</option>
                         </select>
                       </div>
                 </div>

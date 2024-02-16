@@ -1,0 +1,19 @@
+<div iconic-input-wrapper [leftIcon]="icon" [attr.rightIcon]="hideArrow?null:['fas', 'caret-down']">
+    <input inputRef 
+            type="text"
+            autocomplete="off"
+            [placeholder]="placeholder"
+            [matAutocomplete]="matControl"
+            class="tw-text-center"
+            (input)="checkForEmptyValue($event)"
+            [formControl]="selectControl">
+    <mat-autocomplete [requireSelection]="requireSelection" 
+                        #matControl="matAutocomplete" 
+                        (optionSelected)="optionSelected.emit($event)" 
+                        [displayWith]="displayFn" 
+                        class="!tw-bg-white">
+        <mat-option *ngFor="let entity of selectableEntities$ | async" [value]="entity">
+            {{entity[searchField]}}
+        </mat-option>
+      </mat-autocomplete>
+  </div>

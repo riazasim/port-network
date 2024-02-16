@@ -1,0 +1,25 @@
+.card {
+    display: flex;
+    border: 1px transparent solid;
+    border-radius: 12px;
+    height: 140px;
+    width: 300px;
+
+    .left {
+        flex-basis: 80px;
+        border: 1px transparent solid;
+        border-radius: 12px 0 0 12px;
+        background-color: #1B9FE8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .right {
+        flex-basis: 220px;
+        border: 1px transparent solid;
+        border-radius: 0 12px 12px 0;
+        background-color: #FFFFFF;
+        display: flex;
+    }
+}

@@ -1,10 +1,21 @@
 <div class="tw-flex-grow tw-flex tw-flex-col tw-gap-8">
   <div class="tw-flex tw-justify-between sm:tw-justify-center md:tw-flex-row max-md:tw-flex-col">
       <h3 class="heading-3">{{'menu.dashboard' | translate }}</h3>
-      <searchbar [minWidth]="500">
+      <div class="tw-w-[500px]">
+        <app-loader *ngIf="isLoading$ | async" size="2x"></app-loader>
+        <app-autocomplete-select *ngIf="!(isLoading$ | async)"
+          [list]="(clients$ | async)!"
+          [searchField]="'fullName'"
+          [placeholder]="'dashboard.search-client' | translate"
+          [hideArrow]="true"
+          (optionSelected)="redirectToPartnerDetails($event)"
+          icon="search">
+        </app-autocomplete-select>
+      </div>
+      <!-- <searchbar [minWidth]="500">
         <fa-icon icon="search" leftIcon></fa-icon>
         <input input class="tw-rounded" type="text" placeholder="Search Client">
-      </searchbar>
+      </searchbar> -->
   </div>
   <div class="tw-flex tw-flex-wrap tw-gap-8">
     <div statistic-card-v2 icon="truck" class="tw-flex-grow slide-in-bottom" [label]="'dashboard.vehicles-today-count' | translate" [numericValue]="(totalVehiclesToday$ | async)!"
@@ -60,4 +71,5 @@
         </div>
       </div>
     </div>
+  
 </div>

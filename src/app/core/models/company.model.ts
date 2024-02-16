@@ -1,16 +1,16 @@
-import { ContactsModel } from "./contact.model";
-export type CompanyModel = {
-    portId?: number;
+// import { ContactsModel } from "./contact.model";
+export interface CompanyModel {
+    companyId?: number;
     name: string;
     addrCoordinates: string;
     addrStreet: string;
-    addrNumber: string;
+    addrStreetNo: string;
     addrCity: string;
     addrCountry: string;
     addrCounty: string;
     addrZipCode: string;
-    addrTimezone:string;
-    contacts?: ContactsModel;
+    addrTimezone?:string | '';
+    contacts: ContactsModel | [];
     imgPreview: File;
 }
 
@@ -26,11 +26,17 @@ export interface CompanyCustomField {
     value: string | string[] | number;
 }
 
-// export type ContactsModel = {
-//    contactsIs?: number;
-//    name:string;
-//    capacity: number;
-//    occupiedCapacity: number;
-//    client: string;
-//    product: string;
-// }
+export interface ContactsModel {
+   contactsId?: number;
+   name:string;
+   capacity: number;
+   occupiedCapacity: number;
+   client: string;
+   product: string;
+}
+
+export interface ContactsTable {
+    items: ContactsModel[];
+    noFiltered: number;
+    noTotal: number;
+}

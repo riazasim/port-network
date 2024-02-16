@@ -38,6 +38,7 @@ export class SetPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeForQueryParams();
+    console.log(this.token)
   }
 
   subscribeForQueryParams(): void {
@@ -58,7 +59,7 @@ export class SetPasswordComponent implements OnInit {
         this.authService.setPassword({...this.setPasswordForm.value, token: this.token }).subscribe({
             next: (response) => {
                 this.router.navigate(
-                    ['../sign-in'], { relativeTo: this.route }
+                    ['../../sign-in'], { relativeTo: this.route }
                 )
                     .then(() => {
                         // this.snackBar.open("Password has been successfully setup.", "Close", {

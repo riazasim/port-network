@@ -1,7 +1,6 @@
-﻿<!--<edit-container headerTitle="Add location">-->
-    <edit-container [headerTitle]="id ?  'Edit company details':'Add company details'">
+﻿ <edit-container [headerTitle]="id ?  'Edit company details':'Add company details'">
     <app-loader *ngIf="(isLoading$ | async)" [isContainer]="true" [fullScreen]="false"></app-loader>
-    <form *ngIf="!(isLoading$ | async)" [formGroup]="locationForm">
+    <form *ngIf="!(isLoading$ | async)" [formGroup]="companyForm">
         <div>
             <div>
                 <h6 class="tw-font-bold">Details</h6>
@@ -17,17 +16,17 @@
                         </div>
                     </div>
                     <div class="tw-h-[90px]">
-                        <div *ngIf="(location$ | async)?.imgPreview">
+                        <div *ngIf="(company$ | async)?.imgPreview">
                             <label >&nbsp;</label>
                             <div class="tw-relative tw-w-[50px]">
                                 <span class="tw-absolute tw-top-1/2 tw-left-1/2
                                 tw-transform tw--translate-x-1/2 tw--translate-y-1/2 tw-text-gray tw-text-3xl
                                 tw-cursor-pointer"
                                 (click)="clearImgPreview()">&times;</span>
-                                <img [src]="(location$ | async)?.imgPreview" alt="imgPreview" width="50" height="50">
+                                <img [src]="(company$ | async)?.imgPreview" alt="imgPreview" width="50" height="50">
                             </div>
                         </div>
-                        <div *ngIf="!(location$ | async)?.imgPreview">
+                        <div *ngIf="!(company$ | async)?.imgPreview">
                             <div iconic-input-wrapper leftIcon="camera" class="tw-cursor-pointer" (click)="triggerFile.click()">
                                 <input inputRef type="text" placeholder="Picture (480 x 300 px)" readonly #inputReference>
                                 <input style="display: none;" type="file"  #triggerFile accept="image/*" (change)="setImgPreview($event.target, inputReference)">
@@ -53,7 +52,7 @@
                         <div class="min-md:tw-flex tw-gap-2">
                             <div class="tw-flex-2">
                                 <div iconic-input-wrapper>
-                                    <input placeholder="No." inputRef type="text" formControlName="addrNumber">
+                                    <input placeholder="No." inputRef type="text" formControlName="addrStreetNo">
                                 </div>
                             </div>
                             <div class="tw-flex-1">
@@ -101,21 +100,41 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let contact of contacts; let i = index">
-                          <td>{{contact.name || '-'}}</td>
-                          <td>{{contact.capacity || '-'}}</td>
+                        <tr>
+                          <td>name</td>
+                          <td>name</td>
+                          <td>name</td>
+                          <td>name</td>
+                          <td>name</td>
+                          <!-- <td>{{contact.capacity || '-'}}</td>
                           <td>{{contact.occupiedCapacity || '-'}}</td>
                           <td>{{contact.client || '-'}}</td>
-                          <td>{{contact.product || '-'}}</td>
+                          <td>{{contact.product || '-'}}</td> -->
                           <!-- <td>{{contact.weight || '-'}}</td> -->
                           <td class="tw-flex tw-gap-2">
-                            <fa-icon (click)="openAddContactModal(contact)" icon="pen" class="tw-text-primary tw-cursor-pointer"></fa-icon>
-                            <fa-icon (click)="removeContact(i)" icon="trash" class="tw-text-primary tw-cursor-pointer"></fa-icon>
+                            <fa-icon  icon="pen" class="tw-text-primary tw-cursor-pointer"></fa-icon>
+                            <fa-icon  icon="trash" class="tw-text-primary tw-cursor-pointer"></fa-icon>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>name</td>
+                          <td>name</td>
+                          <td>name</td>
+                          <td>name</td>
+                          <td>name</td>
+                          <!-- <td>{{contact.capacity || '-'}}</td>
+                          <td>{{contact.occupiedCapacity || '-'}}</td>
+                          <td>{{contact.client || '-'}}</td>
+                          <td>{{contact.product || '-'}}</td> -->
+                          <!-- <td>{{contact.weight || '-'}}</td> -->
+                          <td class="tw-flex tw-gap-2">
+                            <fa-icon  icon="pen" class="tw-text-primary tw-cursor-pointer"></fa-icon>
+                            <fa-icon  icon="trash" class="tw-text-primary tw-cursor-pointer"></fa-icon>
                           </td>
                         </tr>
                       </tbody>
                     </table>
-                    <button type="button" class="tw-text-primary tw-font-bold tw-py-5" (click)="openAddContactModal()">
+                    <button type="button" class="tw-text-primary tw-font-bold tw-py-5" >
                       <fa-icon icon="circle-plus"></fa-icon> Add New contact
                     </button>
                   </div>
@@ -125,7 +144,8 @@
         <div class="tw-flex tw-justify-end tw-pt-5">
             <div class="tw-flex tw-gap-4">
                 <button [routerLink]="id ? '../../list': '../list'" class="btn btn-outline-primary" type="button" [disabled]="(isLoading$ | async)">Cancel</button>
-                <button class="btn btn-primary" type="button" (click)="saveLocation()" [disabled]="locationForm.invalid || (isLoading$ | async)">Save</button>
+                <!-- <button class="btn btn-primary" type="button" (click)="saveLocation()" [disabled]="companyForm.invalid || (isLoading$ | async)">Save</button> -->
+                <button class="btn btn-primary" type="button" (click)="saveLocation()">Save</button>
             </div>
         </div>
     </form>

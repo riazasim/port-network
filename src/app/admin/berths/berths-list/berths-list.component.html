@@ -89,7 +89,7 @@
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="status">Status</div>
-                                <searchbar>
+                                <!-- <searchbar>
                                     <fa-icon icon="search"></fa-icon>
                                     <input
                                         #searchStatus
@@ -116,7 +116,20 @@
                                 </searchbar>
                             </section>
                         </th>
-                        <td class="tw-w-2/12" cdk-cell *cdkCellDef="let row">{{ row.status }}</td>
+                        <td class="tw-w-2/12" cdk-cell *cdkCellDef="let row">{{ row.status }}</td> -->
+                        <select (change)="filterByStatus($event)" filter-select>
+                            <option value="" selected>Select</option>
+                            <option [value]="true">Active</option>
+                            <option [value]="false">Inactive</option>
+                        </select>
+                    </section>
+                  </th>
+                  <td cdk-cell *cdkCellDef="let row;let i = index">
+                    <mat-chip [ngClass]="{
+                      '!tw-bg-green-200': row.status,
+                      '!tw-bg-red-200': !row.status
+                    }">{{row.status ? 'active' : 'inactive'}}</mat-chip>
+                  </td>
                     </ng-container>
 
                     <ng-container cdkColumnDef="addrCoordinates">

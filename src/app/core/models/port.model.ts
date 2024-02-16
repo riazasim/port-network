@@ -1,16 +1,16 @@
 import { ContactsModel } from "./contact.model";
 export type PortModel = {
-    portId?: number;
+    id?: number;
     name: string;
     addrCoordinates: string;
     addrStreet: string;
-    addrNumber: string;
+    addrStreetNo: string;
     addrCity: string;
     addrCountry: string;
     addrCounty: string;
     addrZipCode: string;
-    addrTimezone:string;
-    contacts: ContactsModel;
+    addrTimezone?:string | '';
+    contacts: ContactsModel | [];
     imgPreview: File;
 }
 

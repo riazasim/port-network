@@ -20,7 +20,8 @@ import { FilterSelectComponent } from './components/filter-select/filter-select.
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { TextareaWrapperComponent } from './components/textarea-wrapper/textarea-wrapper.component';
 import { SVGLayoutComponent } from './components/svg-layout/svg-layout.component';
-
+import { AutocompleteSelectComponent } from './components/autocomplete-select/autocomplete-select.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { SVGLayoutComponent } from './components/svg-layout/svg-layout.component
     CallbackPipe,
     ButtonComponent,
     FilterSelectComponent,
-    TextareaWrapperComponent
+    TextareaWrapperComponent,
+    AutocompleteSelectComponent
   ],
     imports: [
         CommonModule,
@@ -48,7 +50,9 @@ import { SVGLayoutComponent } from './components/svg-layout/svg-layout.component
         FormsModule,
         ReactiveFormsModule,
         SearchbarModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatAutocompleteModule
+        
     ],
   exports: [
     IconicInputWrapperComponent,
@@ -66,7 +70,10 @@ import { SVGLayoutComponent } from './components/svg-layout/svg-layout.component
     CallbackPipe,
     ButtonComponent,
     FilterSelectComponent,
-    TextareaWrapperComponent
+    TextareaWrapperComponent,
+    AutocompleteSelectComponent,
+    AutocompleteSelectComponent
+    
   ]
 })
 export class SharedModule { }

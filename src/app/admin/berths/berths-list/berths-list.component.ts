@@ -143,6 +143,21 @@ export class BerthsListComponent {
     });
   }
 
+  filterByStatus(event: any): void {
+    this.isLoading$.next(true);
+    switch(event.target.value) {
+      case 'true':
+        this.dataSource = this.originalSource.filter(el => el.berthStatus);
+        break;
+      case 'false':
+        this.dataSource = this.originalSource.filter(el => !el.berthStatus);
+        break;
+      default:
+        this.dataSource = [...this.originalSource]
+    }
+    this.isLoading$.next(false);
+  }
+
   sortData(sort: Sort): void {
     const data = this.dataSource.slice();
     if (!sort.active || sort.direction === '') {
@@ -154,6 +169,7 @@ export class BerthsListComponent {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'name': return compare(a.name, b.name, isAsc);
+        case 'berthStatus': return compare(a.berthStatus, b.berthStatus, isAsc);
         case 'addrCoordinates': return compare(a.addrCoordinates, b.addrCoordinates, isAsc);
         // case 'port': return compare(a.port, b.port, isAsc);
         case 'length': return compare(a.length, b.length, isAsc);

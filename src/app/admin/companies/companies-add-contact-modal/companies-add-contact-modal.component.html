@@ -6,7 +6,7 @@
                 <div iconic-select-wrapper [rightIcon]="['fas', 'caret-down']">
                     <select [disabled]="!!contact" inputRef name="contact" id="contact" (change)="setContact($event)" [(ngModel)]="contactId">
                         <option [value]="null" selected disabled>Select contact</option>
-                        <option *ngFor="let contact of data.contacts" [value]="contact.id">{{contact.name}}</option>
+                        <option *ngFor="let contact of contactList" [value]="contact.id">{{contact.name}}</option>
                     </select>
                 </div>
             </div>

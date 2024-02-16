@@ -4,6 +4,7 @@ import { CompaniesAddEditComponent } from './companies-add-edit/companies-add-ed
 import { CompaniesListComponent } from './companies-list/companies-list.component';
 import { CompaniesSuccessComponent } from './companies-success/companies-success.component';
 import { CompaniesComponent } from './companies.component';
+import { NoCompaniesComponent } from './no-companies/no-companies.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
       {
         path: 'success',
         component: CompaniesSuccessComponent
+      },
+      {
+        path: 'no-companies',
+        component: NoCompaniesComponent
       },
       {
         path: 'add',
