@@ -22,8 +22,11 @@ import { TextareaWrapperComponent } from './components/textarea-wrapper/textarea
 import { SVGLayoutComponent } from './components/svg-layout/svg-layout.component';
 import { AutocompleteSelectComponent } from './components/autocomplete-select/autocomplete-select.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 @NgModule({
   declarations: [
     IconicInputWrapperComponent,
@@ -42,7 +45,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     ButtonComponent,
     FilterSelectComponent,
     TextareaWrapperComponent,
-    AutocompleteSelectComponent
+    AutocompleteSelectComponent,
   ],
     imports: [
         CommonModule,
@@ -51,8 +54,13 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         ReactiveFormsModule,
         SearchbarModule,
         MatProgressSpinnerModule,
-        MatAutocompleteModule
-        
+        MatAutocompleteModule,
+        MatCheckboxModule,
+        MatRadioModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatInputModule
+
     ],
   exports: [
     IconicInputWrapperComponent,
@@ -72,8 +80,13 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     FilterSelectComponent,
     TextareaWrapperComponent,
     AutocompleteSelectComponent,
-    AutocompleteSelectComponent
-    
+    AutocompleteSelectComponent,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatInputModule
+
   ]
 })
 export class SharedModule { }
