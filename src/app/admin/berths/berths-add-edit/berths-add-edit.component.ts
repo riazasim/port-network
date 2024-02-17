@@ -53,7 +53,7 @@ export class BerthsAddEditComponent implements OnInit {
     this.berthForm = this.fb.group({
       name: this.fb.control(data?.name || '', [Validators.required]),
       addrCoordinates: this.fb.control(data?.addrCoordinates || '', [Validators.required]),
-      portId: this.fb.control(data?.port?.id || '', [Validators.required]),
+      portId: this.fb.control(data?.port?.portId || '', [Validators.required]),
       length: this.fb.control(data?.length || '', [Validators.required]),
       width: this.fb.control(data?.width || '', [Validators.required]),
       depth: this.fb.control(data?.depth || '', [Validators.required]),

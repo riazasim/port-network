@@ -1,6 +1,7 @@
 import { ContactsModel } from "./contact.model";
 export type PortModel = {
-    id?: number;
+    id?: number; 
+    portId?: number;
     name: string;
     addrCoordinates: string;
     addrStreet: string;

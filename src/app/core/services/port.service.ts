@@ -34,7 +34,7 @@ export class PortService {
   }
 
   edit(id:number,data: PortModel): Observable<any> {
-    data['id']=id;
+    data['portId']=id;
     const formData = convertJsonToFormData(data, '');
     formData.delete('data[imgPreview]');
     formData.delete('data[portId]');
