@@ -89,36 +89,66 @@
                 <h6 class="tw-font-bold">Contact</h6>
                 <div class="tw-py-[100px]">
                     <table class="table tw-border tw-border-lightgray">
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Capacity</th>
-                          <th>Occupied Capacity</th>
-                          <th>Client</th>
-                          <th>Product</th>
-                          <!-- <th>Greutate (kg)</th> -->
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let contact of contacts; let i = index">
-                          <td>{{contact.name || '-'}}</td>
-                          <td>{{contact.capacity || '-'}}</td>
-                          <td>{{contact.occupiedCapacity || '-'}}</td>
-                          <td>{{contact.client || '-'}}</td>
-                          <td>{{contact.product || '-'}}</td>
-                          <!-- <td>{{contact.weight || '-'}}</td> -->
-                          <td class="tw-flex tw-gap-2">
-                            <fa-icon (click)="openAddContactModal(contact)" icon="pen" class="tw-text-primary tw-cursor-pointer"></fa-icon>
-                            <fa-icon (click)="removeContact(i)" icon="trash" class="tw-text-primary tw-cursor-pointer"></fa-icon>
-                          </td>
-                        </tr>
-                      </tbody>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Capacity</th>
+                                <th>Occupied Capacity</th>
+                                <th>Client</th>
+                                <th>Product</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody formArrayName="contacts">
+                            <tr
+                                *ngFor="
+                                    let contact of contacts.controls;
+                                    let i = index
+                                "
+                                [formGroupName]="i"
+                            >
+                                <td>
+                                    <input class="tw-text-center" matInput formControlName="name" />
+                                </td>
+                                <td>
+                                    <input
+                                    class="tw-text-center"
+                                        matInput
+                                        formControlName="capacity"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        matInput
+                                        class="tw-text-center"
+                                        formControlName="occupiedCapacity"
+                                    />
+                                </td>
+                                <td>
+                                    <input matInput class="tw-text-center" formControlName="client" />
+                                </td>
+                                <td>
+                                    <input matInput class="tw-text-center" formControlName="product" />
+                                </td>
+                                <td>
+                                    <!-- <fa-icon  icon="pen" class="tw-text-primary tw-cursor-pointer"></fa-icon> -->
+                                    <fa-icon
+                                        icon="trash"
+                                        (click)="removeContact(i)"
+                                        class="tw-text-primary tw-cursor-pointer"
+                                    ></fa-icon>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
-                    <button type="button" class="tw-text-primary tw-font-bold tw-py-5" (click)="openAddContactModal()">
-                      <fa-icon icon="circle-plus"></fa-icon> Add New contact
+                    <button
+                        type="button"
+                        class="tw-text-primary tw-font-bold tw-py-5"
+                        (click)="addContact()"
+                    >
+                        <fa-icon icon="circle-plus"></fa-icon> Add New contact
                     </button>
-                  </div>
+                </div>
             </div>
 
         </div>

@@ -134,10 +134,10 @@
                         </td>
                     </ng-container>
 
-                    <ng-container cdkColumnDef="addrNumber">
+                    <ng-container cdkColumnDef="addrStreetNo">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
-                                <div mat-sort-header="addrNumber">No.</div>
+                                <div mat-sort-header="addrStreetNo">No.</div>
                                 <searchbar [maxWidth]="76">
                                     <fa-icon icon="search"></fa-icon>
                                     <input
@@ -147,7 +147,7 @@
                                         (keyup)="
                                             applyFilter(
                                                 $event.target,
-                                                'addrNumber'
+                                                'addrStreetNo'
                                             )
                                         "
                                     />
@@ -162,7 +162,7 @@
                                             searchStreetNo.value = '';
                                             applyFilter(
                                                 { value: '' },
-                                                'addrNumber'
+                                                'addrStreetNo'
                                             )
                                         "
                                     >

@@ -20,7 +20,7 @@ import { PortService } from 'src/app/core/services/port.service';
 export class PortsListComponent {
  // isLoading: boolean = true;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    displayedColumns: string[] = ['name', 'addrStreet', 'addrNumber', 'addrCity', 'addrCountry', 'addrZipCode', 'addrCoordinates', 'actions'];
+    displayedColumns: string[] = ['name', 'addrStreet', 'addrStreetNo', 'addrCity', 'addrCountry', 'addrZipCode', 'addrCoordinates', 'actions'];
   // originalColumns: string[] = ['id', 'name', 'addrStreet', 'addrNumber', 'addrCounty', 'addrCity', 'addrCountry', 'addrZipCode', 'contact', 'actions'];
   //displayedColumns: string[] = [];
   // dataSource: any = []
@@ -209,7 +209,7 @@ export class PortsListComponent {
       switch (sort.active) {
         case 'name': return compare(a.name, b.name, isAsc);
         case 'addrStreet': return compare(a.addrStreet, b.addrStreet, isAsc);
-        case 'addrNumber': return compare(a.addrNumber, b.addrNumber, isAsc);
+        case 'addrStreetNo': return compare(a.addrStreetNo, b.addrStreetNo, isAsc);
         case 'addrCounty': return compare(a.addrCounty, b.addrCounty, isAsc);
         case 'addrCity': return compare(a.addrCity, b.addrCity, isAsc);
         case 'addrCountry': return compare(a.addrCountry, b.addrCountry, isAsc);
