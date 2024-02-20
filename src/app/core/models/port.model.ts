@@ -1,4 +1,3 @@
-import { ContactsModel } from "./contact.model";
 export type PortModel = {
     id?: number; 
     portId?: number;
@@ -11,7 +10,7 @@ export type PortModel = {
     addrCounty: string;
     addrZipCode: string;
     addrTimezone?:string | '';
-    contacts: ContactsModel | [];
+    contacts: ContactsModel[] | [];
     imgPreview: File;
 }
 
@@ -27,11 +26,18 @@ export interface PortCustomField {
     value: string | string[] | number;
 }
 
-// export type ContactsModel = {
-//    contactsIs?: number;
-//    name:string;
-//    capacity: number;
-//    occupiedCapacity: number;
-//    client: string;
-//    product: string;
-// }
+export interface ContactsModel {
+    id?: number;
+   contactId?: number;
+   name:string;
+   capacity: number;
+   occupiedCapacity: number;
+   client: string;
+   product: string;
+}
+
+export interface ContactsTable {
+    items: ContactsModel[];
+    noFiltered: number;
+    noTotal: number;
+}

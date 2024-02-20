@@ -91,7 +91,7 @@ export class BerthsListComponent {
       });
   }
 
-  applyFilter(target: any, column: string, isMultipleSearch = false): void {
+  applyFilter(target: any, column: any, isMultipleSearch = false): void {
     if (target.value) {
       if (isMultipleSearch) {
         this.appliedFilters['name'] = target.value;
@@ -122,11 +122,11 @@ export class BerthsListComponent {
         if (isMultipleSearch && target.value) {
           expression =
             el['name'].toLowerCase().includes(this.appliedFilters['name'].toLowerCase()) ||
-            el['status'].toLowerCase().includes(this.appliedFilters['status'].toLowerCase()) ||
+            el['status'].toLowerCase().includes(this.appliedFilters['status'].toLowerCase()) ;
             // el['port'].toLowerCase().includes(this.appliedFilters['port'].toLowerCase()) ||
-            el['length'].toLowerCase().includes(this.appliedFilters['length'].toLowerCase()) ||
-            el['width'].toLowerCase().includes(this.appliedFilters['width'].toLowerCase())  ||
-          el['depth'].toLowerCase().includes(this.appliedFilters['depth'].toLowerCase());
+          //   el['length'].toLowerCase().includes(this.appliedFilters['length'].toLowerCase()) ||
+          //   el['width'].toLowerCase().includes(this.appliedFilters['width'].toLowerCase())  ||
+          // el['depth'].toLowerCase().includes(this.appliedFilters['depth'].toLowerCase())
 
           return expression;
         } else {
@@ -143,14 +143,68 @@ export class BerthsListComponent {
     });
   }
 
+  // applyFilter(target: any, column: string): void {
+  //   if (target.value) {
+  //     this.appliedFilters[column] = target.value;
+  //   } else {
+  //     delete this.appliedFilters[column];
+  //   }
+
+  //   this.dataSource = this.originalSource.filter((el: any) => {
+  //     if (Object.keys(this.appliedFilters).length) {
+  //       let expression = false;
+  //       for (let filter in this.appliedFilters) {
+  //           if(el[filter] === null){
+  //               continue
+  //           }
+  //           else{
+  //               if(filter === 'fullName'){
+  //                   expression = el.userSetting['firstName'].toLowerCase().includes(this.appliedFilters[filter].toLowerCase()) || el.userSetting['lastName'].toLowerCase().includes(this.appliedFilters[filter].toLowerCase());
+  //                 }
+  //                 else if(filter === 'email'){
+  //                   expression = el.user[filter].toLowerCase().includes(this.appliedFilters[filter].toLowerCase());
+  //                 }
+  //                 else{
+  //                   expression = el[filter].toLowerCase().includes(this.appliedFilters[filter].toLowerCase());
+  //                 }
+  //           }
+  //         if (!expression) break;
+  //       }
+
+  //       return expression;
+  //     }
+
+  //     if(column === 'fullName'){
+  //       return el.userSetting['firstName'].toLowerCase().includes(target.value.toLowerCase()) || el.userSetting['lastName'].toLowerCase().includes(target.value.toLowerCase());
+  //     }
+  //     else if(column === 'email'){
+  //       return el.user[column].toLowerCase().includes(target.value.toLowerCase());
+  //     }
+  //     else{
+  //       return el[column].toLowerCase().includes(target.value.toLowerCase());
+  //     }
+  //   });
+  // }
+
+  // filterByStatus(event: any): void {
+  //   this.isLoading$.next(true);
+  //   //alert(event.target.value);
+  //   if (!event.target.value) {
+  //       this.dataSource = [...this.originalSource];
+  //     } else {
+  //       this.dataSource = this.originalSource.filter((el : any )=> {return String(el.status).includes(event.target.value)});
+  //     }
+  //   this.isLoading$.next(false);
+  // }
+
   filterByStatus(event: any): void {
     this.isLoading$.next(true);
     switch(event.target.value) {
       case 'true':
-        this.dataSource = this.originalSource.filter(el => el.berthStatus);
+        this.dataSource = this.originalSource.filter(el => el.status);
         break;
       case 'false':
-        this.dataSource = this.originalSource.filter(el => !el.berthStatus);
+        this.dataSource = this.originalSource.filter(el => !el.status);
         break;
       default:
         this.dataSource = [...this.originalSource]
@@ -169,13 +223,13 @@ export class BerthsListComponent {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'name': return compare(a.name, b.name, isAsc);
-        case 'berthStatus': return compare(a.berthStatus, b.berthStatus, isAsc);
+        case 'status': return compare(a.status, b.status, isAsc);
+        // case 'berthStatus': return compare(a.berthStatus, b.berthStatus, isAsc);
         case 'addrCoordinates': return compare(a.addrCoordinates, b.addrCoordinates, isAsc);
         // case 'port': return compare(a.port, b.port, isAsc);
         case 'length': return compare(a.length, b.length, isAsc);
         case 'width': return compare(a.width, b.width, isAsc);
         case 'depth': return compare(a.depth, b.depth, isAsc);
-        case 'status': return compare(a.status, b.status, isAsc);
         default: return 0;
       }
     });

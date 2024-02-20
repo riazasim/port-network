@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -18,14 +18,14 @@ export class PortsAddEditComponent implements OnInit {
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   ports$: BehaviorSubject<PortModel|null> = new BehaviorSubject<PortModel|null>(null);
   id: number;
-  contacts: ContactsModel[] = [];
-  listContacts: ContactsModel[] = [];
-  customFieldPortData: PortCustomField[] = [];
-  portData: CustomFieldModel[]|undefined;
+  // contacts: ContactsModel[] = [];
+  // listContacts: ContactsModel[] = [];
+  // customFieldPortData: PortCustomField[] = [];
+  // portData: CustomFieldModel[]|undefined;
   constructor(private fb: UntypedFormBuilder,
               private portService: PortService,
               private router: Router,
-              private readonly dialogService: MatDialog,
+              private readonly cd: ChangeDetectorRef,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -66,10 +66,53 @@ export class PortsAddEditComponent implements OnInit {
       addrCounty: this.fb.control(data?.addrCounty || '', [Validators.required]),
       addrZipCode: this.fb.control(data?.addrZipCode || '', [Validators.required]),
       addrTimezone: this.fb.control(data?.addrTimezone || 'Buchrest'),
-      contacts: this.fb.control(data?.contacts || []),
+      contacts: this.fb.array([]),
       imgPreview: this.fb.control(data?.imgPreview || ''),
-     // customFields: this.fb.control(data?.customFields, []),
     });
+
+    if (data.contacts) {
+      data.contacts.forEach(contact => {
+        this.addContact(contact);
+      });
+    }
+  }
+  
+  get contacts(): any {
+    return this.portForm.get('contacts');
+  }
+  
+  addContact(contact?: ContactsModel): void {
+    const newContact = this.fb.group({
+      name: [contact?.name || '', Validators.required],
+      capacity: [contact?.capacity || '', Validators.required],
+      occupiedCapacity: [contact?.occupiedCapacity || '', Validators.required],
+      client: [contact?.client || '', Validators.required],
+      product: [contact?.product || '', Validators.required],
+    });
+    this.contacts.push(newContact);
+  }
+  
+  removeContact(index: number): void {
+    const portId = this.ports$?.value?.id;
+    const contactsArray = this.ports$?.value?.contacts;
+  
+    if (portId && contactsArray && contactsArray.length >= index) {
+      const contactId = contactsArray[index]?.id; // Get the ID of the contact at the specified index
+      if (contactId) {
+        this.portService.deleteContact(portId, contactId).subscribe({
+          next: () => {
+            console.log('Contact deleted successfully');
+            this.contacts.removeAt(index); // Remove the contact from the form array
+            this.cd.detectChanges();
+            return this.portForm.get('contacts');
+          },
+          error: error => {
+            console.error('Error deleting contact:', error);
+            // Handle error, such as showing an error message to the user
+          }
+        });
+      }
+    }
   }
 
   setImgPreview(target: any, input: any): void {
@@ -78,35 +121,9 @@ export class PortsAddEditComponent implements OnInit {
       this.portForm.get('imgPreview')?.patchValue(target.files.item(0));
     }
   }
-
-  openAddContactModal(contact?: ContactsModel): void {
-    this.dialogService.open(PortAddContactModalComponent, {
-      disableClose: true,
-      data: {
-        contact,
-        contacts: [...this.listContacts],
-        portData: this.portData,
-        customFieldPortData: [...this.customFieldPortData]
-      }
-    }).afterClosed()
-      .subscribe({
-        next: (body: { contact: ContactsModel, customFieldPortData: PortCustomField[] }) => {
-          if (body?.contact) {
-            this.isLoading$.next(true);
-            this.contacts.push(body?.contact);
-            this.contacts = [...this.contacts];
-            if (body?.customFieldPortData) {
-              this.customFieldPortData = [...body.customFieldPortData];
-            }
-            this.isLoading$.next(false);
-          }
-        }
-      });
-  }
-
-  removeContact(index: number): void {
-    this.contacts.splice(index, 1);
-  }
+  // removeContact(index: number): void {
+  //   this.contacts.splice(index, 1);
+  // }
 
   savePort(): void {
     if (this.id) {

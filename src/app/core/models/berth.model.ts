@@ -3,7 +3,7 @@ import { PortModel } from "./port.model";
 export type BerthModel = {
     berthId?: number;
     name: string;
-    berthStatus: string;
+    status: string;
     addrCoordinates: string;
     port:PortModel;
     length: number;
