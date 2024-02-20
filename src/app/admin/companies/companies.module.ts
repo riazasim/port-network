@@ -21,6 +21,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { NoCompaniesComponent } from './no-companies/no-companies.component';
 import { CompanyAddContactModalComponent } from './companies-add-contact-modal/companies-add-contact-modal.component';
+import { ContactsDeleteModalComponent } from './contacts-delete-modal/contacts-delete-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { CompanyAddContactModalComponent } from './companies-add-contact-modal/c
     NoCompaniesComponent,
     CompaniesImportModalComponent,
     CompanyAddContactModalComponent,
+    ContactsDeleteModalComponent,
   ],
     imports: [
         CommonModule,

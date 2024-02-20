@@ -1,5 +1,6 @@
 // import { ContactsModel } from "./contact.model";
 export interface CompanyModel {
+    id?: number;
     companyId?: number;
     name: string;
     addrCoordinates: string;
@@ -10,7 +11,7 @@ export interface CompanyModel {
     addrCounty: string;
     addrZipCode: string;
     addrTimezone?:string | '';
-    contacts: ContactsModel | [];
+    contacts: ContactsModel[] | [];
     imgPreview: File;
 }
 
@@ -27,7 +28,8 @@ export interface CompanyCustomField {
 }
 
 export interface ContactsModel {
-   contactsId?: number;
+    id?: number;
+   contactId?: number;
    name:string;
    capacity: number;
    occupiedCapacity: number;

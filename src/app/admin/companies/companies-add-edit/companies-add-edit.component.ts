@@ -1,34 +1,28 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { CompanyAddContactModalComponent } from '../companies-add-contact-modal/companies-add-contact-modal.component';
-import { CompanyCustomField, CompanyModel, ContactsModel } from 'src/app/core/models/company.model';
-import { CustomFieldModel } from 'src/app/core/models/custom-field.model';
-import { MatDialog } from '@angular/material/dialog';
+import { CompanyModel, ContactsModel } from 'src/app/core/models/company.model';
 import { CompanyService } from 'src/app/core/services/company.service';
 
 @Component({
   selector: 'app-companies-add-edit',
-  templateUrl: './companies-add-edit.component.html'
+  templateUrl: './companies-add-edit.component.html',
+  styleUrls: ['companies-add-edit.component.scss']
 })
 export class CompaniesAddEditComponent implements OnInit {
   companyForm: FormGroup;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   company$: BehaviorSubject<CompanyModel|null> = new BehaviorSubject<CompanyModel|null>(null);
   id: number;
-  contactsList: ContactsModel[] = [];
-  customFieldCompanyData: CompanyCustomField[] = [];
-  companyData: CustomFieldModel[]|undefined;
   constructor(private fb: UntypedFormBuilder,
               private companyService: CompanyService,
               private router: Router,
-              private readonly dialogService: MatDialog,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private readonly cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.subscribeForQueryParams();
-    this.retrieveContacts();
   }
 
   subscribeForQueryParams(): void {
@@ -55,7 +49,7 @@ export class CompaniesAddEditComponent implements OnInit {
 
   initForm(data: CompanyModel = <CompanyModel>{}): void {
     this.companyForm = this.fb.group({
-      //companyId: this.fb.control(data?.id),
+      // companyId: this.fb.control(data?.companyId),
       name: this.fb.control(data?.name || '', [Validators.required]),
       addrCoordinates: this.fb.control(data?.addrCoordinates || '', [Validators.required]),
       addrStreet: this.fb.control(data?.addrStreet || '', [Validators.required]),
@@ -64,12 +58,56 @@ export class CompaniesAddEditComponent implements OnInit {
       addrCountry: this.fb.control(data?.addrCountry || '', [Validators.required]),
       addrCounty: this.fb.control(data?.addrCounty || '', [Validators.required]),
       addrZipCode: this.fb.control(data?.addrZipCode || '', [Validators.required]),
-      addrTimezone: this.fb.control(data?.addrTimezone || ''),
-      contacts: this.fb.control(data?.contacts || []),
+      addrTimezone: this.fb.control(data?.addrTimezone || 'Buchrest'),
+      contacts: this.fb.array([]),
       imgPreview: this.fb.control(data?.imgPreview || ''),
-     // customFields: this.fb.control(data?.customFields, []),
+    });
+
+  if (data.contacts) {
+    data.contacts.forEach(contact => {
+      this.addContact(contact);
     });
   }
+}
+
+get contacts(): any {
+  return this.companyForm.get('contacts');
+}
+
+addContact(contact?: ContactsModel): void {
+  const newContact = this.fb.group({
+    name: [contact?.name || '', Validators.required],
+    capacity: [contact?.capacity || '', Validators.required],
+    occupiedCapacity: [contact?.occupiedCapacity || '', Validators.required],
+    client: [contact?.client || '', Validators.required],
+    product: [contact?.product || '', Validators.required],
+  });
+  this.contacts.push(newContact);
+}
+
+removeContact(index: number): void {
+  debugger
+  const companyId = this.company$?.value?.id;
+  const contactsArray = this.company$?.value?.contacts;
+
+  if (companyId && contactsArray && contactsArray.length >= index) {
+    const contactId = contactsArray[index]?.id; // Get the ID of the contact at the specified index
+    if (contactId) {
+      this.companyService.deleteContact(companyId, contactId).subscribe({
+        next: () => {
+          console.log('Contact deleted successfully');
+          this.contacts.removeAt(index); // Remove the contact from the form array
+          this.cd.detectChanges();
+          return this.companyForm.get('contacts');
+        },
+        error: error => {
+          console.error('Error deleting contact:', error);
+          // Handle error, such as showing an error message to the user
+        }
+      });
+    }
+  }
+}
 
   setImgPreview(target: any, input: any): void {
     if (target.files.item(0)) {
@@ -77,25 +115,7 @@ export class CompaniesAddEditComponent implements OnInit {
       this.companyForm.get('imgPreview')?.patchValue(target.files.item(0));
     }
   }
-
-  retrieveContacts(){
-          this.companyService.addCompanyContact({
-            "companyId": 1,
-            "contacts":[
-                {"name":"Umar", "capacity":44,"occupiedCapacity":33,"client":"Waqar Sahu","product":"New Product"},
-                {"name":"Umar", "capacity":44,"occupiedCapacity":33,"client":"Waqar Sahu","product":"New Product"},
-                {"name":"Umar", "capacity":44,"occupiedCapacity":33,"client":"Waqar Sahu","product":"New Product"}
-    ]
-          }).subscribe(response =>{
-            console.log(response,'contacts');
-        })
-  }
-
-  removeContact(index: number): void {
-    this.contactsList.splice(index, 1);
-  }
-
-  saveLocation(): void {
+  saveCompany(): void {
     if (this.id) {
       this.companyService.edit(this.id, this.parseData(this.companyForm.value)).subscribe(() => {
         this.router.navigate(['../../success'], { relativeTo: this.route });

@@ -18,13 +18,8 @@ import { CompanyService } from 'src/app/core/services/company.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CompaniesListComponent {
- // isLoading: boolean = true;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
     displayedColumns: string[] = ['name', 'addrStreet', 'addrStreetNo', 'addrCity', 'addrCountry', 'addrZipCode', 'addrCoordinates', 'actions'];
-  // originalColumns: string[] = ['id', 'name', 'addrStreet', 'addrStreetNo', 'addrCounty', 'addrCity', 'addrCountry', 'addrZipCode', 'contact', 'actions'];
-  //displayedColumns: string[] = [];
-  // dataSource: any = []
-  // originalSource: any = [];
     dataSource: CompanyModel[] = [];
     originalSource: CompanyModel[] = [];
     appliedFilters: any = {};
@@ -35,26 +30,10 @@ export class CompaniesListComponent {
     length: number;
 
   constructor(private readonly dialogService: MatDialog,
-              private readonly router: Router,
-              private readonly route: ActivatedRoute,
               private readonly companyService: CompanyService,
               private readonly cd: ChangeDetectorRef) {
                 this.retrieveCompanies();
                }
-
-  // retrieveCompanies(): void {
-  //   this.locationService.listTable({}).subscribe((response: any[]) => {
-  //     const existColumns = this.initializeColumns(response);
-  //     if (existColumns) {
-  //       this.dataSource = response;
-  //       this.originalSource = response;
-  //     }
-  //     this.isLoading = false;
-  //     this.cd.detectChanges();
-  //   });
-  // }
-
-
     retrieveCompanies(): void {
         this.pageIndex=0;
         this.pageSize=5;
@@ -66,8 +45,6 @@ export class CompaniesListComponent {
             "order": [{"dir": "DESC", "column": 0}]
         }
         this.companyService.pagination(data).subscribe(response => {
-            //console.log(response)
-            // let result =(<any>response.items).map(((c: CustomFieldData) => c.attributes));
             this.dataSource = response.items;
             this.originalSource = response.items;
             this.length=response.noTotal;
@@ -87,47 +64,12 @@ export class CompaniesListComponent {
             "order": [{"dir": "DESC", "column": 0}]
         }
         this.companyService.pagination(data).subscribe(response => {
-            // let result =(<any>response.items).map(((c: CustomFieldData) => c.attributes));
-            // console.log('Api call')
             this.dataSource = response.items;
             this.originalSource = response.items;
             this.isLoading$.next(false);
             this.cd.detectChanges();
         })
     }
-
-
-
-
-  // retrieveCompanies(): void {
-  //   this.locationService.pagination({}).subscribe((response) => {
-  //     const existColumns = this.initializeColumns(response);
-  //     if (existColumns) {
-  //       this.dataSource = response;
-  //       this.originalSource = response;
-  //     }
-  //     this.isLoading = false;
-  //     this.cd.detectChanges();
-  //   });
-  // }
-
-  // initializeColumns(response: LocationModel[]) {
-  //   if (!response.length || !Object.keys(response[0]).length) {
-  //     return false;
-  //   }
-  //
-  //   let contactAdded = false;
-  //   this.displayedColumns = [...Object.keys(response[0]), 'actions'].map(x => {
-  //     if (!contactAdded && ['firstName', 'lastName', 'mobile', 'email'].includes(x)) {
-  //       contactAdded = true;
-  //       return 'contact';
-  //     }
-  //
-  //     return x;
-  //   }).filter(x => this.originalColumns.includes(x))
-  //
-  //   return true;
-  // }
 
   openDeleteModal(id: number) {
     this.dialogService.open(CompaniesDeleteModalComponent, {
@@ -218,10 +160,6 @@ export class CompaniesListComponent {
       }
     });
   }
-
-  // redirectAddCompany(): void {
-  //   this.router.navigate(['../add'], { relativeTo: this.route });
-  // }
     openImportModal(): void {
         this.isLoading$.next(true);
         this.dialogService.open(CompaniesImportModalComponent, {

@@ -25,11 +25,6 @@
                  [class.loading]="(isLoading$ | async)" aria-label="Usage Table"
                  cdk-table [dataSource]="dataSource">
 
-<!--              <ng-container cdkColumnDef="id">-->
-<!--              <th cdk-header-cell *cdkHeaderCellDef scope="col">Id</th>-->
-<!--              <td cdk-cell *cdkCellDef="let row">{{row.id}}</td>-->
-<!--            </ng-container>-->
-
             <ng-container cdkColumnDef="name">
               <th cdk-header-cell *cdkHeaderCellDef scope="col">
                   <section class="tw-flex tw-flex-col tw-gap-4">
@@ -157,28 +152,6 @@
               <td cdk-cell *cdkCellDef="let row">{{row.addrCoordinates}}</td>
             </ng-container>
 
-            <!-- <ng-container cdkColumnDef="contact">
-                <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                    <section class="tw-flex tw-flex-col tw-gap-4">
-                      <div>Contact</div>
-                      <searchbar [maxWidth]="189">
-                        <fa-icon icon="search"></fa-icon>
-                        <input #searchContact input type="text" (keyup)="applyFilter($event.target, 'contact', true)">
-                        <div [style.visibility]="searchContact.value ? 'visible': 'hidden'" close (click)="searchContact.value=''; applyFilter({ value: '' }, 'contact', true)">
-                          <fa-icon icon="close"></fa-icon>
-                        </div>
-                    </searchbar>
-                    </section>
-                </th>
-                <td cdk-cell *cdkCellDef="let row">
-                  <div class="tw-flex tw-flex-col">
-                    <div class="tw-text-left tw-pl-10">{{row.contactFirstName}} {{row.contactLastName}}</div>
-                    <div class="tw-text-left tw-pl-10">{{row.contactPhoneRegionCode}}-{{row.contactPhone}}</div>
-                    <div class="tw-text-left tw-pl-10">{{row.contactEmail}}</div>
-                  </div>
-                </td>
-              </ng-container> -->
-
             <ng-container cdkColumnDef="actions">
               <th cdk-header-cell *cdkHeaderCellDef scope="col">
                 <section class="tw-flex tw-flex-col tw-gap-4">
@@ -223,49 +196,3 @@
 <ng-template #empty>
   <no-companies></no-companies>
 </ng-template>
-
-<!-- .mdc-text-field--outlined .mdc-notched-outline {
-  /* z-index: 1; */
-}
-
-.mdc-notched-outline {
-  /* display: flex; */
-  /* position: absolute; */
-  /* top: 0; */
-  /* right: 0; */
-  left: 0;
-  /* box-sizing: border-box; */
-  /* width: 100%; */
-  /* max-width: 100%; */
-  /* height: 100%; */
-  /* text-align: left; */
-  /* pointer-events: none; */
-}
-
-.mat-mdc-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-mdc-text-field-wrapper {
-  /* cursor: pointer; */
-}
-.mat-mdc-paginator {
-  display: block;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  color: var(--mat-paginator-container-text-color);
-  background-color: var(--mat-paginator-container-background-color);
-  font-family: var(--mat-paginator-container-text-font);
-  line-height: var(--mat-paginator-container-text-line-height);
-  font-size: var(--mat-paginator-container-text-size);
-  font-weight: var(--mat-paginator-container-text-weight);
-  letter-spacing: var(--mat-paginator-container-text-tracking);
-}
-.mat-mdc-paginator {
-  --mat-form-field-container-height: 40px;
-  --mat-form-field-filled-label-display: none;
-  --mat-form-field-container-vertical-padding: 8px;
-  --mat-form-field-filled-with-label-container-padding-top: 8px;
-  --mat-form-field-filled-with-label-container-padding-bottom: 8px;
-} -->
-
-<!-- notched-outline__notch, .mdc-notched-outline__trailing {
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-} -->

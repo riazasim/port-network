@@ -29,6 +29,7 @@ export class CompanyService {
     const formData = convertJsonToFormData(data,'');
     formData.delete('data[imgPreview]');
     formData.append('imgPreview', data.imgPreview);
+    formData.append('contacts', JSON.stringify(data.contacts));
     return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/create`, formData);
   }
 
@@ -37,6 +38,7 @@ export class CompanyService {
     const formData = convertJsonToFormData(data, '');
     formData.delete('data[imgPreview]');
     formData.delete('data[companyId]');
+    formData.append('contacts', JSON.stringify(data.contacts));
     if (data.imgPreview) formData.append('imgPreview', data.imgPreview);
     return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/company/update`, formData);
   }
@@ -51,9 +53,16 @@ export class CompanyService {
 
   delete(id: number): Observable<any> {
       let data={
-          locationId:id
+          companyId:id
       }
     return this.http.post(`${environment.apiUrl}${environment.apiVersion}/company/delete`,data)
+  }
+  deleteContact(companyId: number, contactId: number): Observable<any> {
+      let data={
+          companyId:companyId,
+          contactId:contactId
+      }
+    return this.http.post(`${environment.apiUrl}${environment.apiVersion}/company/contact/delete`,data)
   }
 
   list(data: any): Observable<CompanyModel[]> {
