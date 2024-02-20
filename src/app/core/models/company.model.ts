@@ -1,5 +1,6 @@
 // import { ContactsModel } from "./contact.model";
 export interface CompanyModel {
+    id?: number;
     companyId?: number;
     name: string;
     addrCoordinates: string;
