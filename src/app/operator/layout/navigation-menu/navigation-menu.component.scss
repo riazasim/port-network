@@ -58,7 +58,7 @@
   height: auto;
 
   > fa-icon {
-    color: var(--primary-color);
+    color: #1B9FE8;
     font-size: 0.7rem;
     @apply min-md:tw-text-base;
   }
@@ -74,7 +74,7 @@
   &.active,
   &:focus,
   &:hover {
-    background-color: var(--primary-color);
+    background-color: #1B9FE8;
 
     fa-icon {
       color: white;

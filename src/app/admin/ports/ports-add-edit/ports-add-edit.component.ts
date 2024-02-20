@@ -2,26 +2,20 @@
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { PortAddContactModalComponent } from '../ports-add-contact-modal/ports-add-contact-modal.component';
 import { ContactsModel } from 'src/app/core/models/contact.model';
-import { MatDialog } from '@angular/material/dialog';
-import { PortCustomField, PortModel } from 'src/app/core/models/port.model';
-import { CustomFieldModel } from 'src/app/core/models/custom-field.model';
+import { PortModel } from 'src/app/core/models/port.model';
 import { PortService } from 'src/app/core/services/port.service';
 
 @Component({
   selector: 'app-ports-add-edit',
-  templateUrl: './ports-add-edit.component.html'
+  templateUrl: './ports-add-edit.component.html',
+  styleUrls: ['./ports-add-edit.component.scss']
 })
 export class PortsAddEditComponent implements OnInit {
   portForm: FormGroup;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   ports$: BehaviorSubject<PortModel|null> = new BehaviorSubject<PortModel|null>(null);
   id: number;
-  // contacts: ContactsModel[] = [];
-  // listContacts: ContactsModel[] = [];
-  // customFieldPortData: PortCustomField[] = [];
-  // portData: CustomFieldModel[]|undefined;
   constructor(private fb: UntypedFormBuilder,
               private portService: PortService,
               private router: Router,
