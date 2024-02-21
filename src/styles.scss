@@ -22,6 +22,7 @@
 @import "assets/scss/variables";
 
 @import 'flag-icons/sass/flag-icons';
+// @import "../node_modules/font-awesome/scss/font-awesome.scss";
 
 :root {
   --app-border-radius: 3px;
@@ -96,3 +97,32 @@ html {
   --mat-paginator-select-trigger-text-size: 14px;
 }
 /* Paginator fixing end*/
+.custom-btn-clr{
+color: #1B9FE8;
+}
+.tw-bg-primary{
+background-color: #1B9FE8;
+}
+.tw-bg-primary:hover{
+  background-color: #0b8fd6;
+}
+.btn.btn-outline-primary {
+  color: #1B9FE8;
+  background-color: white;
+  border: 1px solid #1B9FE8;
+}
+.btn.btn-outline-primary:focus, .btn.btn-outline-primary:hover, .btn.btn-outline-primary:active {
+  color: white;
+  background-color: #1B9FE8;
+}
+.btn.btn-primary {
+  color: white;
+  background-color: #1B9FE8;
+}
+.btn.btn-primary:focus, .btn.btn-primary:hover, .btn.btn-primary:active {
+  color: white;
+  background-color: #0b8fd6;
+}
+.tw-text-primary{
+  color: #1B9FE8;
+}

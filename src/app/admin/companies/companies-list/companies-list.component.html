@@ -7,14 +7,14 @@
             <button
                 routerLink="../add"
                 [disabled]="(isLoading$ | async) || false"
-                class="tw-bg-primary tw-text-white hover:tw-bg-primary-dark tw-py-2 tw-min-h-[35px] min-md:tw-min-w-[120px] max-sm:tw-w-full tw-rounded-l max-lg:tw-w-full"
+                class="tw-bg-primary tw-text-white  tw-py-2 tw-min-h-[35px] min-md:tw-min-w-[120px] max-sm:tw-w-full tw-rounded-l max-lg:tw-w-full"
                 type="button"
             >
                 Add company
             </button>
             <button
                 [disabled]="(isLoading$ | async) || false"
-                class="tw-bg-primary tw-text-white hover:tw-bg-primary-dark tw-min-h-[35px] min-md:tw-min-w-[30px] max-sm:tw-w-full tw-rounded-r"
+                class="tw-bg-primary tw-text-white  tw-min-h-[35px] min-md:tw-min-w-[30px] max-sm:tw-w-full tw-rounded-r"
                 type="button"
                 [matMenuTriggerFor]="menu"
             >

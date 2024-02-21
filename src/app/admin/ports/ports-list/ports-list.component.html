@@ -7,14 +7,14 @@
             <button
                 routerLink="../add"
                 [disabled]="(isLoading$ | async) || false"
-                class="tw-bg-primary tw-text-white hover:tw-bg-primary-dark tw-py-2 tw-min-h-[35px] min-md:tw-min-w-[120px] max-sm:tw-w-full tw-rounded-l max-lg:tw-w-full"
+                class="tw-bg-primary tw-text-white tw-py-2 tw-min-h-[35px] min-md:tw-min-w-[120px] max-sm:tw-w-full tw-rounded-l max-lg:tw-w-full"
                 type="button"
             >
                 Add Port
             </button>
             <button
                 [disabled]="(isLoading$ | async) || false"
-                class="tw-bg-primary tw-text-white hover:tw-bg-primary-dark tw-min-h-[35px] min-md:tw-min-w-[30px] max-sm:tw-w-full tw-rounded-r"
+                class="tw-bg-primary tw-text-white  tw-min-h-[35px] min-md:tw-min-w-[30px] max-sm:tw-w-full tw-rounded-r"
                 type="button"
                 [matMenuTriggerFor]="menu"
             >
@@ -175,48 +175,6 @@
                             {{ row.addrStreetNo }}
                         </td>
                     </ng-container>
-
-                    <!-- <ng-container cdkColumnDef="addrCounty">
-                        <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col tw-gap-4">
-                                <div mat-sort-header="addrCounty">County</div>
-                                <searchbar [maxWidth]="73">
-                                    <fa-icon icon="search"></fa-icon>
-                                    <input
-                                        #searchCounty
-                                        input
-                                        type="text"
-                                        (keyup)="
-                                            applyFilter(
-                                                $event.target,
-                                                'addrCounty'
-                                            )
-                                        "
-                                    />
-                                    <div
-                                        [style.visibility]="
-                                            searchCounty.value
-                                                ? 'visible'
-                                                : 'hidden'
-                                        "
-                                        close
-                                        (click)="
-                                            searchCounty.value = '';
-                                            applyFilter(
-                                                { value: '' },
-                                                'addrCounty'
-                                            )
-                                        "
-                                    >
-                                        <fa-icon icon="close"></fa-icon>
-                                    </div>
-                                </searchbar>
-                            </section>
-                        </th>
-                        <td cdk-cell *cdkCellDef="let row">
-                            {{ row.addrCounty }}
-                        </td>
-                    </ng-container> -->
 
                     <ng-container cdkColumnDef="addrCity">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
@@ -389,63 +347,6 @@
                         </td>
                     </ng-container>
 
-                    <!-- <ng-container cdkColumnDef="contact">
-                        <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col tw-gap-4">
-                                <div>Contact</div>
-                                <searchbar [maxWidth]="189">
-                                    <fa-icon icon="search"></fa-icon>
-                                    <input
-                                        #searchContact
-                                        input
-                                        type="text"
-                                        (keyup)="
-                                            applyFilter(
-                                                $event.target,
-                                                'contact',
-                                                true
-                                            )
-                                        "
-                                    />
-                                    <div
-                                        [style.visibility]="
-                                            searchContact.value
-                                                ? 'visible'
-                                                : 'hidden'
-                                        "
-                                        close
-                                        (click)="
-                                            searchContact.value = '';
-                                            applyFilter(
-                                                { value: '' },
-                                                'contact',
-                                                true
-                                            )
-                                        "
-                                    >
-                                        <fa-icon icon="close"></fa-icon>
-                                    </div>
-                                </searchbar>
-                            </section>
-                        </th>
-                        <td cdk-cell *cdkCellDef="let row">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-text-left tw-pl-10">
-                                    {{ row.contactFirstName }}
-                                    {{ row.contactLastName }}
-                                </div>
-                                <div class="tw-text-left tw-pl-10">
-                                    {{ row.contactPhoneRegionCode }}-{{
-                                        row.contactPhone
-                                    }}
-                                </div>
-                                <div class="tw-text-left tw-pl-10">
-                                    {{ row.contactEmail }}
-                                </div>
-                            </div>
-                        </td>
-                    </ng-container> -->
-
                     <ng-container cdkColumnDef="actions">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
@@ -465,13 +366,13 @@
                         >
                             <fa-icon
                                 icon="eye"
-                                class="tw-text-primary tw-cursor-pointer"
+                                class="custom-btn-clr tw-cursor-pointer"
                                 size="lg"
                                 [routerLink]="['../edit', row.id]"
                             ></fa-icon>
                             <fa-icon
                                 icon="trash-can"
-                                class="tw-text-primary tw-cursor-pointer"
+                                class="custom-btn-clr tw-cursor-pointer"
                                 size="lg"
                                 (click)="openDeleteModal(row.id)"
                             ></fa-icon>
