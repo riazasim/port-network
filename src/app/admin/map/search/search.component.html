@@ -10,63 +10,109 @@
     </div>
     <div class="right">
         <div class="top">
-            <div class="company" *ngIf="isActive === 1">
-                <h2>Filter by company</h2>
-                <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']" class="tw-w-48 tw-h-5">
+            <div *ngIf="isActive === 1">
+                <h2 class="tw-mb-2 tw-text-[#000000] tw-text-sm tw-font-normal">Filter by company</h2>
+                <div iconic-select-wrapper [rightIcon]="['fas', 'caret-down']" class="tw-w-[198px]">
                     <select inputRef name="companyId" id="companyId">
+                        <option value="" disabled selected>Company</option>
                         <option *ngFor="let company of companies;" [value]="company.companyId">{{company.name}}</option>
                     </select>
-                  </div>
+                </div>
             </div>
-            <div class="status" *ngIf="isActive === 2">
-                <h2>Filter by Status</h2>
-                <mat-checkbox class="example-margin">On Route</mat-checkbox>
-                <mat-checkbox class="example-margin">Port</mat-checkbox>
-                <mat-checkbox class="example-margin">Berth</mat-checkbox>
-                <mat-checkbox class="example-margin">Exit</mat-checkbox>
+            <div *ngIf="isActive === 2">
+                <h2 class="tw-mb-3 tw-text-[#000000] tw-text-sm tw-font-normal">Filter by Status</h2>
+                <div class="tw-grid tw-grid-cols-2">
+                    <div class="tw-flex tw-gap-1 tw-items-center tw-w-[100px] tw-px-5">
+                        <input type="checkbox" id="On route" name="On route" class="tw-h-3 tw-w-3" />
+                        <label for="On route" class="tw-text-[#354050] tw-text-sm tw-font-normal">On route</label>
+                    </div>
+                    <div class="tw-flex tw-gap-1 tw-items-center tw-w-[100px] tw-px-5">
+                        <input type="checkbox" id="Port" name="Port" class="tw-h-3 tw-w-3" />
+                        <label for="Port" class="tw-text-[#354050] tw-text-sm tw-font-normal">Port</label>
+                    </div>
+                    <div class="tw-flex tw-gap-1 tw-items-center tw-w-[100px] tw-px-5">
+                        <input type="checkbox" id="Berth" name="Berth" class="tw-h-3 tw-w-3" />
+                        <label for="Berth" class="tw-text-[#354050] tw-text-sm tw-font-normal">Berth</label>
+                    </div>
+                    <div class="tw-flex tw-gap-1 tw-items-center tw-w-[100px] tw-px-5">
+                        <input type="checkbox" id="Exit" name="Exit" class="tw-h-3 tw-w-3" />
+                        <label for="Exit" class="tw-text-[#354050] tw-text-sm tw-font-normal">Exit</label>
+                    </div>
+                </div>
             </div>
-            <div class="time" *ngIf="isActive === 3">
-                <h2>Filter by Time</h2>
-                <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']" class="tw-w-48 tw-h-5">
+            <div *ngIf="isActive === 3">
+                <h2 class="tw-mb-2 tw-text-[#000000] tw-text-sm tw-font-normal">Filter by Time</h2>
+                <div iconic-select-wrapper [rightIcon]="['fas', 'caret-down']" class="tw-w-[198px]">
                     <select inputRef name="companyId" id="companyId">
+                        <option value="" disabled selected>Total Time</option>
                         <option *ngFor="let company of companies;" [value]="company.companyId">{{company.name}}</option>
                     </select>
-                  </div>
-                  <mat-radio-group aria-label="Select an option">
-                    <mat-radio-button value="1">Option 1</mat-radio-button>
-                    <mat-radio-button value="2">Option 2</mat-radio-button>
-                    <mat-radio-button value="2">Option 2</mat-radio-button>
-                  </mat-radio-group>
-                  <input type="text">
-                  <input type="text">
+                </div>
+                <div class="tw-flex tw-justify-between tw-items-center">
+                    <div class="tw-flex tw-gap-1 tw-items-center">
+                        <input type="radio" id="Between" name="Time" value="Between" checked class="tw-h-2 tw-w-2" />
+                        <label for="Between" class="tw-text-xs tw-text-[#354050]">Between</label>
+                    </div>
+                    <div class="tw-flex tw-gap-1 tw-items-center">
+                        <input type="radio" id="More than" name="Time" value="More than" class="tw-h-2 tw-w-2" />
+                        <label for="More than" class="tw-text-xs tw-text-[#354050]">More than</label>
+                    </div>
+                    <div class="tw-flex tw-gap-1 tw-items-center">
+                        <input type="radio" id="Less than" name="Time" value="Less than" class="tw-h-2 tw-w-2" />
+                        <label for="Less than" class="tw-text-xs tw-text-[#354050]">Less than</label>
+                    </div>
+                </div>
+                <div class="tw-flex tw-justify-between tw-gap-2">
+                    <div iconic-input-wrapper>
+                        <input inputRef type="text" placeholder="Minutes">
+                    </div>
+                    <div iconic-input-wrapper>
+                        <input inputRef type="text" placeholder="Minutes">
+                    </div>
+                </div>
             </div>
-            <div class="sid" *ngIf="isActive === 4">
-                <mat-form-field>
-                    <mat-label>Choose a date</mat-label>
-                    <input matInput [matDatepicker]="picker">
-                    <mat-hint>MM/DD/YYYY</mat-hint>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                  </mat-form-field>
-                  <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']" class="tw-w-48 tw-h-5">
+            <div class="tw-flex tw-flex-col tw-gap-1" *ngIf="isActive === 4">
+                <h2 class="tw-mb-2 tw-text-[#000000] tw-text-sm tw-font-normal">Filter by SID</h2>
+                <div>
+                    <mat-form-field>
+                        <mat-label>ETA</mat-label>
+                        <input matInput [matDatepicker]="picker">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div iconic-select-wrapper [rightIcon]="['fas', 'caret-down']" class="tw-w-[198px]">
                     <select inputRef name="companyId" id="companyId">
+                        <option value="" disabled selected>Departure port</option>
                         <option *ngFor="let company of companies;" [value]="company.companyId">{{company.name}}</option>
                     </select>
-                  </div>
-                  <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']" class="tw-w-48 tw-h-5">
+                </div>
+                <div iconic-select-wrapper [rightIcon]="['fas', 'caret-down']" class="tw-w-[198px]">
                     <select inputRef name="companyId" id="companyId">
+                        <option value="" disabled selected>Arival port</option>
                         <option *ngFor="let company of companies;" [value]="company.companyId">{{company.name}}</option>
                     </select>
-                  </div>
-                  <input type="text">
-                  <input type="text">
+                </div>
+                <div iconic-input-wrapper>
+                    <input placeholder="Pilot Company" inputRef type="text">
+                </div>
+                <div iconic-input-wrapper>
+                    <input placeholder="Agent" inputRef type="text">
+                </div>
             </div>
         </div>
+        <div class="tw-flex tw-justify-center">
+            <hr class="tw-text-[#CCCCCC] tw-w-[194px]">
+        </div>
         <div class="bottom">
-            <img [src]="isActive === 1 ? 'assets/images/cardBuilding2.svg' : 'assets/images/cardBuilding.svg' " alt="" (click)="onImgClick(1)"  class="tw-w-5 tw-h-5">
-            <img [src]="isActive === 2 ? 'assets/images/cardChain2.svg' : 'assets/images/cardChain.svg' " alt="" (click)="onImgClick(2)"  class="tw-w-5 tw-h-5">
-            <img [src]="isActive === 3 ? 'assets/images/cardClock2.svg' : 'assets/images/cardClock.svg' " alt="" (click)="onImgClick(3)"  class="tw-w-5 tw-h-5">
-            <img [src]="isActive === 4 ? 'assets/images/cardBoat2.svg' : 'assets/images/cardBoat.svg' " alt="" (click)="onImgClick(4)"  class="tw-w-5 tw-h-5">
+            <img [src]="isActive === 1 ? 'assets/images/cardBuilding2.svg' : 'assets/images/cardBuilding.svg' " alt=""
+                (click)="onImgClick(1)" class="tw-w-5 tw-h-5">
+            <img [src]="isActive === 2 ? 'assets/images/cardChain2.svg' : 'assets/images/cardChain.svg' " alt=""
+                (click)="onImgClick(2)" class="tw-w-10 tw-h-4">
+            <img [src]="isActive === 3 ? 'assets/images/cardClock2.svg' : 'assets/images/cardClock.svg' " alt=""
+                (click)="onImgClick(3)" class="tw-w-4 tw-h-4">
+            <img [src]="isActive === 4 ? 'assets/images/cardBoat2.svg' : 'assets/images/cardBoat.svg' " alt=""
+                (click)="onImgClick(4)" class="tw-w-5 tw-h-5">
         </div>
     </div>
 </div>

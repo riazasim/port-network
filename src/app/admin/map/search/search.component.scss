@@ -22,14 +22,38 @@
         background-color: #FFFFFF;
         display: flex;
         flex-direction: column;
+        gap: 4px;
         .top{
             flex-basis: 100px;
-            overflow-y: scroll;
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: auto;
+            scrollbar-width: none;
         }
         .bottom{
             display: flex;
             justify-content: space-evenly;
             flex-basis: 40px;
+            div .vertical {
+                border-left: 1px solid #CCCCCC;
+                height: 24px;
+            }
         }
     }
+}
+::ng-deep .input-container{
+    min-height: 0px !important;
+}
+::ng-deep .mat-mdc-form-field-flex {
+    width: 198px !important;
+    align-items: center !important;
+}
+::ng-deep .mdc-text-field{
+    padding: 0px !important;
+    overflow: visible !important;
+}
+::ng-deep .errors-container{
+    height: 0px !important;
 }
