@@ -45,7 +45,7 @@ import { SearchComponent } from './map/search/search.component';
     BrandingComponent,
     LocationSettingsComponent,
     ChangeLocationModalComponent,
-    SearchComponent
+    SearchComponent,
   ],
     imports: [
         CommonModule,
