@@ -122,16 +122,15 @@ export class BerthsListComponent {
         if (isMultipleSearch && target.value) {
           expression =
             el['name'].toLowerCase().includes(this.appliedFilters['name'].toLowerCase()) ||
-            el['status'].toLowerCase().includes(this.appliedFilters['status'].toLowerCase()) ;
-            // el['port'].toLowerCase().includes(this.appliedFilters['port'].toLowerCase()) ||
-          //   el['length'].toLowerCase().includes(this.appliedFilters['length'].toLowerCase()) ||
-          //   el['width'].toLowerCase().includes(this.appliedFilters['width'].toLowerCase())  ||
-          // el['depth'].toLowerCase().includes(this.appliedFilters['depth'].toLowerCase())
+            el['status'].toLowerCase().includes(this.appliedFilters['status'].toLowerCase()) ||
+            el['length'].includes(this.appliedFilters['length']) ||
+            el['width'].includes(this.appliedFilters['width']) ||
+            el['depth'].includes(this.appliedFilters['depth']);
 
           return expression;
         } else {
           for (let filter in this.appliedFilters) {
-            expression = el[filter].toLowerCase().includes(this.appliedFilters[filter].toLowerCase());
+            expression = el[filter].toString().toLowerCase().includes(this.appliedFilters[filter].toLowerCase());
             if (!expression) break;
           }
 
@@ -139,67 +138,14 @@ export class BerthsListComponent {
         }
       }
 
-      return isMultipleSearch ? true : el[column].includes(target.value);
+      return isMultipleSearch ? true : el[column].toString().includes(target.value);
     });
   }
 
-  // applyFilter(target: any, column: string): void {
-  //   if (target.value) {
-  //     this.appliedFilters[column] = target.value;
-  //   } else {
-  //     delete this.appliedFilters[column];
-  //   }
-
-  //   this.dataSource = this.originalSource.filter((el: any) => {
-  //     if (Object.keys(this.appliedFilters).length) {
-  //       let expression = false;
-  //       for (let filter in this.appliedFilters) {
-  //           if(el[filter] === null){
-  //               continue
-  //           }
-  //           else{
-  //               if(filter === 'fullName'){
-  //                   expression = el.userSetting['firstName'].toLowerCase().includes(this.appliedFilters[filter].toLowerCase()) || el.userSetting['lastName'].toLowerCase().includes(this.appliedFilters[filter].toLowerCase());
-  //                 }
-  //                 else if(filter === 'email'){
-  //                   expression = el.user[filter].toLowerCase().includes(this.appliedFilters[filter].toLowerCase());
-  //                 }
-  //                 else{
-  //                   expression = el[filter].toLowerCase().includes(this.appliedFilters[filter].toLowerCase());
-  //                 }
-  //           }
-  //         if (!expression) break;
-  //       }
-
-  //       return expression;
-  //     }
-
-  //     if(column === 'fullName'){
-  //       return el.userSetting['firstName'].toLowerCase().includes(target.value.toLowerCase()) || el.userSetting['lastName'].toLowerCase().includes(target.value.toLowerCase());
-  //     }
-  //     else if(column === 'email'){
-  //       return el.user[column].toLowerCase().includes(target.value.toLowerCase());
-  //     }
-  //     else{
-  //       return el[column].toLowerCase().includes(target.value.toLowerCase());
-  //     }
-  //   });
-  // }
-
-  // filterByStatus(event: any): void {
-  //   this.isLoading$.next(true);
-  //   //alert(event.target.value);
-  //   if (!event.target.value) {
-  //       this.dataSource = [...this.originalSource];
-  //     } else {
-  //       this.dataSource = this.originalSource.filter((el : any )=> {return String(el.status).includes(event.target.value)});
-  //     }
-  //   this.isLoading$.next(false);
-  // }
 
   filterByStatus(event: any): void {
     this.isLoading$.next(true);
-    switch(event.target.value) {
+    switch (event.target.value) {
       case 'true':
         this.dataSource = this.originalSource.filter(el => el.status);
         break;
@@ -224,7 +170,6 @@ export class BerthsListComponent {
       switch (sort.active) {
         case 'name': return compare(a.name, b.name, isAsc);
         case 'status': return compare(a.status, b.status, isAsc);
-        // case 'berthStatus': return compare(a.berthStatus, b.berthStatus, isAsc);
         case 'addrCoordinates': return compare(a.addrCoordinates, b.addrCoordinates, isAsc);
         // case 'port': return compare(a.port, b.port, isAsc);
         case 'length': return compare(a.length, b.length, isAsc);

@@ -111,29 +111,27 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params['id'];
 
     combineLatest([
-    //   this.retrieveCustomers(),
-    //   this.retrieveDocks(),
-    //   this.retrieveBuildings(),
-    //   this.retrieveOperations(),
-    //   this.retrieveProducts()
-    ])
-    .subscribe(() => {
-    //   this.customers = partners.sort((a,b) => +b.status - +a.status);
-    //   this.docks = docks;
-    //   this.buildings = buildings;
-    //   this.operations = operations;
-    //   this.listProducts = products;
+      this.retrieveCustomers(),
+      this.retrieveDocks(),
+      this.retrieveBuildings(),
+      this.retrieveOperations(),
+      this.retrieveProducts()
+    ]).subscribe(([partners, docks, buildings, operations, products]) => {
+      this.customers = partners.sort((a,b) => +b.status - +a.status);
+      this.docks = docks;
+      this.buildings = buildings;
+      this.operations = operations;
+      this.listProducts = products;
       this.initForm();
-    //   this.subscribeForOperationChanges();
+      this.subscribeForOperationChanges();
       this.subscribeForSchedulingChanges();
-    //   this.subscribeForDockChanges();
-    //   this.filterName = this.filterName.bind(this);
+      this.subscribeForDockChanges();
+      this.filterName = this.filterName.bind(this);
       this.isLoading$.next(false);
     });
   }
 
   next(step$: BehaviorSubject<boolean>): void {
-    debugger
     step$.pipe(delay(150), take(1)).subscribe(() => {
       this.matStepper.next();
       if (this.matStepper.selectedIndex === 4) {
@@ -176,16 +174,16 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
   }
 
   retrieveStatuses(): Observable<any> {
-    console.log(this.statusListStatus,'listSid')
     return this.statusListStatus.listSid();
   }
-//   retrieveDocks(): Observable<DockModel[]> {
-//     return this.dockService.list({});
-//   }
 
-//   retrieveBuildings(): Observable<BuildingModel[]> {
-//     return this.buildingService.list({});
-//   }
+  retrieveDocks(): Observable<DockModel[]> {
+    return this.dockService.list({});
+  }
+
+  retrieveBuildings(): Observable<BuildingModel[]> {
+    return this.buildingService.list({});
+  }
 
   getCustomerName(): string {
     if (this.schedulingForm.get('customer')?.value) {
@@ -211,7 +209,7 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
                        input.type === 'number' ? 0 :
                        input.type === 'checkbox' ? [] : ''
               });
-
+  
               return input;
             });
             this.cargoData = response?.data.cargoData.map(t => {
@@ -223,7 +221,7 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
                        input.type === 'number' ? 0 :
                        input.type === 'checkbox' ? [] : ''
               });
-
+  
               return input;
             });
             this.additionalData = response?.data.additionalData.map(t => {
@@ -235,7 +233,7 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
                        input.type === 'number' ? 0 :
                        input.type === 'checkbox' ? [] : ''
               });
-
+  
               return input;
             });
             this.customInputsFetched = true;
@@ -258,7 +256,7 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
                        input.type === 'number' ? 0 :
                        input.type === 'checkbox' ? [] : ''
               });
-
+  
               return input;
             });
             this.cargoData = response?.data.cargoData.map(t => {
@@ -270,7 +268,7 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
                        input.type === 'number' ? 0 :
                        input.type === 'checkbox' ? [] : ''
               });
-
+  
               return input;
             });
             this.additionalData = response?.data.additionalData.map(t => {
@@ -282,18 +280,18 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
                        input.type === 'number' ? 0 :
                        input.type === 'checkbox' ? [] : ''
               });
-
+  
               return input;
             });
             this.customInputsFetched = true;
           });
         }
-        // this.retrieveProducts().subscribe((products: ProductModel[]) => {
-        //   this.listProducts = products;
-        //   this.isLoading$.next(false);
-        // })
+        this.retrieveProducts().subscribe((products: ProductModel[]) => {
+          this.listProducts = products;
+          this.isLoading$.next(false);
+        })
         break;
-      case 3:
+      case 3: 
         this.isLoading$.next(true);
         this.isLoading$.next(false);
         break;
@@ -304,17 +302,17 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
     return this.partnerService.list({});
   }
 
-//   retrieveOperations(): Observable<OperationModel[]> {
-//     return this.operationService.list({});
-//   }
+  retrieveOperations(): Observable<OperationModel[]> {
+    return this.operationService.list({});
+  }
 
   retrieveCustomFields(): Observable<ResponseCustomField|null> {
     return this.customFieldService.list();
   }
 
-//   retrieveProducts(): Observable<ProductModel[]> {
-//     return this.productService.list({});
-//   }
+  retrieveProducts(): Observable<ProductModel[]> {
+    return this.productService.list({});
+  }
 
   filterFavorites(customer: PartnerModel): boolean {
     return !!customer.status;
@@ -340,7 +338,7 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
     switch (type) {
       case 'text': field.value = eventTarget.value; break;
       case 'number': field.value = +eventTarget.value; break;
-      case 'checkbox':
+      case 'checkbox': 
             if (eventTarget?.checked && (<string[]>field.value).indexOf(eventTarget.value) === -1) {
               (<string[]>field.value).push(eventTarget.value);
             }
@@ -365,7 +363,7 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
     switch (type) {
       case 'text': field.value = eventTarget.value; break;
       case 'number': field.value = +eventTarget.value; break;
-      case 'checkbox':
+      case 'checkbox': 
             if (eventTarget?.checked && (<string[]>field.value).indexOf(eventTarget.value) === -1) {
               (<string[]>field.value).push(eventTarget.value);
             }
@@ -389,7 +387,7 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
     switch (type) {
       case 'text': field.value = eventTarget.value; break;
       case 'number': field.value = +eventTarget.value; break;
-      case 'checkbox':
+      case 'checkbox': 
             if (eventTarget?.checked && (<string[]>field.value).indexOf(eventTarget.value) === -1) {
               (<string[]>field.value).push(eventTarget.value);
             }
@@ -409,34 +407,6 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
 
   initForm(data?: SchedulingModel): void {
     this.schedulingForm = this.fb.group({
-        convoyType:this.fb.control(''),
-        eta:this.fb.control(''),
-        locationPort:this.fb.control(''),
-        zone:this.fb.control(''),
-        departurePort:this.fb.control(''),
-        arrivalPort:this.fb.control(''),
-        pilotCompany:this.fb.control(''),
-        width:this.fb.control(''),
-        maxDraft:this.fb.control(''),
-        aerialGuage:this.fb.control(''),
-        capacityMax:this.fb.control(''),
-        typeOfLock:this.fb.control(''),
-        length:this.fb.control(''),
-        ship:this.fb.control(''),
-        shipType:this.fb.control(''),
-        pavilion:this.fb.control(''),
-        enginePower:this.fb.control(''),
-        loa:this.fb.control(''),
-        agent:this.fb.control(''),
-        navigationType:this.fb.control(''),
-        manevra:this.fb.control(''),
-        shipOwner:this.fb.control(''),
-        purpose:this.fb.control(''),
-        trafficType:this.fb.control(''),
-        cargo:this.fb.control(''),
-        unitNo:this.fb.control(''),
-        portOfOrigin:this.fb.control(''),
-        observation:this.fb.control(''),
       schedulingDate: this.fb.control(new Date()),
       auto: this.fb.control(''),
       timeSlot: this.fb.control(''),
@@ -480,23 +450,22 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
   }
 
   openAddProductModal(product?: ProductModel): void {
-      this.dialogService.open(SchedulingAddProductModalComponent,
-        {
-          disableClose: true,
-          data: {
-              product,
-              products: [...this.listProducts],
-              cargoData: this.cargoData,
-              customFieldCargoData: [...this.customFieldCargoData]
-            }
-        }).afterClosed()
-        .subscribe({
-            next: (body: { product: ProductModel, customFieldCargoData: SchedulingCustomField[] }) => {
-                if (body?.product) {
-                    this.isLoading$.next(true);
-                    this.products.push(body?.product);
-                    this.products = [...this.products];
-                    if (body?.customFieldCargoData) {
+    this.dialogService.open(SchedulingAddProductModalComponent, {
+      disableClose: true,
+      data: {
+        product,
+        products: [...this.listProducts],
+        cargoData: this.cargoData,
+        customFieldCargoData: [...this.customFieldCargoData]
+      }
+    }).afterClosed()
+      .subscribe({
+        next: (body: { product: ProductModel, customFieldCargoData: SchedulingCustomField[] }) => {
+          if (body?.product) {
+            this.isLoading$.next(true);
+            this.products.push(body?.product);
+            this.products = [...this.products];
+            if (body?.customFieldCargoData) {
               this.customFieldCargoData = [...body.customFieldCargoData];
             }
             this.isLoading$.next(false);
@@ -602,7 +571,7 @@ export class AddSchedulingComponent implements OnInit, OnDestroy {
 
   selectSlot(index: number, isTomorrow = false): void {
     if (isNaN(index)) return;
-
+    
     this.selectedSlot$.next(index);
 
     const slot = index < 10 ? `0${index}:00:00` : `${index}:00:00`;

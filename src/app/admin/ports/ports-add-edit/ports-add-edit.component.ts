@@ -90,9 +90,9 @@ export class PortsAddEditComponent implements OnInit {
     const portId = this.ports$?.value?.id;
     const contactsArray = this.ports$?.value?.contacts;
   
-    if (portId && contactsArray && contactsArray.length >= index) {
+    if (portId && contactsArray && contactsArray.length > 0) {
       const contactId = contactsArray[index]?.id; // Get the ID of the contact at the specified index
-      if (contactId) {
+      if (contactId !== null && contactId !== undefined && contactId > -1) {
         this.portService.deleteContact(portId, contactId).subscribe({
           next: () => {
             console.log('Contact deleted successfully');
@@ -106,6 +106,8 @@ export class PortsAddEditComponent implements OnInit {
           }
         });
       }
+    } else {
+      this.contacts.removeAt(index);
     }
   }
 
@@ -115,11 +117,7 @@ export class PortsAddEditComponent implements OnInit {
       this.portForm.get('imgPreview')?.patchValue(target.files.item(0));
     }
   }
-  // removeContact(index: number): void {
-  //   this.contacts.splice(index, 1);
-  // }
-
-  savePort(): void {
+    savePort(): void {
     if (this.id) {
       this.portService.edit(this.id, this.parseData(this.portForm.value)).subscribe(() => {
         this.router.navigate(['../../success'], { relativeTo: this.route });

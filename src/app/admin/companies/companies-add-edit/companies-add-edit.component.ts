@@ -86,7 +86,6 @@ addContact(contact?: ContactsModel): void {
 }
 
 removeContact(index: number): void {
-  // debugger
   const companyId = this.company$?.value?.id;
   const contactsArray = this.company$?.value?.contacts;
 

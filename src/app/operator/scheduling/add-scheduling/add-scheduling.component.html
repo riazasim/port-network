@@ -1,63 +1,31 @@
- <mat-stepper labelPosition="bottom" [linear]="isLinear" #stepper>
-
-    <mat-step label="Route Details" [completed]="stepOne$ | async">
+  <mat-stepper labelPosition="bottom" [linear]="isLinear" #stepper>
+    
+    <mat-step label="Scheduling" [completed]="stepOne$ | async">
       <app-loader *ngIf="(isLoading$ | async)" [isContainer]="true" [fullScreen]="false"></app-loader>
       <div *ngIf="!(isLoading$ | async)" class="min-md:tw-min-h-[calc(100vh-260px)]">
         <div class="tw-flex tw-flex-col">
           <form [formGroup]="schedulingForm">
-          <div class="tw-grid min-lg:tw-grid-cols-2 tw-grid-cols-1 tw-gap-x-10 tw-gap-y-4 tw-pt-[100px] tw-px-[50px]">
+          <div class="tw-col-span-2 tw-grid tw-grid-cols-2 tw-gap-x-10 tw-gap-y-4 tw-px-[50px]">
               <div class="tw-flex tw-flex-col tw-gap-x-10 tw-gap-y-4 tw-px-[50px]">
-              <div iconic-input-wrapper leftIcon="user">
-                <input inputRef type="text" placeholder="Convoy type" formControlName="convoyType">
-            </div>
-              <div iconic-input-wrapper leftIcon="clock">
-                <input inputRef type="text" placeholder="ETA" formControlName="eta">
-            </div>
-              <div iconic-input-wrapper leftSvg="assets/images/map-pin.svg">ng
-                <input inputRef type="text" placeholder="Location port" formControlName="locationPort">
-            </div>
-            <div iconic-select-wrapper leftIcon="clock" [rightIcon]="['fas', 'caret-down']">
-                <select inputRef name="zone" id="zone" formControlName="zone">
-                    <option value="null" disabled>Zone</option>
-                    <option *ngFor="let building of buildings" [value]="building.id">{{building.name}}</option>
-                </select>
-              </div>
-            <div iconic-select-wrapper leftIcon="clock" [rightIcon]="['fas', 'caret-down']">
-                <select inputRef name="departurePort" id="departurePort" formControlName="departurePort">
-                    <option value="null" disabled>Departure port</option>
-                    <option *ngFor="let building of buildings" [value]="building.id">{{building.name}}</option>
-                </select>
-              </div>
-            <div iconic-select-wrapper leftIcon="clock" [rightIcon]="['fas', 'caret-down']">
-                <select inputRef name="arrivalPort" id="arrivalPort" formControlName="arrivalPort">
-                    <option value="null" disabled>Arrival port</option>
-                    <option *ngFor="let building of buildings" [value]="building.id">{{building.name}}</option>
-                </select>
-              </div>
-              <div iconic-input-wrapper leftIcon="user">
-                <input inputRef type="text" placeholder="Pilot company" formControlName="pilotCompany">
-            </div>
-
+                <searchbar height="53px" borderRadius="10px">
+                  <input [matMenuTriggerFor]="menu" #trigger="matMenuTrigger" [value]="selectedCustomer$ | async" readonly input class="tw-rounded tw-cursor-pointer select-client-input" type="text" placeholder="Select partner">
+                  <fa-icon rightIcon [icon]="['fas', 'caret-down']" class="tw-cursor-pointer" (click)="trigger.toggleMenu()"></fa-icon>
+                  <mat-menu #menu="matMenu" class="!tw-bg-white">
+                    <div iconic-input-wrapper class="tw-px-4" leftIcon="search">
+                      <input (click)="$event.stopPropagation();" inputRef type="text" placeholder="Search" [(ngModel)]="search" [ngModelOptions]="{ standalone: true }">
+                    </div>
+                    <ul class="tw-overflow-auto tw-max-h-[300px]">
+                      <li class="tw-py-2" (click)="selectCustomer(customer)" *ngFor="let customer of customers | callback: filterName">{{customer.fullName}} <fa-icon *ngIf="customer.status" [icon]="['fas', 'star']" class="tw-text-primary tw-pl-4" size="lg"></fa-icon></li>
+                      <li *ngIf="!(customers | callback: filterName).length">No customer found.</li>
+                    </ul>
+                  </mat-menu>
+              </searchbar>
+                
               </div>
               <div class="tw-flex tw-flex-col tw-gap-x-10 tw-gap-y-4 tw-px-[50px]">
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="Length (m)*" formControlName="length">
-                </div>
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="Width (m)*" formControlName="width">
-                </div>
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="Max draft (m)*" formControlName="maxDraft">
-                </div>
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="Aerial gauge" formControlName="aerialGuage">
-                </div>
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="Capacity max (m)*" formControlName="capacityMax">
-                </div>
                 <div iconic-select-wrapper leftIcon="clock" [rightIcon]="['fas', 'caret-down']">
-                  <select inputRef name="typeOfLock" id="typeOfLock" formControlName="typeOfLock">
-                      <option value="null" disabled>Type of lock</option>
+                  <select inputRef name="warehouse" id="warehouse" formControlName="warehouse">
+                      <option value="null" disabled>Select building</option>
                       <option *ngFor="let building of buildings" [value]="building.id">{{building.name}}</option>
                   </select>
                 </div>
@@ -66,110 +34,51 @@
           </form>
         </div>
         <div class="tw-flex tw-justify-center min-md:tw-gap-20 tw-gap-3 max-md:tw-flex-col tw-py-3">
-          <button (click)="next(stepOne$)" type="button" class="btn btn-primary min-md:tw-min-w-[436px] tw-min-h-[50px] !tw-text-[18px]">{{'button.next' | translate}}</button>
+          <button [disabled]="!schedulingForm.get('customer')?.value" (click)="next(stepOne$)" type="button" class="btn btn-primary min-md:tw-min-w-[436px] tw-min-h-[50px] !tw-text-[18px]">{{'button.next' | translate}}</button>
         </div>
       </div>
     </mat-step>
-    <mat-step label="Convoy" [completed]="stepTwo$ | async">
+    <mat-step label="Transport Data" [completed]="stepTwo$ | async">
       <app-loader *ngIf="(isLoading$ | async)" [isContainer]="true" [fullScreen]="false"></app-loader>
       <form *ngIf="!(isLoading$ | async)" [formGroup]="schedulingForm">
         <div class="tw-grid min-lg:tw-grid-cols-2 tw-grid-cols-1 tw-gap-x-10 tw-gap-y-4 tw-pt-[100px] tw-px-[50px]">
             <div class="tw-flex tw-flex-col tw-gap-x-10 tw-gap-y-4 tw-px-[50px]">
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="Navigation type*" formControlName="navigationType">
-                </div>
+                <p class="tw-text-columnCell tw-font-bold">Transport data</p>
                 <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']">
-                  <select inputRef name="ship" id="ship" formControlName="ship">
-                      <option value="null" disabled>Ship</option>
+                  <select inputRef name="operation" id="operation" formControlName="operation">
+                      <option value="null" disabled>Operation type</option>
                       <option *ngFor="let operation of operations" [value]="operation.id">{{operation.name}}</option>
                   </select>
-                </div>
-                <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']">
-                  <select inputRef name="shipType" id="shipType" formControlName="shipType">
-                      <option value="null" disabled>Ship type*</option>
-                      <option *ngFor="let operation of operations" [value]="operation.id">{{operation.name}}</option>
-                  </select>
-                </div>
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="Pavilion" formControlName="pavilion">
-                </div>
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="Engine power" formControlName="enginePower">
-                </div>
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="LOA" formControlName="loa">
-                </div>
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="Width (m)*" formControlName="width">
-                </div>
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="Max draft (m)*" formControlName="maxDraft">
-                </div>
-                <div iconic-input-wrapper leftIcon="user">
-                    <input inputRef type="text" placeholder="C.max (t)*" formControlName="capacityMax">
                 </div>
                 <div iconic-select-wrapper leftIcon="id-card" [rightIcon]="['fas', 'caret-down']">
-                  <select inputRef name="agent" id="agent" formControlName="agent">
-                      <option value="null" disabled>Agent</option>
+                  <select inputRef name="customer" id="customer" formControlName="customer">
+                      <option value="null" disabled>Customer</option>
                       <option *ngFor="let customer of customers" [value]="customer.id">{{customer.fullName}}</option>
                   </select>
                 </div>
-
+                <div iconic-input-wrapper leftIcon="user">
+                    <input inputRef type="text" placeholder="Destination" formControlName="destination">
+                </div>
                 <div iconic-input-wrapper leftIcon="location-dot">
-                    <input inputRef type="text" placeholder="Manevra" formControlName="manevra">
+                    <input inputRef type="text" placeholder="Loading address" formControlName="loadingAddress">
                 </div>
             </div>
             <div class="tw-flex tw-flex-col tw-gap-x-10 tw-gap-y-4 tw-px-[50px]">
+                <p>&nbsp;</p>
                 <div iconic-input-wrapper leftSvg="assets/images/license_plates.svg">
-                    <input inputRef type="text" placeholder="Ship owner" formControlName="shipOwner">
+                    <input inputRef type="text" placeholder="Truck license plate front" formControlName="truckLicensePlateFront">
                 </div>
                 <div iconic-input-wrapper leftIcon="trailer">
-                    <input inputRef type="text" placeholder="Purpose" formControlName="purpose">
-                </div>
-                <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']">
-                    <select inputRef name="operation" id="operation" formControlName="operation">
-                        <option value="null" disabled>Operator*</option>
-                        <option *ngFor="let operation of operations" [value]="operation.id">{{operation.name}}</option>
-                    </select>
-                  </div>
-                  <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']">
-                    <select inputRef name="operation" id="operation" formControlName="operation">
-                        <option value="null" disabled>Traffic type</option>
-                        <option *ngFor="let operation of operations" [value]="operation.id">{{operation.name}}</option>
-                    </select>
-                  </div>
-                  <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']">
-                    <select inputRef name="operation" id="operation" formControlName="operation">
-                        <option value="null" disabled>Operation type</option>
-                        <option *ngFor="let operation of operations" [value]="operation.id">{{operation.name}}</option>
-                    </select>
-                  </div>
-                  <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']">
-                    <select inputRef name="operation" id="operation" formControlName="operation">
-                        <option value="null" disabled>Cargo*</option>
-                        <option *ngFor="let operation of operations" [value]="operation.id">{{operation.name}}</option>
-                    </select>
-                  </div>
-                <div iconic-input-wrapper leftSvg="assets/images/license_plates.svg">
-                    <input inputRef type="text" placeholder="Quantity (t)" formControlName="quantity">
+                    <input inputRef type="text" placeholder="Truck license plate back" formControlName="truckLicensePlateBack">
                 </div>
                 <div iconic-input-wrapper leftSvg="assets/images/license_plates.svg">
-                    <input inputRef type="text" placeholder="Unit.no" formControlName="unitNo">
+                    <input inputRef type="text" placeholder="Driver name" formControlName="driverName">
                 </div>
-                <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']">
-                    <select inputRef name="operation" id="operation" formControlName="operation">
-                        <option value="null" disabled>Port of origin</option>
-                        <option *ngFor="let operation of operations" [value]="operation.id">{{operation.name}}</option>
-                    </select>
-                  </div>
-                  <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']">
-                    <select inputRef name="operation" id="operation" formControlName="operation">
-                        <option value="null" disabled>Destination</option>
-                        <option *ngFor="let operation of operations" [value]="operation.id">{{operation.name}}</option>
-                    </select>
-                  </div>
                 <div iconic-input-wrapper leftSvg="assets/images/license_plates.svg">
-                    <input inputRef type="text" placeholder="Observation" formControlName="observation">
+                    <input inputRef type="text" placeholder="Driver ID" formControlName="driverId">
+                </div>
+                <div iconic-input-wrapper leftSvg="assets/images/license_plates.svg">
+                    <input inputRef type="text" placeholder="Driver mobile phone" formControlName="phoneNumber">
                 </div>
             </div>
         </div>
@@ -181,7 +90,7 @@
                 <ng-container *ngSwitchCase="'text'">
                   <label *ngIf="input.label">{{input.label}}</label>
                   <div iconic-input-wrapper>
-                    <input inputRef type="text" [placeholder]="input.placeholder" [required]="input.required"
+                    <input inputRef type="text" [placeholder]="input.placeholder" [required]="input.required" 
                     (keyup)="updateCustomFieldTransport(input.id, input.type, $event.target)">
                   </div>
                 </ng-container>
@@ -190,7 +99,7 @@
                   <div class="tw-flex tw-items-center tw-gap-4">
                     <div class="tw-flex tw-items-center tw-gap-2" *ngFor="let field of input.customFieldLists">
                       <label *ngIf="field.label">{{field.label}}</label>
-                      <input type="radio" [name]="input.name" [value]="field.value"
+                      <input type="radio" [name]="input.name" [value]="field.value" 
                       (change)="updateCustomFieldTransport(input.id, input.type, { value: field.value, checked: $any($event.target)?.checked })">
                     </div>
                   </div>
@@ -200,7 +109,7 @@
                   <div class="tw-flex tw-items-center tw-gap-4">
                     <div class="tw-flex tw-items-center tw-gap-2" *ngFor="let field of input.customFieldLists">
                       <label *ngIf="field.label">{{field.label}}</label>
-                      <input type="checkbox" [name]="input.name" [value]="field.value"
+                      <input type="checkbox" [name]="input.name" [value]="field.value" 
                       (change)="updateCustomFieldTransport(input.id, input.type, { value: field.value, checked: $any($event.target)?.checked })">
                     </div>
                   </div>
@@ -208,21 +117,21 @@
                 <ng-container *ngSwitchCase="'date'">
                   <label *ngIf="input.label">{{input.label}}</label>
                   <div iconic-input-wrapper>
-                    <input inputRef type="date" [placeholder]="input.placeholder" [required]="input.required"
+                    <input inputRef type="date" [placeholder]="input.placeholder" [required]="input.required" 
                     (change)="updateCustomFieldCargo(input.id, input.type, $event.target)">
                   </div>
                 </ng-container>
                 <ng-container *ngSwitchCase="'time'">
                   <label *ngIf="input.label">{{input.label}}</label>
                   <div iconic-input-wrapper>
-                    <input inputRef type="time" [placeholder]="input.placeholder" [required]="input.required"
+                    <input inputRef type="time" [placeholder]="input.placeholder" [required]="input.required" 
                     (change)="updateCustomFieldCargo(input.id, input.type, $event.target)">
                   </div>
                 </ng-container>
                 <ng-container *ngSwitchCase="'textarea'">
                   <label *ngIf="input.label">{{input.label}}</label>
                   <div textarea-wrapper>
-                    <textarea inputRef type="textarea" [placeholder]="input.placeholder" [required]="input.required"
+                    <textarea inputRef type="textarea" [placeholder]="input.placeholder" [required]="input.required" 
                     (keyup)="updateCustomFieldAdditional(input.id, input.type, $event.target)"></textarea>
                   </div>
                 </ng-container>
@@ -246,7 +155,7 @@
         </div>
       </form>
     </mat-step>
-    <!-- <mat-step label="Cargo Data" [completed]="stepThree$ | async">
+    <mat-step label="Cargo Data" [completed]="stepThree$ | async">
       <app-loader *ngIf="(isLoading$ | async)" [isContainer]="true" [fullScreen]="false"></app-loader>
       <div *ngIf="!(isLoading$ | async)">
         <div class="tw-py-[100px]">
@@ -279,8 +188,8 @@
           </table>
           <button type="button" class="tw-text-primary tw-font-bold tw-py-5" (click)="openAddProductModal()">
             <fa-icon icon="circle-plus"></fa-icon> Add New Product
-          </button> -->
-
+          </button>
+  
           <!-- <div>
             <p class="tw-text-columnCell tw-font-bold tw-pb-3">Custom fields</p>
             <div *ngIf="cargoData" class="tw-flex tw-flex-col tw-gap-4">
@@ -289,7 +198,7 @@
                     <ng-container *ngSwitchCase="'text'">
                       <label *ngIf="input.label">{{input.label}}</label>
                       <div iconic-input-wrapper>
-                        <input inputRef type="text" [placeholder]="input.placeholder" [required]="input.required"
+                        <input inputRef type="text" [placeholder]="input.placeholder" [required]="input.required" 
                         (keyup)="updateCustomFieldCargo(input.id, input.type, $event.target)">
                       </div>
                     </ng-container>
@@ -298,7 +207,7 @@
                       <div class="tw-flex tw-items-center tw-gap-4">
                         <div class="tw-flex tw-items-center tw-gap-2" *ngFor="let field of input.customFieldLists">
                           <label *ngIf="field.label">{{field.label}}</label>
-                          <input type="radio" [name]="input.name" [value]="field.value"
+                          <input type="radio" [name]="input.name" [value]="field.value" 
                           (change)="updateCustomFieldCargo(input.id, input.type, { value: field.value, checked: $any($event.target)?.checked })">
                         </div>
                       </div>
@@ -308,7 +217,7 @@
                       <div class="tw-flex tw-items-center tw-gap-4">
                         <div class="tw-flex tw-items-center tw-gap-2" *ngFor="let field of input.customFieldLists">
                           <label *ngIf="field.label">{{field.label}}</label>
-                          <input type="checkbox" [name]="input.name" [value]="field.value"
+                          <input type="checkbox" [name]="input.name" [value]="field.value" 
                           (change)="updateCustomFieldCargo(input.id, input.type, { value: field.value, checked: $any($event.target)?.checked })">
                         </div>
                       </div>
@@ -316,21 +225,21 @@
                     <ng-container *ngSwitchCase="'date'">
                         <label *ngIf="input.label">{{input.label}}</label>
                         <div iconic-input-wrapper>
-                          <input inputRef type="date" [placeholder]="input.placeholder" [required]="input.required"
+                          <input inputRef type="date" [placeholder]="input.placeholder" [required]="input.required" 
                           (change)="updateCustomFieldCargo(input.id, input.type, $event.target)">
                         </div>
                       </ng-container>
                       <ng-container *ngSwitchCase="'time'">
                         <label *ngIf="input.label">{{input.label}}</label>
                         <div iconic-input-wrapper>
-                          <input inputRef type="time" [placeholder]="input.placeholder" [required]="input.required"
+                          <input inputRef type="time" [placeholder]="input.placeholder" [required]="input.required" 
                           (change)="updateCustomFieldCargo(input.id, input.type, $event.target)">
                         </div>
                       </ng-container>
                       <ng-container *ngSwitchCase="'textarea'">
                         <label *ngIf="input.label">{{input.label}}</label>
                         <div textarea-wrapper>
-                          <textarea inputRef type="textarea" [placeholder]="input.placeholder" [required]="input.required"
+                          <textarea inputRef type="textarea" [placeholder]="input.placeholder" [required]="input.required" 
                           (keyup)="updateCustomFieldAdditional(input.id, input.type, $event.target)"></textarea>
                         </div>
                       </ng-container>
@@ -348,15 +257,13 @@
               </div>
               <p *ngIf="!cargoData || !cargoData.length">There're no cargo data custom fields.</p>
         </div> -->
-
-
-        <!-- </div>
+        </div>
         <div class="tw-flex tw-justify-center min-md:tw-gap-20 tw-gap-3 max-md:tw-flex-col tw-py-5">
           <button type="button" class="btn btn-primary min-md:tw-min-w-[436px] tw-min-h-[50px] !tw-text-[18px]" matStepperPrevious>{{'button.back' | translate}}</button>
           <button type="button" class="btn btn-primary min-md:tw-min-w-[436px] tw-min-h-[50px] !tw-text-[18px]" (click)="next(stepThree$)">{{'button.next' | translate}}</button>
         </div>
       </div>
-    </mat-step> -->
+    </mat-step>
     <mat-step label="Additional Data" [completed]="stepFour$ | async">
       <app-loader *ngIf="(isLoading$ | async)" [isContainer]="true" [fullScreen]="false"></app-loader>
       <div *ngIf="!(isLoading$ | async)">
@@ -372,10 +279,10 @@
                         class="tw-mx-2 tw-cursor-pointer">
                     </fa-icon>
                 </button>
-                <input class="tw-text-center tw-w-full tw-outline-0 tw-shadow-none tw-ring-offset-0 focus:tw-ring-offset-0 focus:tw-shadow-none focus:tw-ring-0 tw-min-h-[53px] tw-border-x-0 tw-border-borderColor	tw-rounded-x-0"
+                <input class="tw-text-center tw-w-full tw-outline-0 tw-shadow-none tw-ring-offset-0 focus:tw-ring-offset-0 focus:tw-shadow-none focus:tw-ring-0 tw-min-h-[53px] tw-border-x-0 tw-border-borderColor	tw-rounded-x-0" 
                 type="text" [value]="file1Text$ | async" (click)="file1.click()" readonly placeholder="Choose file">
                 <input #file1 hidden type="file" (change)="patchFile($any($event.target).files, 0)">
-                <button (click)="file1.click()" class="tw-bg-primary tw-text-white  tw-min-h-[53px] min-md:tw-min-w-[60px] max-sm:tw-w-full tw-rounded">
+                <button (click)="file1.click()" class="tw-bg-primary tw-text-white hover:tw-bg-primary-dark tw-min-h-[53px] min-md:tw-min-w-[60px] max-sm:tw-w-full tw-rounded">
                   <fa-icon icon="upload" size="2x"
                       class="tw-mx-2 tw-cursor-pointer tw-text-white">
                   </fa-icon>
@@ -387,10 +294,10 @@
                         class="tw-mx-2 tw-cursor-pointer">
                     </fa-icon>
                 </button>
-                <input class="tw-text-center tw-w-full tw-outline-0 tw-shadow-none tw-ring-offset-0 focus:tw-ring-offset-0 focus:tw-shadow-none focus:tw-ring-0 tw-min-h-[53px] tw-border-x-0 tw-border-borderColor	tw-rounded-x-0"
+                <input class="tw-text-center tw-w-full tw-outline-0 tw-shadow-none tw-ring-offset-0 focus:tw-ring-offset-0 focus:tw-shadow-none focus:tw-ring-0 tw-min-h-[53px] tw-border-x-0 tw-border-borderColor	tw-rounded-x-0" 
                 type="text" [value]="file2Text$ | async" (click)="file2.click()" readonly placeholder="Choose file">
                 <input #file2 hidden type="file" (change)="patchFile($any($event.target).files, 1)">
-                <button (click)="file2.click()" class="tw-bg-primary tw-text-white  tw-min-h-[53px] min-md:tw-min-w-[60px] max-sm:tw-w-full tw-rounded">
+                <button (click)="file2.click()" class="tw-bg-primary tw-text-white hover:tw-bg-primary-dark tw-min-h-[53px] min-md:tw-min-w-[60px] max-sm:tw-w-full tw-rounded">
                   <fa-icon icon="upload" size="2x"
                       class="tw-mx-2 tw-cursor-pointer tw-text-white">
                   </fa-icon>
@@ -402,10 +309,10 @@
                         class="tw-mx-2 tw-cursor-pointer">
                     </fa-icon>
                 </button>
-                <input class="tw-text-center tw-w-full tw-outline-0 tw-shadow-none tw-ring-offset-0 focus:tw-ring-offset-0 focus:tw-shadow-none focus:tw-ring-0 tw-min-h-[53px] tw-border-x-0 tw-border-borderColor	tw-rounded-x-0"
+                <input class="tw-text-center tw-w-full tw-outline-0 tw-shadow-none tw-ring-offset-0 focus:tw-ring-offset-0 focus:tw-shadow-none focus:tw-ring-0 tw-min-h-[53px] tw-border-x-0 tw-border-borderColor	tw-rounded-x-0" 
                 type="text" [value]="file3Text$ | async" (click)="file3.click()" readonly placeholder="Choose file">
                 <input #file3 hidden type="file" (change)="patchFile($any($event.target).files, 2)">
-                <button (click)="file3.click()" class="tw-bg-primary tw-text-white  tw-min-h-[53px] min-md:tw-min-w-[60px] max-sm:tw-w-full tw-rounded">
+                <button (click)="file3.click()" class="tw-bg-primary tw-text-white hover:tw-bg-primary-dark tw-min-h-[53px] min-md:tw-min-w-[60px] max-sm:tw-w-full tw-rounded">
                   <fa-icon icon="upload" size="2x"
                       class="tw-mx-2 tw-cursor-pointer tw-text-white">
                   </fa-icon>
@@ -423,10 +330,10 @@
             </div>
             <div class="tw-grid tw-grid-rows-2 tw-gap-x-10 tw-gap-y-4 tw-px-[50px]">
               <div textarea-wrapper leftIcon="user" [isFullHeight]="true">
-                <textarea class="tw-break-words tw-whitespace-pre-wrap tw-resize-none" inputRef placeholder="Client's comments:" rows="10" cols="1" formControlName="clientInstruction"></textarea>
+                <textarea class="tw-break-words tw-whitespace-pre-wrap tw-resize-none" inputRef placeholder="Instructiuni Client" rows="10" cols="1" formControlName="clientInstruction"></textarea>
               </div>
               <div textarea-wrapper  leftIcon="id-card" [isFullHeight]="true">
-                <textarea class="tw-break-words tw-whitespace-pre-wrap tw-resize-none" inputRef placeholder="Operator's comments" rows="10" cols="1" formControlName="operatorMention"></textarea>
+                <textarea class="tw-break-words tw-whitespace-pre-wrap tw-resize-none" inputRef placeholder="Mentiuni Operator" rows="10" cols="1" formControlName="operatorMention"></textarea>
               </div>
             </div>
           </form>
@@ -438,7 +345,7 @@
                     <ng-container *ngSwitchCase="'text'">
                       <label *ngIf="input.label">{{input.label}}</label>
                       <div iconic-input-wrapper>
-                        <input inputRef type="text" [placeholder]="input.placeholder" [required]="input.required"
+                        <input inputRef type="text" [placeholder]="input.placeholder" [required]="input.required" 
                         (keyup)="updateCustomFieldAdditional(input.id, input.type, $event.target)">
                       </div>
                     </ng-container>
@@ -447,7 +354,7 @@
                       <div class="tw-flex tw-items-center tw-gap-4">
                         <div class="tw-flex tw-items-center tw-gap-2" *ngFor="let field of input.customFieldLists">
                           <label *ngIf="field.label">{{field.label}}</label>
-                          <input type="radio" [name]="input.name" [value]="field.value"
+                          <input type="radio" [name]="input.name" [value]="field.value" 
                           (change)="updateCustomFieldAdditional(input.id, input.type, { value: field.value, checked: $any($event.target)?.checked })">
                         </div>
                       </div>
@@ -457,7 +364,7 @@
                       <div class="tw-flex tw-items-center tw-gap-4">
                         <div class="tw-flex tw-items-center tw-gap-2" *ngFor="let field of input.customFieldLists">
                           <label *ngIf="field.label">{{field.label}}</label>
-                          <input type="checkbox" [name]="input.name" [value]="field.value"
+                          <input type="checkbox" [name]="input.name" [value]="field.value" 
                           (change)="updateCustomFieldAdditional(input.id, input.type, { value: field.value, checked: $any($event.target)?.checked })">
                         </div>
                       </div>
@@ -465,21 +372,21 @@
                     <ng-container *ngSwitchCase="'date'">
                         <label *ngIf="input.label">{{input.label}}</label>
                         <div iconic-input-wrapper>
-                          <input inputRef type="date" [placeholder]="input.placeholder" [required]="input.required"
+                          <input inputRef type="date" [placeholder]="input.placeholder" [required]="input.required" 
                           (change)="updateCustomFieldAdditional(input.id, input.type, $event.target)">
                         </div>
                       </ng-container>
                       <ng-container *ngSwitchCase="'time'">
                         <label *ngIf="input.label">{{input.label}}</label>
                         <div iconic-input-wrapper>
-                          <input inputRef type="time" [placeholder]="input.placeholder" [required]="input.required"
+                          <input inputRef type="time" [placeholder]="input.placeholder" [required]="input.required" 
                           (change)="updateCustomFieldAdditional(input.id, input.type, $event.target)">
                         </div>
                       </ng-container>
                       <ng-container *ngSwitchCase="'textarea'">
                         <label *ngIf="input.label">{{input.label}}</label>
                         <div textarea-wrapper>
-                          <textarea inputRef type="textarea" [placeholder]="input.placeholder" [required]="input.required"
+                          <textarea inputRef type="textarea" [placeholder]="input.placeholder" [required]="input.required" 
                           (keyup)="updateCustomFieldAdditional(input.id, input.type, $event.target)"></textarea>
                         </div>
                       </ng-container>
@@ -500,18 +407,18 @@
         </div>
         <div class="tw-flex tw-justify-center min-md:tw-gap-20 tw-gap-3 tw-py-3">
           <button type="button" class="btn btn-primary min-md:tw-min-w-[436px] tw-min-h-[50px] !tw-text-[18px]" matStepperPrevious>{{'button.back' | translate}}</button>
-          <button type="button" class="btn btn-primary min-md:tw-min-w-[436px] tw-min-h-[50px] !tw-text-[18px]" (click)="saveScheduling()">{{'button.next' | translate}}</button>
+          <button type="button" class="btn btn-primary min-md:tw-min-w-[436px] tw-min-h-[50px] !tw-text-[18px]" (click)="next(stepFour$)">{{'button.next' | translate}}</button>
         </div>
       </div>
     </mat-step>
-    <!-- <mat-step label="Timeslot" [completed]="stepFive$ | async">
+    <mat-step label="Timeslot" [completed]="stepFive$ | async">
       <app-loader *ngIf="(isLoading$ | async)" [isContainer]="true" [fullScreen]="false"></app-loader>
       <div *ngIf="!(isLoading$ | async)" class="min-md:tw-min-h-[calc(100vh-260px)]">
         <div class="tw-flex tw-items-center tw-justify-center tw-flex-col tw-mx-auto tw-py-4 tw-max-w-[500px]">
           <form [formGroup]="schedulingForm">
             <div class="tw-flex min-md:tw-gap-20 tw-gap-3 max-md:tw-flex-col max-md:tw-flex-col">
               <div class="min-md:tw-min-w-[436px]">
-                <datepicker placeholder="Scheduling date" [formGroup]="schedulingForm" ></datepicker>
+                <datepicker placeholder="Scheduling date" [formGroup]="schedulingForm" [field]="'schedulingDate'"></datepicker>
                 <div [style.visibility]="'hidden'" [style.height.px]="21"></div>
               </div>
               <div class="tw-flex tw-flex-col tw-gap-x-10 tw-gap-y-4 min-md:tw-min-w-[436px]">
@@ -526,15 +433,11 @@
           </form>
 
           <p *ngIf="slots.length" class="tw-py-4 tw-text-columnCell tw-font-bold">Please select a timeslot:</p>
-          <p *ngIf="!slots.length" class="tw-py-4 tw-text-columnCell tw-font-bold">There're slots left for today.</p> -->
-
-
+          <p *ngIf="!slots.length" class="tw-py-4 tw-text-columnCell tw-font-bold">There're slots left for today.</p>
           <!-- <app-scheduling-table-box></app-scheduling-table-box> -->
-
-
-          <!-- <form class="tw-flex tw-flex-wrap tw-gap-2">
+          <form class="tw-flex tw-flex-wrap tw-gap-2">
             <ng-container *ngFor="let slot of slots" (click)="selectSlot(slot)">
-              <div iconic-input-wrapper class="tw-max-w-[119px] tw-cursor-pointer"  [showValidation]="false">
+              <div iconic-input-wrapper class="tw-max-w-[119px] tw-cursor-pointer" inputContainerClass="!tw-border-2 {{(selectedSlot$ | async) == slot ? '!tw-border-primary' : ''}}" [showValidation]="false">
                   <input
                     type="text"
                     readonly
@@ -553,5 +456,5 @@
           <button [disabled]="" (click)="saveScheduling()" type="button" class="btn btn-primary min-md:tw-min-w-[436px] tw-min-h-[50px] !tw-text-[18px]">{{'button.save' | translate}}</button>
         </div>
       </div>
-    </mat-step> -->
+    </mat-step>
   </mat-stepper>

@@ -6,14 +6,14 @@
             <button
                 routerLink="../add"
                 [disabled]="(isLoading$ | async) || false"
-                class="tw-bg-primary tw-text-white  tw-py-2 tw-min-h-[35px] min-md:tw-min-w-[120px] max-sm:tw-w-full tw-rounded-l max-lg:tw-w-full"
+                class="tw-bg-primary tw-text-white tw-py-2 tw-min-h-[35px] min-md:tw-min-w-[120px] max-sm:tw-w-full tw-rounded-l max-lg:tw-w-full"
                 type="button"
             >
                 Add Berth
             </button>
             <button
                 [disabled]="(isLoading$ | async) || false"
-                class="tw-bg-primary tw-text-white  tw-min-h-[35px] min-md:tw-min-w-[30px] max-sm:tw-w-full tw-rounded-r"
+                class="tw-bg-primary tw-text-white tw-min-h-[35px] min-md:tw-min-w-[30px] max-sm:tw-w-full tw-rounded-r"
                 type="button"
                 [matMenuTriggerFor]="menu"
             >
@@ -51,11 +51,13 @@
                     cdk-table
                     [dataSource]="dataSource"
                 >
-                    <ng-container cdkColumnDef="name" >
-                        <th cdk-header-cell *cdkHeaderCellDef  scope="col">
-                            <section class="tw-flex tw-flex-col tw-justify-center tw-gap-4" >
+                    <ng-container cdkColumnDef="name">
+                        <th cdk-header-cell *cdkHeaderCellDef scope="col">
+                            <section
+                                class="tw-flex tw-flex-col tw-justify-center tw-gap-4"
+                            >
                                 <div mat-sort-header="name">Port name</div>
-                                <searchbar >
+                                <searchbar>
                                     <fa-icon icon="search"></fa-icon>
                                     <input
                                         #searchName
@@ -82,54 +84,36 @@
                                 </searchbar>
                             </section>
                         </th>
-                        <td class="tw-w-2/12" cdk-cell *cdkCellDef="let row">{{ row.name }}</td>
+                        <td class="tw-w-2/12" cdk-cell *cdkCellDef="let row">
+                            {{ row.name }}
+                        </td>
                     </ng-container>
 
                     <ng-container cdkColumnDef="status">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="status">Status</div>
-                                <!-- <searchbar>
-                                    <fa-icon icon="search"></fa-icon>
-                                    <input
-                                        #searchStatus
-                                        input
-                                        type="text"
-                                        (keyup)="
-                                            applyFilter($event.target, 'status')
-                                        "
-                                    />
-                                    <div
-                                        [style.visibility]="
-                                            searchStatus.value
-                                                ? 'visible'
-                                                : 'hidden'
-                                        "
-                                        close
-                                        (click)="
-                                            searchStatus.value = '';
-                                            applyFilter({ value: '' }, 'status')
-                                        "
-                                    >
-                                        <fa-icon icon="close"></fa-icon>
-                                    </div>
-                                </searchbar>
+                                <select
+                                    (change)="filterByStatus($event)"
+                                    filter-select
+                                >
+                                    <option value="" selected>Select</option>
+                                    <option [value]="true">Active</option>
+                                    <option [value]="false">In Active</option>
+                                </select>
                             </section>
                         </th>
-                        <td class="tw-w-2/12" cdk-cell *cdkCellDef="let row">{{ row.status }}</td> -->
-                        <select (change)="filterByStatus($event)" filter-select>
-                            <option value="" selected>Select</option>
-                            <option [value]="true">Active</option>
-                            <option [value]="false">In Active</option>
-                        </select>
-                    </section>
-                  </th>
-                  <td cdk-cell *cdkCellDef="let row;let i = index">
-                    <mat-chip [ngClass]="{
-                      '!tw-bg-green-200': row.status,
-                      '!tw-bg-red-200': !row.status
-                    }">{{row.status ? 'Active' : 'In Active'}}</mat-chip>
-                  </td>
+                        <td cdk-cell *cdkCellDef="let row; let i = index">
+                            <mat-chip
+                                [ngClass]="{
+                                    '!tw-bg-green-200': row.status,
+                                    '!tw-bg-red-200': !row.status
+                                }"
+                                >{{
+                                    row.status ? "Active" : "In Active"
+                                }}</mat-chip
+                            >
+                        </td>
                     </ng-container>
 
                     <ng-container cdkColumnDef="addrCoordinates">
@@ -242,7 +226,9 @@
                                 </searchbar>
                             </section>
                         </th>
-                        <td class="tw-w-1/12" cdk-cell *cdkCellDef="let row">{{ row.length }}</td>
+                        <td class="tw-w-1/12" cdk-cell *cdkCellDef="let row">
+                            {{ row.length }}
+                        </td>
                     </ng-container>
 
                     <ng-container cdkColumnDef="width">
@@ -312,7 +298,9 @@
                                 </searchbar>
                             </section>
                         </th>
-                        <td class="tw-w-1/12" cdk-cell *cdkCellDef="let row">{{ row.depth }}</td>
+                        <td class="tw-w-1/12" cdk-cell *cdkCellDef="let row">
+                            {{ row.depth }}
+                        </td>
                     </ng-container>
                     <ng-container cdkColumnDef="actions">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">

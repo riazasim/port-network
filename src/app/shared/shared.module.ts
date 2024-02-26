@@ -44,6 +44,12 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DatepickerComponent } from './components/datepicker/datepicker.component';
+import { SafeHtmlPipe } from '../core/pipes/safe-html.pipe';
+import { CustomTooltipComponent } from './components/custom-tooltip/custom-tooltip.component';
+import { CustomTooltipDirective } from './directives/custom-tooltip.directive';
+import { ExtractPropertyPipe } from '../core/pipes/extract-property.pipe';
+import { ActivityLogComponent } from './components/activity-log/activity-log.component';
 @NgModule({
   declarations: [
     IconicInputWrapperComponent,
@@ -63,6 +69,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FilterSelectComponent,
     TextareaWrapperComponent,
     AutocompleteSelectComponent,
+    DatepickerComponent,
+    SafeHtmlPipe,
+    CustomTooltipComponent,
+    CustomTooltipDirective,
+    ExtractPropertyPipe,
+    ActivityLogComponent,
   ],
     imports: [
         CommonModule,
@@ -116,6 +128,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     TextareaWrapperComponent,
     AutocompleteSelectComponent,
     AutocompleteSelectComponent,
+    DatepickerComponent,
     MatCheckboxModule,
     MatRadioModule,
     MatFormFieldModule,
@@ -139,6 +152,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSortModule,
     MatTableModule,
     MatTooltipModule,
+    SafeHtmlPipe,
+    CustomTooltipComponent,
+    CustomTooltipDirective,
+    ExtractPropertyPipe,
+    ActivityLogComponent
 
   ]
 })
