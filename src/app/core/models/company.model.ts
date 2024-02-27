@@ -1,9 +1,12 @@
+import { PortModel } from "./port.model";
+
 // import { ContactsModel } from "./contact.model";
 export interface CompanyModel {
     id?: number;
     companyId?: number;
     name: string;
     addrCoordinates: string;
+    port:PortModel;
     addrStreet: string;
     addrStreetNo: string;
     addrCity: string;

@@ -98,7 +98,7 @@ table {
 .result-container {
     // width: 25%;
     width: 300px;
-    height: 300px;
+    max-height: 300px;
     overflow: auto;
     border-radius: 12px;
     scrollbar-width: none;

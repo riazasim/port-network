@@ -7,7 +7,7 @@ export type BerthModel = {
     addrCoordinates: string;
     port:PortModel;
     length: number;
-    width: number;
+    // width: number;
     depth:number;
 }
 

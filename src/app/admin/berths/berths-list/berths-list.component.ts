@@ -13,11 +13,12 @@ import { BerthModel } from 'src/app/core/models/berth.model';
 @Component({
   selector: 'app-berths-list',
   templateUrl: './berths-list.component.html',
+  styleUrl: './berths-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BerthsListComponent {
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  displayedColumns: string[] = ['name', 'status', 'addrCoordinates', 'length', 'width', 'depth', 'actions'];
+  displayedColumns: string[] = ['name', 'status', 'addrCoordinates', 'length', 'depth', 'actions'];
   dataSource: BerthModel[] = [];
   originalSource: BerthModel[] = [];
   appliedFilters: any = {};
@@ -34,6 +35,7 @@ export class BerthsListComponent {
     private readonly cd: ChangeDetectorRef) {
     this.retrieveBerths();
   }
+  
 
 
   retrieveBerths(): void {
@@ -98,7 +100,7 @@ export class BerthsListComponent {
         this.appliedFilters['status'] = target.value;
         // this.appliedFilters['port'] = target.value;
         this.appliedFilters['length'] = target.value;
-        this.appliedFilters['width'] = target.value;
+        // this.appliedFilters['width'] = target.value;
         this.appliedFilters['depth'] = target.value;
       } else {
         this.appliedFilters[column] = target.value;
@@ -109,7 +111,7 @@ export class BerthsListComponent {
         delete this.appliedFilters['status']
         // delete this.appliedFilters['port']
         delete this.appliedFilters['length']
-        delete this.appliedFilters['width']
+        // delete this.appliedFilters['width']
         delete this.appliedFilters['depth']
       } else {
         delete this.appliedFilters[column];
@@ -124,7 +126,7 @@ export class BerthsListComponent {
             el['name'].toLowerCase().includes(this.appliedFilters['name'].toLowerCase()) ||
             el['status'].toLowerCase().includes(this.appliedFilters['status'].toLowerCase()) ||
             el['length'].includes(this.appliedFilters['length']) ||
-            el['width'].includes(this.appliedFilters['width']) ||
+            // el['width'].includes(this.appliedFilters['width']);
             el['depth'].includes(this.appliedFilters['depth']);
 
           return expression;
@@ -146,11 +148,14 @@ export class BerthsListComponent {
   filterByStatus(event: any): void {
     this.isLoading$.next(true);
     switch (event.target.value) {
-      case 'true':
-        this.dataSource = this.originalSource.filter(el => el.status);
+      case 'Active':
+        this.dataSource = this.originalSource.filter(el => el.status === 'Active');
         break;
-      case 'false':
-        this.dataSource = this.originalSource.filter(el => !el.status);
+      case 'Service':
+        this.dataSource = this.originalSource.filter(el => el.status === 'Service');
+        break;
+      case 'Closed':
+        this.dataSource = this.originalSource.filter(el => el.status === 'Closed');
         break;
       default:
         this.dataSource = [...this.originalSource]
@@ -173,7 +178,7 @@ export class BerthsListComponent {
         case 'addrCoordinates': return compare(a.addrCoordinates, b.addrCoordinates, isAsc);
         // case 'port': return compare(a.port, b.port, isAsc);
         case 'length': return compare(a.length, b.length, isAsc);
-        case 'width': return compare(a.width, b.width, isAsc);
+        // case 'width': return compare(a.width, b.width, isAsc);
         case 'depth': return compare(a.depth, b.depth, isAsc);
         default: return 0;
       }

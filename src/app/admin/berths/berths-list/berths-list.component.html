@@ -38,7 +38,7 @@
     <material-panel-table
         [showSearchbar]="false"
         [showHeader]="true"
-        tableTitle="Berths"
+        tableTitle="Berths list"
     >
         <div table class="tw-w-full tw-shadow-lg">
             <ng-scrollbar track="vertical" class="tw-min-h-[calc(100vh-200px)]">
@@ -56,9 +56,9 @@
                             <section
                                 class="tw-flex tw-flex-col tw-justify-center tw-gap-4"
                             >
-                                <div mat-sort-header="name">Port name</div>
+                                <div mat-sort-header="name">Berth name</div>
                                 <searchbar>
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchName
                                         input
@@ -94,27 +94,30 @@
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="status">Status</div>
                                 <select
+                                    class="border"
                                     (change)="filterByStatus($event)"
                                     filter-select
                                 >
                                     <option value="" selected>Select</option>
-                                    <option [value]="true">Active</option>
-                                    <option [value]="false">In Active</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Service">Service</option>
+                                    <option value="Closed">Closed</option>
                                 </select>
                             </section>
                         </th>
                         <td cdk-cell *cdkCellDef="let row; let i = index">
                             <mat-chip
                                 [ngClass]="{
-                                    '!tw-bg-green-200': row.status,
-                                    '!tw-bg-red-200': !row.status
+                                    'active': row.status === 'Active',
+                                    'service': row.status === 'Service',
+                                    'inactive': row.status === 'Closed',
                                 }"
-                                >{{
-                                    row.status ? "Active" : "In Active"
-                                }}</mat-chip
+                                >
+                                {{ row.status === 'Active' ? 'Active' : row.status === 'Service' ? 'Service' : 'Closed' }}
+                                </mat-chip
                             >
                         </td>
-                    </ng-container>
+                    </ng-container>
 
                     <ng-container cdkColumnDef="addrCoordinates">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
@@ -123,7 +126,7 @@
                                     Coordinates
                                 </div>
                                 <searchbar>
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchCoordinates
                                         input
@@ -159,48 +162,12 @@
                             {{ row.addrCoordinates }}
                         </td>
                     </ng-container>
-                    <!-- <ng-container cdkColumnDef="port">
-                        <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col tw-gap-4 tw-w-40">
-                                <div mat-sort-header="port">Port</div>
-                                <searchbar>
-                                    <fa-icon icon="search"></fa-icon>
-                                    <input
-                                        #searchPort
-                                        input
-                                        type="text"
-                                        (keyup)="
-                                            applyFilter($event.target, 'port')
-                                        "
-                                    />
-                                    <div
-                                        [style.visibility]="
-                                            searchPort.value
-                                                ? 'visible'
-                                                : 'hidden'
-                                        "
-                                        close
-                                        (click)="
-                                            searchPort.value = '';
-                                            applyFilter({ value: '' }, 'port')
-                                        "
-                                    >
-                                        <fa-icon icon="close"></fa-icon>
-                                    </div>
-                                </searchbar>
-                            </section>
-                        </th>
-                        <td class="tw-w-40" cdk-cell *cdkCellDef="let row">
-                            {{ row.port.name }}
-                        </td>
-                    </ng-container> -->
-
                     <ng-container cdkColumnDef="length">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="length">Length (m)</div>
                                 <searchbar>
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchLength
                                         input
@@ -231,12 +198,12 @@
                         </td>
                     </ng-container>
 
-                    <ng-container cdkColumnDef="width">
+                    <!-- <ng-container cdkColumnDef="width">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="width">Width (m)</div>
                                 <searchbar>
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchWidth
                                         input
@@ -265,14 +232,14 @@
                         <td class="tw-w-1/12" cdk-cell *cdkCellDef="let row">
                             {{ row.width }}
                         </td>
-                    </ng-container>
+                    </ng-container> -->
 
                     <ng-container cdkColumnDef="depth">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="depth">Depth (m)</div>
                                 <searchbar>
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchDepth
                                         input

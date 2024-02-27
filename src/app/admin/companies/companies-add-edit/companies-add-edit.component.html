@@ -1,5 +1,5 @@
 ﻿<edit-container
-    [headerTitle]="id ? 'Edit company details' : 'Add company details'"
+    [headerTitle]="id ? 'Edit Company' : 'Add Company'"
 >
     <app-loader
         *ngIf="isLoading$ | async"
@@ -9,30 +9,40 @@
     <form *ngIf="!(isLoading$ | async)" [formGroup]="companyForm">
         <div>
             <div>
-                <h6 class="tw-font-bold">Details</h6>
-                <div class="min-xl:tw-columns-3">
-                    <div class="tw-h-[90px]">
+                <h6 class="tw-font-bold tw-mb-3">Details</h6>
+                <div class="min-xl:tw-columns-4">
+                    <h6 class="tw-font-bold">Company Name</h6>
+                    <div class="tw-h-[75px]">
                         <div iconic-input-wrapper leftIcon="location-dot">
                             <input
-                                placeholder="Location Name"
                                 inputRef
                                 type="text"
-                                id="locationName"
+                                id="companyName"
                                 formControlName="name"
                             />
                         </div>
                     </div>
-                    <div class="tw-h-[90px]">
+                    <h6 class="tw-font-bold">Google Maps coordinates (Plus code)</h6>
+                    <div class="tw-h-[75px]">
                         <div iconic-input-wrapper leftIcon="compass">
                             <input
-                                placeholder="Google Maps coordinates (Plus code)"
                                 inputRef
                                 type="text"
                                 formControlName="addrCoordinates"
                             />
                         </div>
                     </div>
-                    <div class="tw-h-[90px]">
+                    <h6 class="tw-font-bold">Port</h6>
+                <div class="tw-h-[75px]">
+                    <div iconic-select-wrapper leftSvg="../../../../assets/images/port-anchor.svg" [rightIcon]="['fas', 'caret-down']">
+                        <select inputRef name="portId" id="portId" formControlName="portId" (change)="onPortChange($event)">
+                            <!-- <option value="null" disabled>Port*</option> -->
+                            <option *ngFor="let port of ports;" [value]="port.id">{{port.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                    <h6 class="tw-font-bold">Picture (480 x 300 px)</h6>
+                    <div class="tw-h-[75px]">
                         <div *ngIf="(company$ | async)?.imgPreview">
                             <label>&nbsp;</label>
                             <div class="tw-relative tw-w-[50px]">
@@ -59,7 +69,6 @@
                                 <input
                                     inputRef
                                     type="text"
-                                    placeholder="Picture (480 x 300 px)"
                                     readonly
                                     #inputReference
                                 />
@@ -80,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            <div class="min-xl:tw-columns-3">
+            <div class="min-xl:tw-columns-4 tw-mb-5">
                 <div>&nbsp;</div>
                 <div>
                     <div class="tw-text-right tw-font-bold tw-cursor-pointer">
@@ -90,15 +99,15 @@
                 <div>&nbsp;</div>
             </div>
             <div>
-                <h6 class="tw-font-bold">Address</h6>
+                <h6 class="tw-font-bold tw-mb-3">Address</h6>
                 <div class="min-xl:tw-columns-3">
-                    <div class="tw-h-[90px]">
+                    <h6 class="tw-font-bold">Street</h6>
+                    <div class="tw-h-[75px]">
                         <div
                             iconic-input-wrapper
                             leftIcon="location-crosshairs"
                         >
                             <input
-                                placeholder="Street"
                                 inputRef
                                 type="text"
                                 id="addrStreet"
@@ -106,12 +115,12 @@
                             />
                         </div>
                     </div>
-                    <div class="tw-h-[90px]">
+                    <div class="tw-h-[75px]">
                         <div class="min-md:tw-flex tw-gap-2">
                             <div class="tw-flex-2">
+                                <h6 class="tw-font-bold">No.</h6>
                                 <div iconic-input-wrapper>
                                     <input
-                                        placeholder="No."
                                         inputRef
                                         type="text"
                                         formControlName="addrStreetNo"
@@ -119,9 +128,9 @@
                                 </div>
                             </div>
                             <div class="tw-flex-1">
+                                <h6 class="tw-font-bold">City</h6>
                                 <div iconic-input-wrapper>
                                     <input
-                                        placeholder="City"
                                         inputRef
                                         type="text"
                                         formControlName="addrCity"
@@ -129,9 +138,9 @@
                                 </div>
                             </div>
                             <div class="tw-flex-1">
+                                <h6 class="tw-font-bold">County</h6>
                                 <div iconic-input-wrapper>
                                     <input
-                                        placeholder="County"
                                         inputRef
                                         type="text"
                                         formControlName="addrCounty"
@@ -140,12 +149,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tw-h-[90px]">
+                    <div class="tw-h-[75px]">
                         <div class="min-md:tw-flex tw-gap-2">
                             <div class="tw-flex-1">
+                                <h6 class="tw-font-bold">Country</h6>
                                 <div iconic-input-wrapper>
                                     <input
-                                        placeholder="Country"
                                         inputRef
                                         type="text"
                                         formControlName="addrCountry"
@@ -153,9 +162,9 @@
                                 </div>
                             </div>
                             <div class="tw-flex-1">
+                                <h6 class="tw-font-bold">Zip Code</h6>
                                 <div iconic-input-wrapper>
                                     <input
-                                        placeholder="Zip Code"
                                         inputRef
                                         type="text"
                                         formControlName="addrZipCode"
@@ -233,11 +242,11 @@
             </div>
         </div>
 
-        <div class="tw-flex tw-justify-end tw-pt-5">
+        <div class="tw-flex tw-justify-center tw-pt-5">
             <div class="tw-flex tw-gap-4">
                 <button
                     [routerLink]="id ? '../../list' : '../list'"
-                    class="btn btn-outline-primary"
+                    class="btn btn-outline-primary min-lg:tw-min-w-[250px]"
                     type="button"
                     [disabled]="isLoading$ | async"
                 >
@@ -245,7 +254,7 @@
                 </button>
                 <!-- <button class="btn btn-primary" type="button" (click)="saveLocation()" [disabled]="companyForm.invalid || (isLoading$ | async)">Save</button> -->
                 <button
-                    class="btn btn-primary"
+                    class="btn btn-primary min-lg:tw-min-w-[250px]"
                     type="button"
                     (click)="saveCompany()"
                 >

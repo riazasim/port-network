@@ -1,4 +1,4 @@
-﻿<edit-container [headerTitle]="id ? 'Edit berth details' : 'Add berth details'">
+﻿<edit-container [headerTitle]="id ? 'Edit berth' : 'Add berth'">
     <app-loader
         *ngIf="isLoading$ | async"
         [isContainer]="true"
@@ -6,6 +6,7 @@
     ></app-loader>
     <form *ngIf="!(isLoading$ | async)" [formGroup]="berthForm">
         <div>
+            <h6 class="tw-font-bold tw-mb-3">Details</h6>
             <div class="min-xl:tw-columns-3">
                 <h6 class="tw-font-bold">Berth Name</h6>
                 <div class="tw-h-[75px]">
@@ -52,11 +53,13 @@
                 <h6 class="tw-font-bold">Status</h6>
                 <div class="tw-h-[75px]">
                     <div iconic-select-wrapper leftIcon="eye" [rightIcon]="['fas', 'caret-down']">
-                        <select inputRef name="portId" id="portId" (change)="onPortChange($event)">
-                            <!-- <option value="null" disabled>Port*</option> -->
-                            <option *ngFor="let port of ports;" [value]="port.id">{{port.name}}</option>
+                        <select inputRef name="status" id="status" formControlName="status">
+                            <!-- <option value="" disabled>Auto Selected</option> -->
+                            <option value="Active">Active</option>
+                            <option value="Service">Service</option>
+                            <option value="Closed">Closed</option>
                         </select>
-                    </div>
+                      </div>
                 </div>
                 <h6 class="tw-font-bold">Length (m)</h6>
                 <div class="tw-h-[75px]">
@@ -69,16 +72,7 @@
                         />
                     </div>
                 </div>
-                <!-- <h6 class="tw-font-bold">Width (m)</h6>
-                <div class="tw-h-[75px]">
-                    <div iconic-input-wrapper leftIcon="compass">
-                        <input
-                            inputRef
-                            type="number"
-                            formControlName="width"
-                        />
-                    </div>
-                </div> -->
+                
                 <h6 class="tw-font-bold">Depth (m)</h6>
                 <div class="tw-h-[75px]">
                     <div iconic-input-wrapper leftSvg="../../../../assets/images/depth-boat.svg">

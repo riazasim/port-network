@@ -40,7 +40,7 @@
     <material-panel-table
         [showSearchbar]="false"
         [showHeader]="true"
-        tableTitle="Companies"
+        tableTitle="Companies list"
     >
         <div table class="tw-w-full tw-shadow-lg">
             <ng-scrollbar track="vertical" class="tw-min-h-[calc(100vh-200px)]">
@@ -56,9 +56,9 @@
                     <ng-container cdkColumnDef="name">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
-                                <div mat-sort-header="name">Location name</div>
+                                <div mat-sort-header="name">Company name</div>
                                 <searchbar [maxWidth]="152">
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchName
                                         input
@@ -87,12 +87,12 @@
                         <td cdk-cell *cdkCellDef="let row">{{ row.name }}</td>
                     </ng-container>
 
-                    <ng-container cdkColumnDef="addrStreet">
+                    <!-- <ng-container cdkColumnDef="addrStreet">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="addrStreet">Street</div>
                                 <searchbar [maxWidth]="152">
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchStreet
                                         input
@@ -127,16 +127,16 @@
                         <td cdk-cell *cdkCellDef="let row">
                             {{ row.addrStreet }}
                         </td>
-                    </ng-container>
+                    </ng-container> -->
 
-                    <ng-container cdkColumnDef="addrStreetNo">
+                    <!-- <ng-container cdkColumnDef="addrStreetNo">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="addrStreetNo">
                                     Street No.
                                 </div>
                                 <searchbar [maxWidth]="76">
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchStreetNo
                                         input
@@ -171,14 +171,14 @@
                         <td cdk-cell *cdkCellDef="let row">
                             {{ row.addrStreetNo }}
                         </td>
-                    </ng-container>
+                    </ng-container> -->
 
                     <ng-container cdkColumnDef="addrCounty">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="addrCounty">County</div>
                                 <searchbar [maxWidth]="73">
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchCounty
                                         input
@@ -220,7 +220,7 @@
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="addrCity">City</div>
                                 <searchbar [maxWidth]="73">
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchCity
                                         input
@@ -262,7 +262,7 @@
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="addrCountry">Country</div>
                                 <searchbar [maxWidth]="108">
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchCountry
                                         input
@@ -306,7 +306,7 @@
                                     Zip Code
                                 </div>
                                 <searchbar [maxWidth]="85">
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchZipCode
                                         input
@@ -342,14 +342,14 @@
                             {{ row.addrZipCode }}
                         </td>
                     </ng-container>
-                    <ng-container cdkColumnDef="addrCoordinates">
+                    <!-- <ng-container cdkColumnDef="addrCoordinates">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="addrCoordinates">
                                     Coordinates
                                 </div>
                                 <searchbar [maxWidth]="85">
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchCoordinates
                                         input
@@ -384,7 +384,7 @@
                         <td cdk-cell *cdkCellDef="let row">
                             {{ row.addrCoordinates }}
                         </td>
-                    </ng-container>
+                    </ng-container> -->
 
                     <ng-container cdkColumnDef="actions">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">

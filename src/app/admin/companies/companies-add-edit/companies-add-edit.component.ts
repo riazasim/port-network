@@ -3,7 +3,9 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { CompanyModel, ContactsModel } from 'src/app/core/models/company.model';
+import { PortModel } from 'src/app/core/models/port.model';
 import { CompanyService } from 'src/app/core/services/company.service';
+import { PortService } from 'src/app/core/services/port.service';
 
 @Component({
   selector: 'app-companies-add-edit',
@@ -15,14 +17,18 @@ export class CompaniesAddEditComponent implements OnInit {
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   company$: BehaviorSubject<CompanyModel|null> = new BehaviorSubject<CompanyModel|null>(null);
   id: number;
+  portId: number | null;
+  ports: PortModel[] = [];
   constructor(private fb: UntypedFormBuilder,
               private companyService: CompanyService,
+              private readonly portService: PortService,
               private router: Router,
               private route: ActivatedRoute,
               private readonly cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.subscribeForQueryParams();
+    this.retrievePorts();
   }
 
   subscribeForQueryParams(): void {
@@ -52,6 +58,7 @@ export class CompaniesAddEditComponent implements OnInit {
       // companyId: this.fb.control(data?.companyId),
       name: this.fb.control(data?.name || '', [Validators.required]),
       addrCoordinates: this.fb.control(data?.addrCoordinates || '', [Validators.required]),
+      portId: this.fb.control(data?.port?.id || '', [Validators.required]),
       addrStreet: this.fb.control(data?.addrStreet || '', [Validators.required]),
       addrStreetNo: this.fb.control(data?.addrStreetNo || '', [Validators.required]),
       addrCity: this.fb.control(data?.addrCity || '', [Validators.required]),
@@ -89,9 +96,9 @@ removeContact(index: number): void {
   const companyId = this.company$?.value?.id;
   const contactsArray = this.company$?.value?.contacts;
 
-  if (companyId && contactsArray && contactsArray.length >= index) {
+  if (companyId && contactsArray && contactsArray.length > 0) {
     const contactId = contactsArray[index]?.id; // Get the ID of the contact at the specified index
-    if (contactId) {
+    if (contactId !== null && contactId !== undefined && contactId > -1) {
       this.companyService.deleteContact(companyId, contactId).subscribe({
         next: () => {
           console.log('Contact deleted successfully');
@@ -105,7 +112,29 @@ removeContact(index: number): void {
         }
       });
     }
+  } else {
+    this.contacts.removeAt(index);
   }
+}
+
+onPortChange(value: any) {
+  this.subscribeForPortChanges(value.target.value);
+} 
+
+subscribeForPortChanges(data: any): void {
+  this.companyForm.get('portId')?.setValue(data);
+}
+
+retrievePorts() {
+  this.portService.pagination({
+    "start": 0,
+    "length": 0,
+    "filters": ["", "", "", "", "", "", "", "", ""],
+    "order": [{ "dir": "DESC", "column": 0 }]
+  }).subscribe(response => {
+    this.ports = response.items
+    this.cd.detectChanges();
+  })
 }
 
   setImgPreview(target: any, input: any): void {

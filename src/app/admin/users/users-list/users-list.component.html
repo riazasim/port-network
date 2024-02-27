@@ -35,13 +35,6 @@
             </mat-menu>
         </mat-button-toggle-group>
     </div>
-    <!-- <material-panel-table
-        [showSearchbar]="false"
-        [showHeader]="true"
-        buttonLabel="Add User"
-        tableTitle="Users list"
-        (buttonClicked)="redirectAddUser()"
-    > -->
     <material-panel-table
         [showSearchbar]="false"
         [showHeader]="true"
@@ -61,9 +54,9 @@
                     <ng-container cdkColumnDef="fullName">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col">
-                                <div mat-sort-header="fullName">User Name</div>
+                                <div mat-sort-header="fullName">User name</div>
                                 <searchbar>
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchName
                                         input
@@ -100,19 +93,19 @@
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="tw-flex tw-flex-col">
                                 <div mat-sort-header="status">Status</div>
-                                <select
+                                <select 
+                                class="border"
                                     (change)="filterByStatus($event)"
                                     filter-select
                                 >
                                     <option value="" selected>Select</option>
-                                    <option value="true">ACTIVE</option>
-                                    <option value="false">INACTIVE</option>
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
                                 </select>
                             </section>
                         </th>
-                        <!--              <td cdk-cell *cdkCellDef="let row">{{row.user.status}}</td>-->
                         <td cdk-cell *cdkCellDef="let row">
-                            {{ row.user.status ? "ACTIVE" : "INACTIVE" }}
+                            {{ row.user.status ? "Active" : "Inactive" }}
                         </td>
                     </ng-container>
 
@@ -121,19 +114,15 @@
                             <section class="tw-flex tw-flex-col">
                                 <div mat-sort-header="userRole">User Role</div>
                                 <select
+                                class="border"
                                     (change)="filterByRole($event)"
                                     filter-select
                                 >
                                     <option value="" selected>Select</option>
-                                    <option value="ADMIN">ADMIN</option>
-                                    <option value="OPERATOR">OPERATOR</option>
-                                    <!--                    <option *ngFor="let role of roles" [value]="role.id">{{role.name}}</option>-->
+                                    <option value="ADMIN">Admin</option>
+                                    <option value="OPERATOR">Operator</option>
                                 </select>
                             </section>
-                        </th>
-                        <!--              <td cdk-cell *cdkCellDef="let row">-->
-                        <!--                {{row?.user?.attributes?.roles[0] || '-'}}-->
-                        <!--              </td>-->
                         <td cdk-cell *cdkCellDef="let row">
                             {{ row.user.userRole }}
                         </td>
@@ -147,7 +136,7 @@
                             >
                                 <div mat-sort-header="phone">Phone</div>
                                 <searchbar>
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchPhone
                                         input
@@ -177,7 +166,7 @@
                             <section class="tw-flex tw-flex-col">
                                 <div mat-sort-header="email">Email</div>
                                 <searchbar>
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchEmail
                                         input
@@ -208,7 +197,7 @@
                             <section class="tw-flex tw-flex-col">
                                 <div mat-sort-header="department">Department</div>
                                 <searchbar>
-                                    <fa-icon icon="search"></fa-icon>
+                                    <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchDepartment
                                         input

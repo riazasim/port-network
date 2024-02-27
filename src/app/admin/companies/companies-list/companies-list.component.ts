@@ -1,11 +1,8 @@
 ﻿import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
-import { ActivatedRoute, Router } from '@angular/router';
-import { LocationService } from 'src/app/core/services/location.service';
 import { compare } from 'src/app/shared/utils/sort.function';
 import { CompaniesDeleteModalComponent } from '../companies-delete-modal/companies-delete-modal.component';
-import { LocationModel } from 'src/app/core/models/location.model';
 import {PageEvent} from "@angular/material/paginator";
 import {BehaviorSubject} from "rxjs";
 import {CompaniesImportModalComponent} from "../companies-import-modal/companies-import-modal.component";
@@ -19,7 +16,8 @@ import { CompanyService } from 'src/app/core/services/company.service';
 })
 export class CompaniesListComponent {
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    displayedColumns: string[] = ['name', 'addrStreet', 'addrStreetNo', 'addrCity', 'addrCountry', 'addrZipCode', 'addrCoordinates', 'actions'];
+    // displayedColumns: string[] = ['name', 'addrStreet', 'addrStreetNo', 'addrCity', 'addrCountry', 'addrZipCode', 'addrCoordinates', 'actions'];
+    displayedColumns: string[] = ['name','addrCity', 'addrCountry', 'addrZipCode','actions'];
     dataSource: CompanyModel[] = [];
     originalSource: CompanyModel[] = [];
     appliedFilters: any = {};
@@ -55,7 +53,6 @@ export class CompaniesListComponent {
 
     onPaginateChange(event: PageEvent) {
         this.isLoading$.next(true);
-        //  console.log("API call");
         let data={
           "start": event.pageIndex ? event.pageIndex * event.pageSize : event.pageIndex,
 
@@ -149,13 +146,13 @@ export class CompaniesListComponent {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'name': return compare(a.name, b.name, isAsc);
-        case 'addrStreet': return compare(a.addrStreet, b.addrStreet, isAsc);
-        case 'addrStreetNo': return compare(a.addrStreetNo, b.addrStreetNo, isAsc);
+        // case 'addrStreet': return compare(a.addrStreet, b.addrStreet, isAsc);
+        // case 'addrStreetNo': return compare(a.addrStreetNo, b.addrStreetNo, isAsc);
         case 'addrCounty': return compare(a.addrCounty, b.addrCounty, isAsc);
         case 'addrCity': return compare(a.addrCity, b.addrCity, isAsc);
         case 'addrCountry': return compare(a.addrCountry, b.addrCountry, isAsc);
         case 'addrZipCode': return compare(a.addrZipCode, b.addrZipCode, isAsc);
-        case 'addrCoordinates': return compare(a.addrCoordinates, b.addrCoordinates, isAsc);
+        // case 'addrCoordinates': return compare(a.addrCoordinates, b.addrCoordinates, isAsc);
         default: return 0;
       }
     });
