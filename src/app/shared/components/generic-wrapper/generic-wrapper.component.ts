@@ -18,7 +18,7 @@ export class GenericWrapperComponent<T1, T2 extends GenericRef<T1>> {
   public showValidation = true;
 
   @Input()
-  public leftIcon: IconProp | undefined;
+  public leftIcon: IconProp | undefined ;
 
   @Input()
   public withCheckmark = true;
