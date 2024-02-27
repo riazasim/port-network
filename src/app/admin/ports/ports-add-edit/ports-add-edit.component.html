@@ -1,36 +1,40 @@
 ﻿<!--<edit-container headerTitle="Add port">-->
-    <edit-container [headerTitle]="id ?  'Edit port details':'Add port details'">
+<edit-container [headerTitle]="id ?  'Edit port details':'Add port details'">
     <app-loader *ngIf="(isLoading$ | async)" [isContainer]="true" [fullScreen]="false"></app-loader>
     <form *ngIf="!(isLoading$ | async)" [formGroup]="portForm">
         <div>
             <div>
-                <h6 class="tw-font-bold">Details</h6>
+                <h5 class="tw-font-bold">Details</h5>
                 <div class="min-xl:tw-columns-3">
+                    <h6 class="tw-font-bold">Port Name</h6>
                     <div class="tw-h-[75px]">
                         <div iconic-input-wrapper leftIcon="location-dot">
-                            <input placeholder="Location Name" inputRef type="text" id="portName" formControlName="name">
+                            <input inputRef type="text" id="portName" formControlName="name">
                         </div>
                     </div>
+                    <h6 class="tw-font-bold">Google Maps coordinates (Plus code)</h6>
                     <div class="tw-h-[75px]">
                         <div iconic-input-wrapper leftIcon="compass">
-                            <input placeholder="Google Maps coordinates (Plus code)" inputRef type="text" formControlName="addrCoordinates">
+                            <input inputRef type="text" formControlName="addrCoordinates">
                         </div>
                     </div>
+                    <h6 class="tw-font-bold">Picture (480 x 300 px)</h6>
                     <div class="tw-h-[75px]">
                         <div *ngIf="(ports$ | async)?.imgPreview">
-                            <label >&nbsp;</label>
+                            <label>&nbsp;</label>
                             <div class="tw-relative tw-w-[50px]">
                                 <span class="tw-absolute tw-top-1/2 tw-left-1/2
                                 tw-transform tw--translate-x-1/2 tw--translate-y-1/2 tw-text-gray tw-text-3xl
-                                tw-cursor-pointer"
-                                (click)="clearImgPreview()">&times;</span>
+                                tw-cursor-pointer" (click)="clearImgPreview()">&times;</span>
                                 <img [src]="(ports$ | async)?.imgPreview" alt="imgPreview" width="50" height="50">
                             </div>
                         </div>
                         <div *ngIf="!(ports$ | async)?.imgPreview">
-                            <div iconic-input-wrapper leftIcon="camera" class="tw-cursor-pointer" (click)="triggerFile.click()">
-                                <input inputRef type="text" placeholder="Picture (480 x 300 px)" readonly #inputReference>
-                                <input style="display: none;" type="file"  #triggerFile accept="image/*" (change)="setImgPreview($event.target, inputReference)">
+                            <div iconic-input-wrapper leftIcon="camera" class="tw-cursor-pointer"
+                                (click)="triggerFile.click()">
+                                <input inputRef type="text" readonly #inputReference>
+                                <input style="display: none;" type="file" #triggerFile accept="image/*"
+                                    (change)="setImgPreview($event.target, inputReference)">
                             </div>
                         </div>
                     </div>
@@ -38,32 +42,39 @@
             </div>
             <div class="min-xl:tw-columns-3 tw-mb-10">
                 <div>&nbsp;</div>
-                <div><div class="tw-text-right tw-font-bold tw-cursor-pointer">How do I find Google maps coordinates?</div></div>
+                <div>
+                    <div class="tw-text-right tw-font-bold tw-cursor-pointer">How do I find Google maps coordinates?
+                    </div>
+                </div>
                 <div>&nbsp;</div>
             </div>
             <div>
-                <h6 class="tw-font-bold">Address</h6>
+                <h5 class="tw-font-bold">Address</h5>
                 <div class="min-xl:tw-columns-3">
                     <div class="tw-h-[90px]">
-                        <div iconic-input-wrapper leftIcon="location-crosshairs">
-                            <input placeholder="Street" inputRef type="text" id="addrStreet" formControlName="addrStreet">
+                    <h6 class="tw-font-bold">Street</h6>
+                    <div iconic-input-wrapper leftIcon="location-crosshairs">
+                            <input inputRef type="text" id="addrStreet" formControlName="addrStreet">
                         </div>
                     </div>
                     <div class="tw-h-[90px]">
                         <div class="min-md:tw-flex tw-gap-2">
                             <div class="tw-flex-2">
+                                <h6 class="tw-font-bold">No.</h6>
                                 <div iconic-input-wrapper>
-                                    <input placeholder="No." inputRef type="text" formControlName="addrStreetNo">
+                                    <input inputRef type="text" formControlName="addrStreetNo">
                                 </div>
                             </div>
                             <div class="tw-flex-1">
+                                <h6 class="tw-font-bold">City</h6>
                                 <div iconic-input-wrapper>
-                                    <input placeholder="City" inputRef type="text" formControlName="addrCity">
+                                    <input inputRef type="text" formControlName="addrCity">
                                 </div>
                             </div>
                             <div class="tw-flex-1">
+                                <h6 class="tw-font-bold">County</h6>
                                 <div iconic-input-wrapper>
-                                    <input placeholder="County" inputRef type="text" formControlName="addrCounty">
+                                    <input inputRef type="text" formControlName="addrCounty">
                                 </div>
                             </div>
                         </div>
@@ -71,16 +82,17 @@
                     <div class="tw-h-[90px]">
                         <div class="min-md:tw-flex tw-gap-2">
                             <div class="tw-flex-1">
+                                <h6 class="tw-font-bold">Country</h6>
                                 <div iconic-input-wrapper>
-                                    <input placeholder="Country" inputRef type="text" formControlName="addrCountry">
+                                    <input inputRef type="text" formControlName="addrCountry">
                                 </div>
                             </div>
-                                <div class="tw-flex-1">
+                            <div class="tw-flex-1">
+                                <h6 class="tw-font-bold">Zip Code</h6>
                                 <div iconic-input-wrapper>
-                                    <input placeholder="Zip Code" inputRef type="text" formControlName="addrZipCode">
+                                    <input inputRef type="text" formControlName="addrZipCode">
                                 </div>
-                                </div>
-
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -100,29 +112,18 @@
                             </tr>
                         </thead>
                         <tbody formArrayName="contacts">
-                            <tr
-                                *ngFor="
+                            <tr *ngFor="
                                     let contact of contacts.controls;
                                     let i = index
-                                "
-                                [formGroupName]="i"
-                            >
+                                " [formGroupName]="i">
                                 <td>
                                     <input class="tw-text-center" matInput formControlName="name" />
                                 </td>
                                 <td>
-                                    <input
-                                    class="tw-text-center"
-                                        matInput
-                                        formControlName="capacity"
-                                    />
+                                    <input class="tw-text-center" matInput formControlName="capacity" />
                                 </td>
                                 <td>
-                                    <input
-                                        matInput
-                                        class="tw-text-center"
-                                        formControlName="occupiedCapacity"
-                                    />
+                                    <input matInput class="tw-text-center" formControlName="occupiedCapacity" />
                                 </td>
                                 <td>
                                     <input matInput class="tw-text-center" formControlName="client" />
@@ -132,20 +133,13 @@
                                 </td>
                                 <td>
                                     <!-- <fa-icon  icon="pen" class="tw-text-primary tw-cursor-pointer"></fa-icon> -->
-                                    <fa-icon
-                                        icon="trash"
-                                        (click)="removeContact(i)"
-                                        class="tw-text-primary tw-cursor-pointer"
-                                    ></fa-icon>
+                                    <fa-icon icon="trash" (click)="removeContact(i)"
+                                        class="tw-text-primary tw-cursor-pointer"></fa-icon>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button
-                        type="button"
-                        class="tw-text-primary tw-font-bold tw-py-5"
-                        (click)="addContact()"
-                    >
+                    <button type="button" class="tw-text-primary tw-font-bold tw-py-5" (click)="addContact()">
                         <fa-icon icon="circle-plus"></fa-icon> Add New contact
                     </button>
                 </div>
@@ -155,8 +149,10 @@
 
         <div class="tw-flex tw-justify-end tw-pt-5">
             <div class="tw-flex tw-gap-4">
-                <button [routerLink]="id ? '../../list': '../list'" class="btn btn-outline-primary" type="button" [disabled]="(isLoading$ | async)">Cancel</button>
-                <button class="btn btn-primary" type="button" (click)="savePort()" [disabled]="portForm.invalid || (isLoading$ | async)">Save</button>
+                <button [routerLink]="id ? '../../list': '../list'" class="btn btn-outline-primary" type="button"
+                    [disabled]="(isLoading$ | async)">Cancel</button>
+                <button class="btn btn-primary" type="button" (click)="savePort()"
+                    [disabled]="portForm.invalid || (isLoading$ | async)">Save</button>
             </div>
         </div>
     </form>

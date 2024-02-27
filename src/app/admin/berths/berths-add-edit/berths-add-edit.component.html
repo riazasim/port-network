@@ -11,7 +11,6 @@
                 <div class="tw-h-[75px]">
                     <div iconic-input-wrapper leftIcon="location-dot">
                         <input
-                            placeholder="Berth name"
                             inputRef
                             type="text"
                             id="BerthName"
@@ -23,7 +22,6 @@
                 <div class="tw-h-[75px]">
                     <div iconic-input-wrapper leftIcon="compass">
                         <input
-                            placeholder="Google Maps coordinates (Plus code)"
                             inputRef
                             type="text"
                             formControlName="addrCoordinates"
@@ -33,12 +31,12 @@
                 </div>
                 <h6 class="tw-font-bold">Port</h6>
                 <div class="tw-h-[75px]">
-                    <div iconic-select-wrapper leftIcon="grid-2" [rightIcon]="['fas', 'caret-down']">
+                    <div iconic-select-wrapper leftSvg="../../../../assets/images/port-anchor.svg" [rightIcon]="['fas', 'caret-down']">
                         <select inputRef name="portId" id="portId" formControlName="portId" (change)="onPortChange($event)">
                             <!-- <option value="null" disabled>Port*</option> -->
                             <option *ngFor="let port of ports;" [value]="port.id">{{port.name}}</option>
                         </select>
-                      </div>
+                    </div>
                 </div>
             </div>
             <div class="min-xl:tw-columns-3 tw-mb-10">
@@ -51,11 +49,19 @@
                 <div>&nbsp;</div>
             </div>
             <div class="min-xl:tw-columns-3">
+                <h6 class="tw-font-bold">Status</h6>
+                <div class="tw-h-[75px]">
+                    <div iconic-select-wrapper leftIcon="eye" [rightIcon]="['fas', 'caret-down']">
+                        <select inputRef name="portId" id="portId" (change)="onPortChange($event)">
+                            <!-- <option value="null" disabled>Port*</option> -->
+                            <option *ngFor="let port of ports;" [value]="port.id">{{port.name}}</option>
+                        </select>
+                    </div>
+                </div>
                 <h6 class="tw-font-bold">Length (m)</h6>
                 <div class="tw-h-[75px]">
-                    <div iconic-input-wrapper leftIcon="location-dot">
+                    <div iconic-input-wrapper leftSvg="../../../../assets/images/length-boat.svg">
                         <input
-                            placeholder="length"
                             inputRef
                             type="number"
                             id="length"
@@ -63,32 +69,28 @@
                         />
                     </div>
                 </div>
-                <h6 class="tw-font-bold">Width (m)</h6>
+                <!-- <h6 class="tw-font-bold">Width (m)</h6>
                 <div class="tw-h-[75px]">
                     <div iconic-input-wrapper leftIcon="compass">
                         <input
-                            placeholder="Google Maps coordinates (Plus code)"
                             inputRef
                             type="number"
                             formControlName="width"
                         />
                     </div>
-                </div>
+                </div> -->
                 <h6 class="tw-font-bold">Depth (m)</h6>
                 <div class="tw-h-[75px]">
-                    <div iconic-input-wrapper leftIcon="compass">
+                    <div iconic-input-wrapper leftSvg="../../../../assets/images/depth-boat.svg">
                         <input
-                            placeholder="Google Maps coordinates (Plus code)"
                             inputRef
                             type="number"
                             formControlName="depth"
                         />
                     </div>
                 </div>
-                
             </div>
         </div>
-
         <div class="tw-flex tw-justify-center tw-pt-5">
             <div class="tw-flex tw-gap-4">
                 <button
@@ -99,7 +101,7 @@
                 >
                     Cancel
                 </button>
-                
+
                 <button
                     class="btn btn-primary min-lg:tw-min-w-[250px]"
                     type="button"
