@@ -239,15 +239,8 @@
                         <td
                             cdk-cell
                             *cdkCellDef="let row"
-                            class="tw-flex tw-gap-4"
+                            class="tw-flex tw-justify-center tw-gap-4"
                         >
-                            <!--                  <span class="hover:tw-hidden" (mouseleave)="icon2.classList.add('tw-hidden');icon1.classList.remove('tw-hidden')" #icon2>-->
-                            <!--                  <fa-icon icon="user-lock" class="tw-text-primary tw-cursor-pointer" size="lg"></fa-icon>-->
-                            <!--                </span>-->
-                            <!--                <span #icon1 (mouseenter)="icon1.classList.add('tw-hidden');icon2.classList.remove('tw-hidden')">-->
-                            <!--                  <fa-icon icon="user-unlock" class="tw-text-primary tw-cursor-pointer" size="lg"></fa-icon>-->
-                            <!--                </span>-->
-
                             <fa-icon
                                 icon="eye"
                                 class="tw-text-primary tw-cursor-pointer"
@@ -309,28 +302,6 @@
                 showFirstLastButtons
             >
             </mat-paginator>
-
-            <!--                <mat-paginator [class.!tw-hidden]="dataSource.length === 0"   class="paginator tw-rounded-b-[10px]"-->
-            <!--                               hidePageSize-->
-            <!--                               aria-label="Select page" pageSize="10">-->
-            <!--                </mat-paginator>-->
-
-            <!--        <mat-paginator pageSizeOptions="[5]"-->
-            <!--                       length="10"-->
-            <!--                       pageSize=4-->
-            <!--                       showFirstLastButtons>-->
-            <!--            -->
-            <!--        </mat-paginator>-->
-
-            <!--        <mat-paginator [class.!tw-hidden]="dataSource.length === 0"   class="paginator tw-rounded-b-[10px]"-->
-            <!--                       hidePageSize-->
-            <!--                       aria-label="Select page" pageSize="10">-->
-            <!--        </mat-paginator>-->
-
-            <!--        <mat-paginator #paginator-->
-            <!--                       [pageSize]="10"-->
-            <!--                       [pageSizeOptions]="[5, 10, 20]">-->
-            <!--        </mat-paginator>-->
         </div>
     </material-panel-table>
 </section>
