@@ -57,7 +57,7 @@ export class BerthsAddEditComponent implements OnInit {
       length: this.fb.control(data?.length || '', [Validators.required]),
       // width: this.fb.control(data?.width || '', [Validators.required]),
       depth: this.fb.control(data?.depth || '', [Validators.required]),
-      status: this.fb.control({ value: data?.status || 'Activate', disabled: this.creatingNewPort }, [Validators.required]),
+      status: this.fb.control(data?.status || '', [Validators.required]),
       // status: this.fb.control(data?.status || 'Activate', [Validators.required]),
     });
 

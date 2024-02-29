@@ -32,7 +32,7 @@
                 </div>
                 <h6 class="tw-font-bold">Port</h6>
                 <div class="tw-h-[75px]">
-                    <div iconic-select-wrapper leftSvg="../../../../assets/images/port-anchor.svg" [rightIcon]="['fas', 'caret-down']">
+                    <div iconic-select-wrapper leftSvg="./assets/images/port-anchor.svg" [rightIcon]="['fas', 'caret-down']">
                         <select inputRef name="portId" id="portId" formControlName="portId" (change)="onPortChange($event)">
                             <!-- <option value="null" disabled>Port*</option> -->
                             <option *ngFor="let port of ports;" [value]="port.id">{{port.name}}</option>
@@ -55,7 +55,7 @@
                     <div iconic-select-wrapper leftIcon="eye" [rightIcon]="['fas', 'caret-down']">
                         <select inputRef name="status" id="status" formControlName="status">
                             <!-- <option value="" disabled>Auto Selected</option> -->
-                            <option value="Active">Active</option>
+                            <option value="Active" selected>Active</option>
                             <option value="Service">Service</option>
                             <option value="Closed">Closed</option>
                         </select>
@@ -63,7 +63,7 @@
                 </div>
                 <h6 class="tw-font-bold">Length (m)</h6>
                 <div class="tw-h-[75px]">
-                    <div iconic-input-wrapper leftSvg="../../../../assets/images/length-boat.svg">
+                    <div iconic-input-wrapper leftSvg="./assets/images/length-boat.svg">
                         <input
                             inputRef
                             type="number"
@@ -75,7 +75,7 @@
                 
                 <h6 class="tw-font-bold">Depth (m)</h6>
                 <div class="tw-h-[75px]">
-                    <div iconic-input-wrapper leftSvg="../../../../assets/images/depth-boat.svg">
+                    <div iconic-input-wrapper leftSvg="./assets/images/depth-boat.svg">
                         <input
                             inputRef
                             type="number"

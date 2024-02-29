@@ -105,8 +105,13 @@
                             </section>
                         </th>
                         <td cdk-cell *cdkCellDef="let row">
-                            {{ row.user.status ? "Active" : "Inactive" }}
+                            <mat-chip
+                                [ngStyle]="{'background-color': row.user.status === true ? 'green' : 'red'}"
+                            >
+                                {{ row.user.status ? 'Active' : 'Inactive'}}
+                            </mat-chip>
                         </td>
+                            <!-- {{ row.user.status ? "Active" : "Inactive" }} -->
                     </ng-container>
 
                     <ng-container cdkColumnDef="userRole">

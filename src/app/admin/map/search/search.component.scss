@@ -54,9 +54,9 @@
     padding: 0px !important;
     overflow: visible !important;
 }
-::ng-deep .errors-container{
-    height: 0px !important;
-}
+// ::ng-deep .errors-container{
+//     height: 0px !important;
+// }
 ::ng-deep.iconic-layout-wrapper > .input-container {
     background-color: white;
     position: relative;

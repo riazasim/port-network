@@ -43,7 +43,7 @@
         tableTitle="Ports list"
     >
         <div table class="tw-w-full tw-shadow-lg">
-            <ng-scrollbar track="vertical" class="tw-min-h-[calc(100vh-200px)]">
+            <ng-scrollbar track="horizontal" [autoHeightDisabled]="false">
                 <table
                     class="material-table no-wrap tw-overflow-hidden"
                     matSort
@@ -59,10 +59,10 @@
                     <!--            </ng-container>-->
 
                     <ng-container cdkColumnDef="name">
-                        <th cdk-header-cell *cdkHeaderCellDef scope="col">
+                        <th cdk-header-cell *cdkHeaderCellDef scope="col" class="tw-max-w-40">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="name">Port name</div>
-                                <searchbar [maxWidth]="152">
+                                <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchName
@@ -177,10 +177,10 @@
                     </ng-container> -->
 
                     <ng-container cdkColumnDef="addrCity">
-                        <th cdk-header-cell *cdkHeaderCellDef scope="col">
+                        <th cdk-header-cell *cdkHeaderCellDef scope="col" class="tw-max-w-20">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="addrCity">City</div>
-                                <searchbar [maxWidth]="73">
+                                <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchCity
@@ -219,10 +219,10 @@
                     </ng-container>
 
                     <ng-container cdkColumnDef="addrCountry">
-                        <th cdk-header-cell *cdkHeaderCellDef scope="col">
+                        <th cdk-header-cell *cdkHeaderCellDef scope="col" class="tw-max-w-24">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="addrCountry">Country</div>
-                                <searchbar [maxWidth]="108">
+                                <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchCountry
@@ -261,12 +261,12 @@
                     </ng-container>
 
                     <ng-container cdkColumnDef="addrZipCode">
-                        <th cdk-header-cell *cdkHeaderCellDef scope="col">
+                        <th cdk-header-cell *cdkHeaderCellDef scope="col" class="tw-max-w-20">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="addrZipCode">
                                     Zip Code
                                 </div>
-                                <searchbar [maxWidth]="85">
+                                <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchZipCode
@@ -304,12 +304,12 @@
                         </td>
                     </ng-container>
                     <ng-container cdkColumnDef="addrCoordinates">
-                        <th cdk-header-cell *cdkHeaderCellDef scope="col">
+                        <th cdk-header-cell *cdkHeaderCellDef scope="col" class="tw-max-w-40">
                             <section class="tw-flex tw-flex-col tw-gap-4">
                                 <div mat-sort-header="addrCoordinates">
                                   Coordinates
                                 </div>
-                                <searchbar [maxWidth]="85">
+                                <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
                                     <input
                                         #searchCoordinates
@@ -430,4 +430,3 @@
 <ng-template #empty>
     <no-ports></no-ports>
 </ng-template>
-

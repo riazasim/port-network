@@ -34,7 +34,7 @@
                     </div>
                     <h6 class="tw-font-bold">Port</h6>
                 <div class="tw-h-[75px]">
-                    <div iconic-select-wrapper leftSvg="../../../../assets/images/port-anchor.svg" [rightIcon]="['fas', 'caret-down']">
+                    <div iconic-select-wrapper leftSvg="./assets/images/port-anchor.svg" [rightIcon]="['fas', 'caret-down']">
                         <select inputRef name="portId" id="portId" formControlName="portId" (change)="onPortChange($event)">
                             <!-- <option value="null" disabled>Port*</option> -->
                             <option *ngFor="let port of ports;" [value]="port.id">{{port.name}}</option>
