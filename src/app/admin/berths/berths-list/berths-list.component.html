@@ -1,30 +1,30 @@
 ﻿<section *ngIf="(isLoading$ | async) || originalSource.length; else empty">
-    <div class="tw-flex tw-items-center">
+    <div class="flex items-center">
         <mat-button-toggle-group
-            class="tw-flex tw-w-full tw-justify-end tw-items-center"
+            class="flex w-full justify-end items-center"
         >
             <button
                 routerLink="../add"
                 [disabled]="(isLoading$ | async) || false"
-                class="tw-bg-primary tw-text-white tw-py-2 tw-min-h-[35px] min-md:tw-min-w-[120px] max-sm:tw-w-full tw-rounded-l max-lg:tw-w-full"
+                class="bg-primary text-white py-2 min-h-[35px] min-md:min-w-[120px] max-sm:w-full rounded-l max-lg:w-full"
                 type="button"
             >
                 Add Berth
             </button>
             <button
                 [disabled]="(isLoading$ | async) || false"
-                class="tw-bg-primary tw-text-white tw-min-h-[35px] min-md:tw-min-w-[30px] max-sm:tw-w-full tw-rounded-r"
+                class="bg-primary text-white min-h-[35px] min-md:min-w-[30px] max-sm:w-full rounded-r"
                 type="button"
                 [matMenuTriggerFor]="menu"
             >
                 <fa-icon
                     [icon]="['fas', 'caret-down']"
                     size="2x"
-                    class="tw-mx-2 tw-cursor-pointer tw-text-white"
+                    class="mx-2 cursor-pointer text-white"
                 >
                 </fa-icon>
             </button>
-            <mat-menu #menu="matMenu" xPosition="before" class="!tw-bg-white">
+            <mat-menu #menu="matMenu" xPosition="before" class="!bg-white">
                 <button
                     [disabled]="(isLoading$ | async) || false"
                     (click)="openImportModal()"
@@ -40,10 +40,10 @@
         [showHeader]="true"
         tableTitle="Berths list"
     >
-        <div table class="tw-w-full tw-shadow-lg">
+        <div table class="w-full shadow-lg">
             <ng-scrollbar track="horizontal" [autoHeightDisabled]="false">
                 <table
-                    class="material-table no-wrap tw-overflow-hidden"
+                    class="material-table no-wrap overflow-hidden"
                     matSort
                     (matSortChange)="sortData($event)"
                     [class.loading]="isLoading$ | async"
@@ -54,7 +54,7 @@
                     <ng-container cdkColumnDef="name">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section
-                                class="tw-flex tw-flex-col tw-justify-center tw-gap-4"
+                                class="flex flex-col justify-center gap-4"
                             >
                                 <div mat-sort-header="name">Berth name</div>
                                 <searchbar>
@@ -84,14 +84,14 @@
                                 </searchbar>
                             </section>
                         </th>
-                        <td class="tw-w-3/12" cdk-cell *cdkCellDef="let row">
+                        <td class="w-3/12" cdk-cell *cdkCellDef="let row">
                             {{ row.name }}
                         </td>
                     </ng-container>
 
                     <ng-container cdkColumnDef="status">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col tw-gap-4">
+                            <section class="flex flex-col gap-4">
                                 <div mat-sort-header="status">Status</div>
                                 <select
                                     class="border"
@@ -121,7 +121,7 @@
 
                     <ng-container cdkColumnDef="addrCoordinates">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col tw-gap-4">
+                            <section class="flex flex-col gap-4">
                                 <div mat-sort-header="addrCoordinates">
                                     Coordinates
                                 </div>
@@ -158,13 +158,13 @@
                                 </searchbar>
                             </section>
                         </th>
-                        <td class="tw-w-3/12" cdk-cell *cdkCellDef="let row">
+                        <td class="w-3/12" cdk-cell *cdkCellDef="let row">
                             {{ row.addrCoordinates }}
                         </td>
                     </ng-container>
                     <ng-container cdkColumnDef="length">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col tw-gap-4">
+                            <section class="flex flex-col gap-4">
                                 <div mat-sort-header="length">Length (m)</div>
                                 <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
@@ -193,14 +193,14 @@
                                 </searchbar>
                             </section>
                         </th>
-                        <td class="tw-w-1/12" cdk-cell *cdkCellDef="let row">
+                        <td class="w-1/12" cdk-cell *cdkCellDef="let row">
                             {{ row.length }}
                         </td>
                     </ng-container>
 
                     <!-- <ng-container cdkColumnDef="width">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col tw-gap-4">
+                            <section class="flex flex-col gap-4">
                                 <div mat-sort-header="width">Width (m)</div>
                                 <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
@@ -229,14 +229,14 @@
                                 </searchbar>
                             </section>
                         </th>
-                        <td class="tw-w-1/12" cdk-cell *cdkCellDef="let row">
+                        <td class="w-1/12" cdk-cell *cdkCellDef="let row">
                             {{ row.width }}
                         </td>
                     </ng-container> -->
 
                     <ng-container cdkColumnDef="depth">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col tw-gap-4">
+                            <section class="flex flex-col gap-4">
                                 <div mat-sort-header="depth">Depth (m)</div>
                                 <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
@@ -265,13 +265,13 @@
                                 </searchbar>
                             </section>
                         </th>
-                        <td class="tw-w-1/12" cdk-cell *cdkCellDef="let row">
+                        <td class="w-1/12" cdk-cell *cdkCellDef="let row">
                             {{ row.depth }}
                         </td>
                     </ng-container>
                     <ng-container cdkColumnDef="actions">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col tw-gap-4">
+                            <section class="flex flex-col gap-4">
                                 <div>Actions</div>
                                 <button
                                     type="button"
@@ -284,17 +284,17 @@
                         <td
                             cdk-cell
                             *cdkCellDef="let row"
-                            class="tw-flex tw-justify-center tw-gap-4"
+                            class="flex justify-center gap-4"
                         >
                             <fa-icon
                                 icon="eye"
-                                class="tw-text-primary tw-cursor-pointer"
+                                class="text-primary cursor-pointer"
                                 size="lg"
                                 [routerLink]="['../edit', row.id]"
                             ></fa-icon>
                             <fa-icon
                                 icon="trash-can"
-                                class="tw-text-primary tw-cursor-pointer"
+                                class="text-primary cursor-pointer"
                                 size="lg"
                                 (click)="openDeleteModal(row.id)"
                             ></fa-icon>
@@ -337,7 +337,7 @@
             </ng-scrollbar>
 
             <mat-paginator
-                [class.!tw-hidden]="dataSource.length === 0"
+                [class.!hidden]="dataSource.length === 0"
                 [pageSizeOptions]="pageSizeOptions"
                 [length]="length"
                 [pageIndex]="pageIndex"

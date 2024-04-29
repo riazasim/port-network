@@ -1,9 +1,9 @@
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component, ElementRef, HostListener, Inject, OnInit,
-  TemplateRef,
-  ViewChild
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component, ElementRef, HostListener, Inject, OnInit,
+    TemplateRef,
+    ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -13,52 +13,54 @@ import { OnboardingSlideContent } from 'src/app/shared/components/onboarding/onb
 import { OnboardingSlideshowComponent } from '../shared/components/onboarding/onboarding-slideshow/onboarding-slideshow.component';
 import { type AssetsType } from './onboarding-content-provider.service';
 import {
-  ONBOARDING_CONTENT_PROVIDER,
-  OnboardingContentProvider
+    ONBOARDING_CONTENT_PROVIDER,
+    OnboardingContentProvider
 } from './onboarding-content-provider.type';
 
 @Component({
-  templateUrl: './onboarding.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./onboarding.component.scss']
+    templateUrl: './onboarding.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./onboarding.component.scss']
 })
 export class OnboardingComponent implements OnInit {
 
-  @HostListener('document:keydown.enter', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    const nr = document?.getElementsByClassName('swiper-slide swiper-slide-active')[0]?.getAttribute('data-swiper-slide-index')
-    if (+ (nr ?? 0) === 5) {
-      this.setTutorialTrue();
-      this.navigate();
+    slides : any[];
+
+    @HostListener('document:keydown.enter', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+        const nr = document?.getElementsByClassName('swiper-slide swiper-slide-active')[0]?.getAttribute('data-swiper-slide-index')
+        if (+ (nr ?? 0) === 5) {
+            this.setTutorialTrue();
+            this.navigate();
+        }
     }
-  }
 
-  @ViewChild(OnboardingSlideshowComponent, { static: true }) slideShow: ElementRef<any>|null = null;
+    @ViewChild(OnboardingSlideshowComponent, { static: true }) slideShow: ElementRef<any> | null = null;
 
-  @ViewChild('letsStartBtnTemplate', { static: true })
-  private readonly letsStartBtnTemplate!: TemplateRef<HTMLButtonElement>;
+    @ViewChild('letsStartBtnTemplate', { static: true })
+    private readonly letsStartBtnTemplate!: TemplateRef<HTMLButtonElement>;
 
-  public onboardingSlides$: Observable<OnboardingSlideContent[]>;
+    public onboardingSlides$: Observable<OnboardingSlideContent[]>;
 
-  constructor(private readonly assetsProvider: AssetsProviderService<AssetsType>,
-    @Inject(ONBOARDING_CONTENT_PROVIDER) private readonly contentProvider: OnboardingContentProvider,
-    private router: Router,
-  private route: ActivatedRoute) {
-    this.onboardingSlides$ = this.contentProvider.getContent();
-  }
+    constructor(private readonly assetsProvider: AssetsProviderService<AssetsType>,
+        @Inject(ONBOARDING_CONTENT_PROVIDER) private readonly contentProvider: OnboardingContentProvider,
+        private router: Router,
+        private route: ActivatedRoute) {
+        this.onboardingSlides$ = this.contentProvider.getContent();
+    }
 
-  ngOnInit(): void {
-    this.onboardingSlides$ = this.onboardingSlides$
-      .pipe(
-        tap(slides => slides[slides.length - 1].customContent = this.letsStartBtnTemplate)
-      );
-  }
+    ngOnInit(): void {
+        this.onboardingSlides$ = this.onboardingSlides$
+            .pipe(
+                tap(slides => slides[slides.length - 1].customContent = this.letsStartBtnTemplate)
+            );
+    }
 
-  navigate() {
-    this.router.navigate(['../admin/dashboard'], { relativeTo: this.route });
-  }
+    navigate() {
+        this.router.navigate(['../operator/dashboard'], { relativeTo: this.route });
+    }
 
-  setTutorialTrue() {
-    localStorage.setItem('tutorial', 'true');
-  }
+    setTutorialTrue() {
+        localStorage.setItem('tutorial', 'true');
+    }
 
 }

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { OnboardingSlideContent } from 'src/app/shared/components/onboarding/onboarding-slide-content.interface';
 
 export interface ContentProvider<T> {
-  getContent(): T;
+    getContent(): T;
 }
 
 export type ObservableContentProvider<T> = ContentProvider<Observable<T>>;

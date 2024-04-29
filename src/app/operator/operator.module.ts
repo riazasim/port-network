@@ -15,18 +15,26 @@ import { OperatorLayoutComponent } from './layout/operator/opeartor-layout.compo
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {TranslateModule} from "@ngx-translate/core";
-import { SchedulingComponent } from './scheduling/scheduling.component';
+import { TranslateModule } from "@ngx-translate/core";
+import { MapComponent } from './map/map.component';
+import { SearchComponent } from './map/search/search.component';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @NgModule({
-  declarations: [
-    OperatorComponent,
-    DashboardComponent,
-    OperatorHeaderComponent,
-    NavigationMenuComponent,
-    OperatorLayoutComponent,
-  ],
+    declarations: [
+        OperatorComponent,
+        DashboardComponent,
+        OperatorHeaderComponent,
+        NavigationMenuComponent,
+        OperatorLayoutComponent,
+        MapComponent,
+        SearchComponent
+    ],
     imports: [
         CommonModule,
         OperatorRoutingModule,
@@ -39,7 +47,14 @@ import { SchedulingComponent } from './scheduling/scheduling.component';
         MatBadgeModule,
         MatDialogModule,
         MatSnackBarModule,
-        TranslateModule
-    ]
+        TranslateModule,
+        GoogleMapsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        SharedModule
+    ],
+    exports:[MapComponent]
 })
 export class OperatorModule { }

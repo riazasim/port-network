@@ -4,14 +4,14 @@
             autocomplete="off"
             [placeholder]="placeholder"
             [matAutocomplete]="matControl"
-            class="tw-text-center"
+            class="text-center"
             (input)="checkForEmptyValue($event)"
             [formControl]="selectControl">
     <mat-autocomplete [requireSelection]="requireSelection" 
                         #matControl="matAutocomplete" 
                         (optionSelected)="optionSelected.emit($event)" 
                         [displayWith]="displayFn" 
-                        class="!tw-bg-white">
+                        class="!bg-white">
         <mat-option *ngFor="let entity of selectableEntities$ | async" [value]="entity">
             {{entity[searchField]}}
         </mat-option>

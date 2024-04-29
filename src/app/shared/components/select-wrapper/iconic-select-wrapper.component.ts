@@ -7,35 +7,41 @@ import { GenericWrapperComponent } from '../generic-wrapper/generic-wrapper.comp
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
-  selector: '[iconic-select-wrapper]',
-  templateUrl: './iconic-select-wrapper.component.html',
-  styles: [
-    `
+    selector: '[iconic-select-wrapper]',
+    templateUrl: './iconic-select-wrapper.component.html',
+    styles: [
+        `
     .select-container {
         position: relative;
         flex-grow: 1;
         display: flex;
-      }
+    }
     .select-decoration {
         position: absolute;
         right: 10px;
         color: black;
-      }
+    }
     `
-  ]
+    ]
 })
 export class IconicSelectWrapperComponent extends GenericWrapperComponent<HTMLSelectElement, SelectRefDirective> {
 
-  @Input()
-  // public readonly rightIcon: IconProp = faAngleDown;
-  public rightIcon: IconProp | undefined;
+    @Input()
+    // public readonly rightIcon: IconProp = faAngleDown;
+    public rightIcon: IconProp | undefined;
 
-  @Input()
-  public leftSvg: string | undefined;
+    @Input()
+    public leftSvg: string | undefined;
 
-  @ContentChild(SelectRefDirective)
-  override set inputRef(ref: SelectRefDirective) {
-    this._inputRef = ref;
-  }
+    @Input()
+    public dashboardInp: boolean;
+
+    @Input()
+    public loading: boolean | any;
+
+    @ContentChild(SelectRefDirective)
+    override set inputRef(ref: SelectRefDirective) {
+        this._inputRef = ref;
+    }
 
 }

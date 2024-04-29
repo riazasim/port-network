@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Row } from 'read-excel-file';
 import { BehaviorSubject, combineLatest, map, switchMap } from 'rxjs';
+import { BookingModel } from 'src/app/core/models/booking.model';
 import { DockService } from 'src/app/core/services/dock.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { OperationService } from 'src/app/core/services/operation.service';
@@ -49,8 +50,7 @@ export class SchedulingImportModalComponent {
       .pipe(
         map(rowsWithHeader => rowsWithHeader.slice(1)),
         map(rows => rows.map(row => this.processParsing(row))),
-        // switchMap((plannings: BookingModel[]) => this.planningService.importPlannings(plannings))
-        switchMap((plannings: any[]) => this.planningService.importPlannings(plannings))
+        switchMap((plannings: BookingModel[]) => this.planningService.importPlannings(plannings))
       ).subscribe({
         next: () => {
           this.snackBar.open('Imported!', 'Success', {
@@ -97,7 +97,6 @@ export class SchedulingImportModalComponent {
       this.dockService.list({})
     ]).subscribe({
       next: ([operations, docks]) => {
-      // generateBasicExcel(this.translate.currentLang, operations, docks).then((b: Blob) => {
       generateBasicExcel(this.translate.currentLang).then((b: Blob) => {
         const a = document.createElement("a");
         a.href = URL.createObjectURL(b);

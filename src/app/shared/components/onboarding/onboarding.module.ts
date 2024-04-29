@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
+import SwiperCore, { Keyboard, Navigation, Pagination } from 'swiper';
+import { SwiperModule } from 'swiper/angular';
 import { OnboardingSlideComponent } from './onboarding-slide/onboarding-slide.component';
 import { OnboardingSlideshowComponent } from './onboarding-slideshow/onboarding-slideshow.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
+SwiperCore.use([Navigation, Pagination, Keyboard]);
 
 @NgModule({
-  declarations: [OnboardingSlideComponent, OnboardingSlideshowComponent],
-  imports: [CommonModule],
-  exports: [OnboardingSlideComponent, OnboardingSlideshowComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    declarations: [OnboardingSlideComponent, OnboardingSlideshowComponent],
+    imports: [CommonModule , SwiperModule],
+    exports: [OnboardingSlideComponent, OnboardingSlideshowComponent],
+    schemas:[NO_ERRORS_SCHEMA]
 })
-export class OnboardingSlideModule {
-}
+export class OnboardingSlideModule { }

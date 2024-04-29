@@ -1,11 +1,11 @@
-// import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { convertJsonToFormData, pluckArrayWrapperData, pluckItemWrapperData, wrapJsonForRequest, wrapJsonListForRequest } from 'src/app/shared/utils/api.functions';
+import { convertJsonToFormData, pluckArrayPaginationWrapperData, pluckArrayWrapperData, pluckItemWrapperData, wrapJsonForRequest, wrapJsonListForRequest } from 'src/app/shared/utils/api.functions';
 import { environment } from 'src/environments/environment';
-import { ResponseArrayWrapper, ResponseDataItem, ResponseItemWrapper } from '../models/response-wrappers.types';
+import { ResponseArrayPaginationWrapper, ResponseArrayWrapper, ResponseDataItem, ResponseItemWrapper } from '../models/response-wrappers.types';
 import { DocumentObject, SchedulingCustomField, SchedulingLogModel, SchedulingModel, SchedulingPreviewModel, SchedulingProduct, ShipmentLogsModel } from '../models/scheduling.model';
-import { UpdatePlanningDock } from '../models/planning.model';
+import { PlanningDetailModel, PlanningTable, UpdatePlanningDock, convoyModel } from '../models/planning.model';
 import { map } from 'rxjs/operators';
 import { StatusListModel } from '../models/status-list.model';
 import { BuildingModel } from '../models/building.model';
@@ -14,361 +14,380 @@ import { OperationModel } from '../models/operation.model';
 import { PartnerModel } from '../models/partner.model';
 import { ProductModel } from '../models/product.model';
 import { LocationModel } from '../models/location.model';
-// import { BookingModel } from '../models/booking.model';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { BookingModel } from '../models/booking.model';
+import { CustomFieldData } from '../models/custom-field.model';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PlanningService {
-  private route: string = '/admin/plannings';
-  constructor(private readonly http: HttpClient) { }
+    private route: string = '/createPlanning';
+    constructor(private readonly http: HttpClient) { }
 
-  create(body: any): Observable<any> {
-    const products = [...body.products];
-    const customFieldCargoData = [...body.customFieldCargoData];
-    const customFieldTransportData = [...body.customFieldTransportData];
-    const customFieldAdditionalData = [...body.customFieldAdditionalData];
-
-    delete body.products;
-    delete body.customFieldCargoData;
-    delete body.customFieldTransportData;
-    delete body.customFieldAdditionalData;
-
-    const data = convertJsonToFormData(body, 'data[attributes]');
-
-    if (body?.documents?.length) {
-      body.documents.forEach((file: File) => {
-        data.append('documents[]', file);
-      })
+    create(body: any): Observable<any> {
+        const data = convertJsonToFormData(body, '');
+        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}${this.route}`, data);
     }
 
-    data.append('data[attributes][oldDocuments][]', '');
 
-    data.append('data[attributes][products]', JSON.stringify(products));
-    data.append('data[attributes][customFieldCargoData]', JSON.stringify(customFieldCargoData));
-    data.append('data[attributes][customFieldTransportData]', JSON.stringify(customFieldTransportData));
-    data.append('data[attributes][customFieldAdditionalData]', JSON.stringify(customFieldAdditionalData));
-
-    if (!body.warehouse) {
-      data.append('data[attributes][warehouse]', '');
+    editRouteingDetails(id: number, data: any): Observable<PlanningDetailModel> {
+        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/updatePlanning`, { "planningId": id, ...data })
+            .pipe(pluckItemWrapperData<PlanningDetailModel, ResponseItemWrapper<PlanningDetailModel>>(),
+                map((p: PlanningDetailModel) => {
+                    return p;
+                })
+            )
+    }
+    editConvoys(id: number, data: convoyModel): Observable<convoyModel> {
+        data.planningConvoyId = id
+        const body = convertJsonToFormData(data, '');
+        console.log(body)
+        console.log(data)
+        return this.http.post<ResponseItemWrapper<convoyModel>>(`${environment.apiUrl}${environment.apiVersion}/updatePlanningConvoy`, body)
+            .pipe(pluckItemWrapperData<convoyModel, ResponseItemWrapper<convoyModel>>(),
+                map((p: convoyModel) => {
+                    return p;
+                })
+            )
     }
 
-    if (!body.dock) {
-      data.append('data[attributes][dock]', '');
+    edit(id: number, body: Partial<SchedulingModel>): Observable<any> {
+        const products = [...<SchedulingProduct[]>body.products];
+        const customFieldCargoData = [...<SchedulingCustomField[]>body.customFieldCargoData];
+        const customFieldTransportData = [...<SchedulingCustomField[]>body.customFieldTransportData];
+        const customFieldAdditionalData = [...<SchedulingCustomField[]>body.customFieldAdditionalData];
+
+        delete body.products;
+        delete body.customFieldCargoData;
+        delete body.customFieldTransportData;
+        delete body.customFieldAdditionalData;
+
+        const data = convertJsonToFormData(body, 'data[attributes]');
+
+        if ((<File[]>body?.documents)?.length) {
+            (<File[]>body.documents).forEach((file: File) => {
+                data.append('documents[]', file);
+            })
+        } else {
+            data.append('documents[]', '[]');
+        }
+
+        if (body.oldDocuments!.length) {
+            body.oldDocuments!.forEach((d) => {
+                data.append('data[attributes][oldDocuments][]', `${d}`);
+            });
+        } else {
+            data.append('data[attributes][oldDocuments][]', '');
+        }
+
+        data.append('data[attributes][products]', JSON.stringify(products));
+        data.append('data[attributes][customFieldCargoData]', JSON.stringify(customFieldCargoData));
+        data.append('data[attributes][customFieldTransportData]', JSON.stringify(customFieldTransportData));
+        data.append('data[attributes][customFieldAdditionalData]', JSON.stringify(customFieldAdditionalData));
+
+        if (!body.warehouse) {
+            data.append('data[attributes][warehouse]', '');
+        }
+
+        if (!body.dock) {
+            data.append('data[attributes][dock]', '');
+        }
+
+        data.delete('data[attributes][documents][0]');
+        data.delete('data[attributes][documents][1]');
+        data.delete('data[attributes][documents][2]');
+
+        data.delete('data[attributes][oldDocuments][0]');
+        data.delete('data[attributes][oldDocuments][1]');
+        data.delete('data[attributes][oldDocuments][2]');
+
+        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}${this.route}/${id}`, data);
     }
 
-    data.delete('data[attributes][documents][0]');
-    data.delete('data[attributes][documents][1]');
-    data.delete('data[attributes][documents][2]');
-
-    return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}${this.route}`, data);
-  }
-
-  edit(id: number, body: Partial<SchedulingModel>): Observable<any> {
-    const products = [...<SchedulingProduct[]>body.products];
-    const customFieldCargoData = [...<SchedulingCustomField[]>body.customFieldCargoData];
-    const customFieldTransportData = [...<SchedulingCustomField[]>body.customFieldTransportData];
-    const customFieldAdditionalData = [...<SchedulingCustomField[]>body.customFieldAdditionalData];
-
-    delete body.products;
-    delete body.customFieldCargoData;
-    delete body.customFieldTransportData;
-    delete body.customFieldAdditionalData;
-
-    const data = convertJsonToFormData(body, 'data[attributes]');
-
-    if ((<File[]>body?.documents)?.length) {
-      (<File[]>body.documents).forEach((file: File) => {
-        data.append('documents[]', file);
-      })
-    } else {
-      data.append('documents[]', '[]');
+    get(id: number): Observable<PlanningDetailModel> {
+        return this.http.post<ResponseItemWrapper<PlanningDetailModel>>(`${environment.apiUrl}${environment.apiVersion}/getPlanning`, { "planningId": id })
+            .pipe(pluckItemWrapperData<PlanningDetailModel, ResponseItemWrapper<PlanningDetailModel>>(),
+                map((p: PlanningDetailModel) => {
+                    return p;
+                })
+            )
     }
 
-    if (body.oldDocuments!.length) {
-      body.oldDocuments!.forEach((d) => {
-        data.append('data[attributes][oldDocuments][]', `${d}`);
-      });
-    } else {
-      data.append('data[attributes][oldDocuments][]', '');
+    getConvoy(id: number): Observable<convoyModel> {
+        return this.http.post<ResponseItemWrapper<convoyModel>>(`${environment.apiUrl}${environment.apiVersion}/getPlanningConvoy`, { "planningConvoyId": id })
+            .pipe(pluckItemWrapperData<convoyModel, ResponseItemWrapper<convoyModel>>(),
+                map((p: convoyModel) => {
+                    return p;
+                })
+            )
     }
 
-    data.append('data[attributes][products]', JSON.stringify(products));
-    data.append('data[attributes][customFieldCargoData]', JSON.stringify(customFieldCargoData));
-    data.append('data[attributes][customFieldTransportData]', JSON.stringify(customFieldTransportData));
-    data.append('data[attributes][customFieldAdditionalData]', JSON.stringify(customFieldAdditionalData));
-
-    if (!body.warehouse) {
-      data.append('data[attributes][warehouse]', '');
+    delete(id: number): Observable<any> {
+        let data = { "planningId": id };
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}/deletePlanning`, wrapJsonForRequest(data))
+    }
+    deleteConvoy(id: number): Observable<any> {
+        let data = { "planningConvoyId": id };
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}/deletePlanningConvoy`, wrapJsonForRequest(data))
     }
 
-    if (!body.dock) {
-      data.append('data[attributes][dock]', '');
+    pagination(data: any): Observable<PlanningTable> {
+        return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/paginatePlannings`, wrapJsonForRequest(data))
+            .pipe(pluckArrayPaginationWrapperData<any, ResponseArrayPaginationWrapper<any>>(),
+                map((u: PlanningTable) => {
+                    u.items = (<any>u.items).map(((c: CustomFieldData) => c.attributes));
+                    return u;
+                })
+            );
+    }
+    getTransferData(data: any): Observable<any> {
+        return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/getUsersByUserRole`, wrapJsonForRequest(data))
+            .pipe(pluckArrayPaginationWrapperData<any, ResponseArrayPaginationWrapper<any>>(),
+                map((u: any) => {
+                    u.items = (<any>u.items).map(((c: CustomFieldData) => c.attributes));
+                    return u;
+                })
+            );
     }
 
-    data.delete('data[attributes][documents][0]');
-    data.delete('data[attributes][documents][1]');
-    data.delete('data[attributes][documents][2]');
-
-    data.delete('data[attributes][oldDocuments][0]');
-    data.delete('data[attributes][oldDocuments][1]');
-    data.delete('data[attributes][oldDocuments][2]');
-
-    return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}${this.route}/${id}`, data);
-  }
-
-  get(id: number): Observable<SchedulingModel> {
-    return this.http.get<ResponseItemWrapper<SchedulingModel>>(`${environment.apiUrl}${environment.apiVersion}${this.route}/${id}`)
-                    .pipe(pluckItemWrapperData<SchedulingModel, ResponseItemWrapper<SchedulingModel>>(),
-                      map((p: SchedulingModel) => {
-
-                        p.customer = p.customer ? <number>(<ResponseDataItem<PartnerModel>>p.customer).attributes.id : p.customer;
-                        p.warehouse = p.warehouse ? <number>(<ResponseDataItem<BuildingModel>>p.warehouse).attributes.id : p.warehouse;
-                        p.location = p.location ? <number>(<ResponseDataItem<LocationModel>>p.location).attributes.locationId : p.location;
-                        p.dock = p.dock ? <number>(<ResponseDataItem<DockModel>>p.dock).attributes.id : p.dock;
-                        p.operation = p.operation ? <number>(<ResponseDataItem<OperationModel>>p.operation).attributes.id : p.operation;
-                        p.statusListStatus = p.statusListStatus ? <number>(<ResponseDataItem<StatusListModel>>p.statusListStatus).attributes.id : p.statusListStatus;
-                        p.documents = (<any>p.documents).length ? (<any>p.documents).map((d: any) => d.attributes) : [];
-
-                        p.products = p.products.length ? (<ResponseDataItem<ProductModel>[]>p.products).map(p => p.attributes) : p.products;
-
-                        return p;
-                      })
-                    )
-  }
-
-  delete(id: number): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}${environment.apiVersion}${this.route}/${id}`)
-  }
-
-  /**
-   * filters
-   * 0 = SID filter
-   * 1 = truckLicensePlateFront filter
-   * 2 = truckLicensePlateBack filter
-   * 3 = dockName filter
-   * 4 = status name filter
-   * 5 = schedulingDate filter
-   * 6 = goodsName filter
-   * 7 = goodsBuyer filter
-   * 8 = goodsSupplier filter
-   * 9 = country filter
-   * 10 = harvestYear filter
-   * 11 = statusUpdatedAt filter
-   * 12 = timeSlot filter
-   * 13 = phoneNumber filter
-   * 
-   * "order": [{"dir": "DESC", "column": 0}]
-   * 
-   * start = start index (e .g daca vrei sa incepi cu 11 sau whatever -by default e 0);
-   * length = nr de items per page
-   * 
-   * @param data 
-   * @returns 
-   */
-  list(data: any): Observable<SchedulingPreviewModel[]> {
-    let params = new URLSearchParams();
-    const filters = [
-      data.sId||'', 
-      data.truckLicensePlateFront||'', 
-      data.truckLicensePlateBack||'', 
-      data.dockName||'', 
-      data.status||'', 
-      data.schedulingDate||'',
-      data.goodsName||'',
-      data.goodsBuyer||'',
-      data.goodsSupplier||'',
-      data.country||'',
-      data.harvestYear||'',
-      data.statusUpdatedAt||'',
-      data.timeSlot||'',
-      data.phoneNumber||'',
-    ];
-
-    const order = {dir: data.dir||'DESC', column: data.column || 5}
-
-    for (let key in filters) {
-      params.set(`filters[${key}]`, filters[key]);
+    assignTransferData(data: any): Observable<any> {
+        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/assignPlanningToUser`, data);
     }
 
-    params.set(`order[0][dir]`, order.dir.toLowerCase());
-    params.set(`order[0][column]`, order.column);
 
-    if (data.start) params.set('start', data.start);
-    if (data.length) params.set('length', data.length);
-    return this.http.get<ResponseArrayWrapper<SchedulingPreviewModel[]>>(`${environment.apiUrl}${environment.apiVersion}${this.route}?`+params.toString())
-                    .pipe(pluckArrayWrapperData<any, ResponseArrayWrapper<SchedulingPreviewModel[]>>(),
-                      // map((l: SchedulingModel[]) => {
+    /**
+     * filters
+     * 0 = SID filter
+     * 1 = truckLicensePlateFront filter
+     * 2 = truckLicensePlateBack filter
+     * 3 = dockName filter
+     * 4 = status name filter
+     * 5 = schedulingDate filter
+     * 6 = goodsName filter
+     * 7 = goodsBuyer filter
+     * 8 = goodsSupplier filter
+     * 9 = country filter
+     * 10 = harvestYear filter
+     * 11 = statusUpdatedAt filter
+     * 12 = timeSlot filter
+     * 13 = phoneNumber filter
+     *
+     * "order": [{"dir": "DESC", "column": 0}]
+     *
+     * start = start index (e .g daca vrei sa incepi cu 11 sau whatever -by default e 0);
+     * length = nr de items per page
+     *
+     * @param data
+     * @returns
+     */
+    list(data: any): Observable<SchedulingPreviewModel[]> {
+        let params = new URLSearchParams();
+        const filters = [
+            data.sId || '',
+            data.truckLicensePlateFront || '',
+            data.truckLicensePlateBack || '',
+            data.dockName || '',
+            data.status || '',
+            data.schedulingDate || '',
+            data.goodsName || '',
+            data.goodsBuyer || '',
+            data.goodsSupplier || '',
+            data.country || '',
+            data.harvestYear || '',
+            data.statusUpdatedAt || '',
+            data.timeSlot || '',
+            data.phoneNumber || '',
+        ];
 
-                      //   l = l.map((p: SchedulingModel) => {
-                          
-                      //     p.statusListStatus = (<ResponseDataItem<StatusListModel>>p.statusListStatus)?.attributes ?? null;
-                      //     p.warehouse = (<ResponseDataItem<BuildingModel>>p.warehouse)?.attributes || null;
-                      //     p.location = (<ResponseDataItem<LocationModel>>p.location)?.attributes || null;
-                      //     p.dock = (<ResponseDataItem<DockModel>>p.dock)?.attributes || null;
-                      //     p.operation = (<ResponseDataItem<OperationModel>>p.operation)?.attributes || null;
+        const order = { dir: data.dir || 'DESC', column: data.column || 5 }
 
-                      //     if (p.products.length) {
-                      //       p.products = (<ResponseDataItem<SchedulingProduct>[]>p.products).map((product: ResponseDataItem<SchedulingProduct>) => product.attributes);
-                      //     }
+        for (let key in filters) {
+            params.set(`filters[${key}]`, filters[key]);
+        }
 
-                      //     return p;
-                      //   })
+        params.set(`order[0][dir]`, order.dir.toLowerCase());
+        params.set(`order[0][column]`, order.column);
 
-                      //   return l;
-                      // })
-                    )
-  }
+        if (data.start) params.set('start', data.start);
+        if (data.length) params.set('length', data.length);
+        return this.http.get<ResponseArrayWrapper<SchedulingPreviewModel[]>>(`${environment.apiUrl}${environment.apiVersion}${this.route}?` + params.toString())
+            .pipe(pluckArrayWrapperData<any, ResponseArrayWrapper<SchedulingPreviewModel[]>>(),
+                // map((l: SchedulingModel[]) => {
 
-  /**
-   * Comvex filters
-   * 0 = SID filter
-   * 1 = truckLicensePlateFront filter
-   * 2 = truckLicensePlateBack filter
-   * 3 = dockName filter
-   * 4 = status name filter
-   * 5 = schedulingDate filter
-   * 6 = goodsName filter
-   * 7 = goodsBuyer filter
-   * 8 = goodsSupplier filter
-   * 9 = country filter
-   * 10 = harvestYear filter
-   * 11 = statusUpdatedAt filter
-   * 12 = timeSlot filter
-   * 13 = phoneNumber filter
-   * 
-   * "order": [{"dir": "DESC", "column": 0}]
-   * 
-   * start = start index (e .g daca vrei sa incepi cu 11 sau whatever -by default e 0);
-   * length = nr de items per page
-   * 
-   * @param data 
-   * @returns 
-   */
-  listComvex(data: any): Observable<SchedulingPreviewModel[]> {
-    let params = new URLSearchParams();
-    const filters = [
-      data.sId||'', 
-      data.truckLicensePlateFront||'', 
-      data.truckLicensePlateBack||'', 
-      data.dockName||'', 
-      data.status||'', 
-      data.schedulingDate||'',
-      data.goodsName||'',
-      data.goodsBuyer||'',
-      data.goodsSupplier||'',
-      data.country||'',
-      data.harvestYear||'',
-      data.statusUpdatedAt||'',
-      data.timeSlot||'',
-      data.phoneNumber||'',
-    ];
-    const order = {dir: data.dir||'DESC', column: data.column || 5}
+                //   l = l.map((p: SchedulingModel) => {
 
-    for (const key in filters) {
-      params.set(`filters[${key}]`, filters[key]);
+                //     p.statusListStatus = (<ResponseDataItem<StatusListModel>>p.statusListStatus)?.attributes ?? null;
+                //     p.warehouse = (<ResponseDataItem<BuildingModel>>p.warehouse)?.attributes || null;
+                //     p.location = (<ResponseDataItem<LocationModel>>p.location)?.attributes || null;
+                //     p.dock = (<ResponseDataItem<DockModel>>p.dock)?.attributes || null;
+                //     p.operation = (<ResponseDataItem<OperationModel>>p.operation)?.attributes || null;
+
+                //     if (p.products.length) {
+                //       p.products = (<ResponseDataItem<SchedulingProduct>[]>p.products).map((product: ResponseDataItem<SchedulingProduct>) => product.attributes);
+                //     }
+
+                //     return p;
+                //   })
+
+                //   return l;
+                // })
+            )
     }
 
-    params.set(`order[0][dir]`, order.dir);
-    params.set(`order[0][column]`, order.column);
+    /**
+     * Comvex filters
+     * 0 = SID filter
+     * 1 = truckLicensePlateFront filter
+     * 2 = truckLicensePlateBack filter
+     * 3 = dockName filter
+     * 4 = status name filter
+     * 5 = schedulingDate filter
+     * 6 = goodsName filter
+     * 7 = goodsBuyer filter
+     * 8 = goodsSupplier filter
+     * 9 = country filter
+     * 10 = harvestYear filter
+     * 11 = statusUpdatedAt filter
+     * 12 = timeSlot filter
+     * 13 = phoneNumber filter
+     *
+     * "order": [{"dir": "DESC", "column": 0}]
+     *
+     * start = start index (e .g daca vrei sa incepi cu 11 sau whatever -by default e 0);
+     * length = nr de items per page
+     *
+     * @param data
+     * @returns
+     */
+    listComvex(data: any): Observable<SchedulingPreviewModel[]> {
+        let params = new URLSearchParams();
+        const filters = [
+            data.sId || '',
+            data.truckLicensePlateFront || '',
+            data.truckLicensePlateBack || '',
+            data.dockName || '',
+            data.status || '',
+            data.schedulingDate || '',
+            data.goodsName || '',
+            data.goodsBuyer || '',
+            data.goodsSupplier || '',
+            data.country || '',
+            data.harvestYear || '',
+            data.statusUpdatedAt || '',
+            data.timeSlot || '',
+            data.phoneNumber || '',
+        ];
+        const order = { dir: data.dir || 'DESC', column: data.column || 5 }
 
-    if (data.start) params.set('start', data.start);
-    if (data.length) params.set('length', data.length);
-    return this.http.get<ResponseArrayWrapper<SchedulingPreviewModel[]>>(`${environment.apiUrl}${environment.apiVersion}/admin/comvex/plannings?`+params.toString())
-                    .pipe(pluckArrayWrapperData<any, ResponseArrayWrapper<SchedulingPreviewModel[]>>(),
-                      // map((l: SchedulingModel[]) => {
+        for (const key in filters) {
+            params.set(`filters[${key}]`, filters[key]);
+        }
 
-                      //   l = l.map((p: SchedulingModel) => {
-                          
-                      //     p.statusListStatus = (<ResponseDataItem<StatusListModel>>p.statusListStatus)?.attributes ?? null;
-                      //     p.warehouse = (<ResponseDataItem<BuildingModel>>p.warehouse)?.attributes || null;
-                      //     p.location = (<ResponseDataItem<LocationModel>>p.location)?.attributes || null;
-                      //     p.dock = (<ResponseDataItem<DockModel>>p.dock)?.attributes || null;
-                      //     p.operation = (<ResponseDataItem<OperationModel>>p.operation)?.attributes || null;
+        params.set(`order[0][dir]`, order.dir);
+        params.set(`order[0][column]`, order.column);
 
-                      //     if (p.products.length) {
-                      //       p.products = (<ResponseDataItem<SchedulingProduct>[]>p.products).map((product: ResponseDataItem<SchedulingProduct>) => product.attributes);
-                      //     }
+        if (data.start) params.set('start', data.start);
+        if (data.length) params.set('length', data.length);
+        return this.http.get<ResponseArrayWrapper<SchedulingPreviewModel[]>>(`${environment.apiUrl}${environment.apiVersion}/admin/comvex/plannings?` + params.toString())
+            .pipe(pluckArrayWrapperData<any, ResponseArrayWrapper<SchedulingPreviewModel[]>>(),
+                // map((l: SchedulingModel[]) => {
 
-                      //     return p;
-                      //   })
+                //   l = l.map((p: SchedulingModel) => {
 
-                      //   return l;
-                      // })
-                    )
-  }
+                //     p.statusListStatus = (<ResponseDataItem<StatusListModel>>p.statusListStatus)?.attributes ?? null;
+                //     p.warehouse = (<ResponseDataItem<BuildingModel>>p.warehouse)?.attributes || null;
+                //     p.location = (<ResponseDataItem<LocationModel>>p.location)?.attributes || null;
+                //     p.dock = (<ResponseDataItem<DockModel>>p.dock)?.attributes || null;
+                //     p.operation = (<ResponseDataItem<OperationModel>>p.operation)?.attributes || null;
 
+                //     if (p.products.length) {
+                //       p.products = (<ResponseDataItem<SchedulingProduct>[]>p.products).map((product: ResponseDataItem<SchedulingProduct>) => product.attributes);
+                //     }
 
+                //     return p;
+                //   })
 
-  updatePlanningToDock(data: UpdatePlanningDock): Observable<any> {
-    return this.http.post(`${environment.apiUrl}${environment.apiVersion}/admin/assigning-dock-to-plannings`, wrapJsonForRequest(data));
-  }
-
-  downloadPlannings(lang: string): Observable<any> {
-    return this.http.get(`/assets/${lang === 'en' ? 'basic_EN.xlsx': 'basic_RO.xlsx'}`, { observe: 'response', responseType: 'blob'});
-  }
-
-  // importPlannings(list: BookingModel[]): Observable<any> {
-  //   return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.route}/import-json`, wrapJsonListForRequest('planning', list));
-  // }
-  importPlannings(list: any[]): Observable<any> {
-    return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.route}/import-json`, wrapJsonListForRequest('planning', list));
-  }
-
-  listLogs(id: number): Observable<SchedulingLogModel[]> {
-    return this.http.get<ResponseArrayWrapper<SchedulingLogModel[]>>(`${environment.apiUrl}${environment.apiVersion}/admin/shipment-logs/${id}`)
-                    .pipe(pluckArrayWrapperData<any, ResponseArrayWrapper<SchedulingLogModel[]>>(),
-                      map((l: SchedulingLogModel[]) => {
-
-                        l = l.map((p: SchedulingLogModel) => {
-                          
-                          p.statusListStatus = (<ResponseDataItem<StatusListModel>>p.statusListStatus)?.attributes ?? null;
-                          p.operation = (<ResponseDataItem<OperationModel>>p.operation)?.attributes ?? null;
-                          p.warehouse = (<ResponseDataItem<BuildingModel>>p.warehouse)?.attributes || null;
-
-                          if (p.products.length) {
-                            p.products = (<ResponseDataItem<SchedulingProduct>[]>p.products).map((product: ResponseDataItem<SchedulingProduct>) => product.attributes);
-                          }
-
-                          if (p.shipmentLogs?.length) {
-                            p.shipmentLogs = (<ResponseDataItem<ShipmentLogsModel>[]>p.shipmentLogs).map((s: ResponseDataItem<ShipmentLogsModel>) => s.attributes);
-                          }
-
-                          if (p.documents.length) {
-                            p.documents = (<ResponseDataItem<DocumentObject>[]>p.documents).map((s: ResponseDataItem<DocumentObject>) => s.attributes);
-                          }
-
-                          return p;
-                        })
-
-                        return l;
-                      })
-                    )
-  }
-
-  cancel(planningId: number): Observable<any> {
-    return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.route}/cancel/${planningId}`, {});
-  }
-
-  reject(planningId: number): Observable<any> {
-    return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.route}/reject/${planningId}`, {});
-  }
-
-  getPhoto(url: string): Observable<HttpResponse<Blob>> {
-    if (!environment.production) {
-      const httpURL = url.replace(new URL(url).origin, 'http://localhost:4200');
-      return this.http.get(httpURL, { observe: 'response', responseType: 'blob' });
-    } else {
-      return this.http.get(url, { observe: 'response', responseType: 'blob' });
+                //   return l;
+                // })
+            )
     }
-  }
 
-  checkin(planningId: number): Observable<any> {
-    return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.route}/checkin/${planningId}`, {})
-  }
 
-  checkout(planningId: number): Observable<any> {
-    return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.route}/checkout/${planningId}`, {})
-  }
+
+    updatePlanningToDock(data: UpdatePlanningDock): Observable<any> {
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}/admin/assigning-dock-to-plannings`, wrapJsonForRequest(data));
+    }
+
+    downloadPlannings(lang: string): Observable<any> {
+        return this.http.get(`/assets/${lang === 'en' ? 'basic_EN.xlsx' : 'basic_RO.xlsx'}`, { observe: 'response', responseType: 'blob' });
+    }
+
+    importPlannings(list: BookingModel[]): Observable<any> {
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.route}/import-json`, wrapJsonListForRequest('planning', list));
+    }
+
+    listLogs(id: number): Observable<any> {
+        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/getShipmentLogs`, { "planningId": id })
+            .pipe(pluckItemWrapperData<any, ResponseItemWrapper<any>>(),
+                map((p: any) => {
+                    return p;
+                })
+            )
+    }
+
+    // listLogs(id: number): Observable<SchedulingLogModel[]> {
+    //     return this.http.get<ResponseArrayWrapper<SchedulingLogModel[]>>(`${environment.apiUrl}${environment.apiVersion}/admin/shipment-logs/${id}`)
+    //         .pipe(pluckArrayWrapperData<any, ResponseArrayWrapper<SchedulingLogModel[]>>(),
+    //             map((l: SchedulingLogModel[]) => {
+
+    //                 l = l.map((p: SchedulingLogModel) => {
+
+    //                     p.statusListStatus = (<ResponseDataItem<StatusListModel>>p.statusListStatus)?.attributes ?? null;
+    //                     p.operation = (<ResponseDataItem<OperationModel>>p.operation)?.attributes ?? null;
+    //                     p.warehouse = (<ResponseDataItem<BuildingModel>>p.warehouse)?.attributes || null;
+
+    //                     if (p.products.length) {
+    //                         p.products = (<ResponseDataItem<SchedulingProduct>[]>p.products).map((product: ResponseDataItem<SchedulingProduct>) => product.attributes);
+    //                     }
+
+    //                     if (p.shipmentLogs?.length) {
+    //                         p.shipmentLogs = (<ResponseDataItem<ShipmentLogsModel>[]>p.shipmentLogs).map((s: ResponseDataItem<ShipmentLogsModel>) => s.attributes);
+    //                     }
+
+    //                     if (p.documents.length) {
+    //                         p.documents = (<ResponseDataItem<DocumentObject>[]>p.documents).map((s: ResponseDataItem<DocumentObject>) => s.attributes);
+    //                     }
+
+    //                     return p;
+    //                 })
+
+    //                 return l;
+    //             })
+    //         )
+    // }
+
+    cancel(planningId: number): Observable<any> {
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.route}/cancel/${planningId}`, {});
+    }
+
+    reject(planningId: number): Observable<any> {
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.route}/reject/${planningId}`, {});
+    }
+
+    getPhoto(url: string): Observable<HttpResponse<Blob>> {
+        if (!environment.production) {
+            const httpURL = url.replace(new URL(url).origin, 'http://localhost:4200');
+            return this.http.get(httpURL, { observe: 'response', responseType: 'blob' });
+        } else {
+            return this.http.get(url, { observe: 'response', responseType: 'blob' });
+        }
+    }
+
+    checkin(planningId: number): Observable<any> {
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.route}/checkin/${planningId}`, {})
+    }
+
+    checkout(planningId: number): Observable<any> {
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.route}/checkout/${planningId}`, {})
+    }
 }

@@ -16,142 +16,120 @@
 @import "assets/scss/typography";
 @import "assets/scss/anchors";
 
-// @import "swiper/swiper.min.css";
-// @import "swiper/css/navigation";
-// @import "swiper/css/pagination";
+@import "swiper/swiper.min.css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
 @import "assets/scss/variables";
 
 @import 'flag-icons/sass/flag-icons';
 // @import "../node_modules/font-awesome/scss/font-awesome.scss";
 
+
 :root {
-  --app-border-radius: 3px;
-  --control-height: 53px;
-  --body-bg: #F4F6F8;
-  --offcanvas-bg: #F4F6F8;
-  --secondary-color: #17A0B5;
-  font-size: 14px;
+    --app-border-radius: 3px;
+    --control-height: 53px;
+    --body-bg: #F4F6F8;
+    --offcanvas-bg: #F4F6F8;
+    --secondary-color: #17A0B5;
+    font-size: 14px;
 }
 
 div.mat-autocomplete-panel {
-  box-shadow: 1px 6px 4px 0px #ccc;
-  mat-option.mat-option:hover {
-    background: #f5f5f5;
-  }
+    box-shadow: 1px 6px 4px 0px #ccc;
 
-  mat-option.mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled),
-  mat-option.mat-option {
-    background: #FFF;
-  }
+    mat-option.mat-option:hover {
+        background: #f5f5f5;
+    }
+
+    mat-option.mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled),
+    mat-option.mat-option {
+        background: #FFF;
+    }
 }
 
 /* MatSnackBar Module */
 .error-snackbar {
-  background: #FFF;
-  color: #000;
-  border-left: 5px solid #ff5968;
-  width: 370px;
+    background: #FFF;
+    color: #000;
+    border-left: 5px solid #ff5968;
+    width: 370px;
 }
 
 .success-snackbar {
-  background: #FFF;
-  color: #000;
-  border-left: 5px solid #22c52a;
-  width: 370px;
+    background: #FFF;
+    color: #000;
+    border-left: 5px solid #22c52a;
+    width: 370px;
 }
+
+.text-primary,.custom-btn-clr{
+    color: #1B9FE8;
+}
+
+
 /* End MatSnackBar Module */
 
 /* Fix Mat calendar hover text color */
-.mat-calendar-body-cell:not(.mat-calendar-body-disabled):focus > 
-.mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical),
-.mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover > 
-.mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
-  color: #FFF;
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled):focus>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical),
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    color: #FFF;
 }
+
 /* Fix Mat calendar hover text color */
 
 /* Paginator fixing*/
-.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline .mdc-notched-outline__leading, .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline .mdc-notched-outline__notch, .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline .mdc-notched-outline__trailing {
-  border-width: thin !important;
-}
-.mdc-text-field--outlined {
-  padding-right: max(20px) !important;
-}
-.mdc-text-field--outlined {
-   padding-left: max(20px) !important;
-}
-.mat-mdc-paginator-page-size {
-  display: flex;
-  align-items: baseline;
-  margin-right: 0px;
-}
-.mat-mdc-paginator-range-label {
-   margin: 0px !important; 
-}
-html {
-  --mat-paginator-container-text-font: Roboto, sans-serif;
-  --mat-paginator-container-text-line-height: 20px;
-  --mat-paginator-container-text-size: 12px;
-  --mat-paginator-container-text-tracking: 0.0333333333em;
-  --mat-paginator-container-text-weight: 400;
-  --mat-paginator-select-trigger-text-size: 14px;
-}
-/* Paginator fixing end*/
-.custom-btn-clr{
-color: #1B9FE8;
-}
-.tw-bg-primary{
-background-color: #1B9FE8;
-}
-.tw-bg-primary:hover{
-  background-color: #0b8fd6;
-}
-.btn.btn-outline-primary {
-  color: #1B9FE8;
-  background-color: white;
-  border: 1px solid #1B9FE8;
-}
-.btn.btn-outline-primary:focus, .btn.btn-outline-primary:hover, .btn.btn-outline-primary:active {
-  color: white;
-  background-color: #1B9FE8;
-}
-.btn.btn-primary {
-  color: white;
-  background-color: #1B9FE8;
-}
-.btn.btn-primary:focus, .btn.btn-primary:hover, .btn.btn-primary:active {
-  color: white;
-  background-color: #0b8fd6;
-}
-.tw-text-primary{
-  color: #1B9FE8;
-}
-.border{
-  border-radius: 3px !important;
-}
-select:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
-  --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: #1B9FE8;
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) #1B9FE8;
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  border-color: #1B9FE8;
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline .mdc-notched-outline__leading,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline .mdc-notched-outline__notch,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline .mdc-notched-outline__trailing {
+    border-width: thin !important;
 }
 
-// .iconic-layout-wrapper.invalid > .input-container {
-//   border-color: var(--invalid-color);}
-.invalid {
-  font-size: 90%;
-  color: var(--invalid-color);
+.mdc-text-field--outlined {
+    padding-right: max(20px) !important;
 }
-// .iconic-layout-wrapper.invalid > .errors-container {
-//   width: 100%;
-//   visibility: visible;
-//     height: 21px;
-//     font-size: 90%;
-//   color: var(--invalid-color);
-// }
+
+.mdc-text-field--outlined {
+    padding-left: max(20px) !important;
+}
+
+.mat-mdc-paginator-page-size {
+    display: flex;
+    align-items: baseline;
+    margin-right: 0px;
+}
+
+.mat-mdc-paginator-range-label {
+    margin: 0px !important;
+}
+
+.mat-mdc-icon-button{
+    padding: 0 !important;
+    font-size: 14px;
+}
+
+.mat-mdc-icon-button svg,
+.mat-mdc-icon-button img {
+    vertical-align: bottom !important;
+    width: 28px !important;
+}
+
+[type='checkbox']:focus{
+    --tw-ring-inset: var(--tw-empty) !important;
+    --tw-ring-offset-width: 0 !important;
+    --tw-ring-offset-color: transparent !important;
+    --tw-ring-color: transparent !important ;
+    --tw-ring-offset-shadow: transparent !important;
+    --tw-ring-shadow:transparent !important;
+    box-shadow: transparent !important;
+}
+
+html {
+    --mat-paginator-container-text-font: Roboto, sans-serif;
+    --mat-paginator-container-text-line-height: 20px;
+    --mat-paginator-container-text-size: 12px;
+    --mat-paginator-container-text-tracking: 0.0333333333em;
+    --mat-paginator-container-text-weight: 400;
+    --mat-paginator-select-trigger-text-size: 14px;
+}
+
+/* Paginator fixing end*/

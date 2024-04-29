@@ -6,10 +6,10 @@
     ></app-loader>
     <form *ngIf="!(isLoading$ | async)" [formGroup]="berthForm">
         <div>
-            <h6 class="tw-font-bold tw-mb-3">Details</h6>
-            <div class="min-xl:tw-columns-3">
-                <h6 class="tw-font-bold">Berth Name</h6>
-                <div class="tw-h-[75px]">
+            <h6 class="font-bold mb-3">Details</h6>
+            <div class="min-xl:columns-3">
+                <h6 class="font-bold">Berth Name</h6>
+                <div class="h-[75px]">
                     <div iconic-input-wrapper leftIcon="location-dot">
                         <input
                             inputRef
@@ -19,8 +19,8 @@
                         />
                     </div>
                 </div>
-                <h6 class="tw-font-bold">Google Maps coordinates (Plus code)</h6>
-                <div class="tw-h-[75px]">
+                <h6 class="font-bold">Google Maps coordinates (Plus code)</h6>
+                <div class="h-[75px]">
                     <div iconic-input-wrapper leftIcon="compass">
                         <input
                             inputRef
@@ -30,30 +30,30 @@
                         <p>123</p>
                     </div>
                 </div>
-                <h6 class="tw-font-bold">Port</h6>
-                <div class="tw-h-[75px]">
+                <h6 class="font-bold">Port</h6>
+                <div class="h-[75px]">
                     <div iconic-select-wrapper leftSvg="./assets/images/port-anchor.svg" [rightIcon]="['fas', 'caret-down']">
-                        <select inputRef name="portId" id="portId" formControlName="portId" (change)="onPortChange($event)">
+                        <select spAccessInputRef name="portId" id="portId" formControlName="portId" (change)="onPortChange($event)">
                             <!-- <option value="null" disabled>Port*</option> -->
                             <option *ngFor="let port of ports;" [value]="port.id">{{port.name}}</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="min-xl:tw-columns-3 tw-mb-10">
+            <div class="min-xl:columns-3 mb-10">
                 <div>&nbsp;</div>
                 <div>
-                    <div class="tw-text-right tw-font-bold tw-cursor-pointer">
+                    <div class="text-right font-bold cursor-pointer">
                         How do I find Google maps coordinates?
                     </div>
                 </div>
                 <div>&nbsp;</div>
             </div>
-            <div class="min-xl:tw-columns-3">
-                <h6 class="tw-font-bold">Status</h6>
-                <div class="tw-h-[75px]">
+            <div class="min-xl:columns-3">
+                <h6 class="font-bold">Status</h6>
+                <div class="h-[75px]">
                     <div iconic-select-wrapper leftIcon="eye" [rightIcon]="['fas', 'caret-down']">
-                        <select inputRef name="status" id="status" formControlName="status">
+                        <select spAccessInputRef name="status" id="status" formControlName="status">
                             <!-- <option value="" disabled>Auto Selected</option> -->
                             <option value="Active" selected>Active</option>
                             <option value="Service">Service</option>
@@ -61,8 +61,8 @@
                         </select>
                       </div>
                 </div>
-                <h6 class="tw-font-bold">Length (m)</h6>
-                <div class="tw-h-[75px]">
+                <h6 class="font-bold">Length (m)</h6>
+                <div class="h-[75px]">
                     <div iconic-input-wrapper leftSvg="./assets/images/length-boat.svg">
                         <input
                             inputRef
@@ -72,9 +72,9 @@
                         />
                     </div>
                 </div>
-                
-                <h6 class="tw-font-bold">Depth (m)</h6>
-                <div class="tw-h-[75px]">
+
+                <h6 class="font-bold">Depth (m)</h6>
+                <div class="h-[75px]">
                     <div iconic-input-wrapper leftSvg="./assets/images/depth-boat.svg">
                         <input
                             inputRef
@@ -85,11 +85,11 @@
                 </div>
             </div>
         </div>
-        <div class="tw-flex tw-justify-center tw-pt-5">
-            <div class="tw-flex tw-gap-4">
+        <div class="flex justify-center pt-5">
+            <div class="flex gap-4">
                 <button
                     [routerLink]="id ? '../../list' : '../list'"
-                    class="btn btn-outline-primary min-lg:tw-min-w-[250px]"
+                    class="btn btn-outline-primary min-lg:min-w-[250px]"
                     type="button"
                     [disabled]="isLoading$ | async"
                 >
@@ -97,7 +97,7 @@
                 </button>
 
                 <button
-                    class="btn btn-primary min-lg:tw-min-w-[250px]"
+                    class="btn btn-primary min-lg:min-w-[250px]"
                     type="button"
                     (click)="saveBerth()"
                     [disabled]="berthForm.invalid || (isLoading$ | async)"

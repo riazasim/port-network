@@ -18,15 +18,13 @@ export class SearchbarComponent implements OnInit {
   @Input()
   public minWidth: number | null = null;
 
+  @Input() disabled: boolean;
+
   @Input()
   public height: string | null = null;
 
   @Input()
   public borderRadius: string | null = null;
-
-  @Input() disabled: boolean;
-
-  @Input() isConstantWidth: boolean;
 
   @Input() leftIcon: IconProp;
   @Input() rightIcon: IconProp;
@@ -55,7 +53,7 @@ export class SearchbarComponent implements OnInit {
       this.searchStyle['borderRadius'] = `${this.borderRadius}`;
     }
 
-    if (this.maxWidth) this.classes = 'tw-mx-auto';
+    if (this.maxWidth) this.classes = 'mx-auto';
     if (!this.maxWidth) this.classes = '';
   }
 

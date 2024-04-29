@@ -14,40 +14,40 @@ import {
     ResponseArrayWrapper,
     ResponseItemWrapper
 } from '../models/response-wrappers.types';
-import {UserModel, UserTable} from '../models/user.model';
-import {CustomFieldData} from "../models/custom-field.model";
+import { UserModel, UserTable } from '../models/user.model';
+import { CustomFieldData } from "../models/custom-field.model";
 import { ProfileModel } from '../models/profile.model';
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class UserService {
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
-  create(data: UserModel): Observable<any> {
-    return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/user/create`, wrapJsonForRequest(data));
-  }
+    create(data: UserModel): Observable<any> {
+        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/user/create`, wrapJsonForRequest(data));
+    }
 
-  edit(id:number,data: UserModel): Observable<any> {
-      data['userId']=id;
-    return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/user/update`, wrapJsonForRequest(data)).pipe(pluckItemWrapperData<any, ResponseItemWrapper<any>>());
-  }
+    edit(id: number, data: UserModel): Observable<any> {
+        data['userId'] = id;
+        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/user/update`, wrapJsonForRequest(data)).pipe(pluckItemWrapperData<any, ResponseItemWrapper<any>>());
+    }
 
-  get(id: number): Observable<UserModel> {
-      let data = {'userId':id};
-    return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/user/get`, wrapJsonForRequest(data))
-                    .pipe(pluckItemWrapperData<any, ResponseItemWrapper<UserModel>>())
-  }
+    get(id: number): Observable<UserModel> {
+        let data = { 'userId': id };
+        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/user/get`, wrapJsonForRequest(data))
+            .pipe(pluckItemWrapperData<any, ResponseItemWrapper<UserModel>>())
+    }
 
-  delete(id: number): Observable<any> {
-      // let data = {'userId':id};
-    return this.http.post(`${environment.apiUrl}${environment.apiVersion}/user/delete`, wrapJsonForRequest(id))
-  }
+    delete(id: number): Observable<any> {
+        let data = { 'userId': id };
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}/user/delete`, wrapJsonForRequest(data))
+    }
 
-  list(data: any): Observable<UserModel[]> {
-    return this.http.post<ResponseArrayWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/user/paginate`, wrapJsonForRequest(data)).pipe(pluckArrayWrapperData<any, ResponseArrayWrapper<any>>())
-  }
+    list(data: any): Observable<UserModel[]> {
+        return this.http.post<ResponseArrayWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/user/paginate`, wrapJsonForRequest(data)).pipe(pluckArrayWrapperData<any, ResponseArrayWrapper<any>>())
+    }
 
     pagination(data: any): Observable<UserTable> {
         return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/user/paginate`, wrapJsonForRequest(data))
@@ -60,10 +60,10 @@ export class UserService {
     }
 
     importLocaitons(list: UserModel[]): Observable<any> {
-      return this.http.post(`${environment.apiUrl}${environment.apiVersion}/user/import`, wrapJsonListForRequest('user', list));
-  }
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}/user/import`, wrapJsonListForRequest('user', list));
+    }
 
     setOrganization(data: ProfileModel): Observable<any> {
         return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/setOrganizationDetails`, wrapJsonForRequest(data));
-      }
+    }
 }

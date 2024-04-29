@@ -1,103 +1,120 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit, HostListener} from '@angular/core';
 import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { PartnerModel } from 'src/app/core/models/partner.model';
-import { OrganizationService } from 'src/app/core/services/organization.service';
-import { PartnerService } from 'src/app/core/services/partner.service';
+import { BehaviorSubject} from 'rxjs';
 import { StatsService } from 'src/app/core/services/stats.service';
 
+
+interface pieData {
+    name: string
+    value: number
+}
+
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent implements OnDestroy  {
-  isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  totalVehiclesToday$: Observable<number>;
-  totalVehiclesInside$: Observable<number>;
-  totalVehiclesPlanned$: Observable<number>;
-  lineChartData$: Observable<any>;
-  currentVehicles$: Observable<any>;
-  futureVehicles$: Observable<any>;
 
-  clients$: BehaviorSubject<PartnerModel[]> = new BehaviorSubject<PartnerModel[]>([]);
+export class DashboardComponent implements OnInit {
+    innerWidth: any;
+    isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    dashboardData: any;
+    sidsByStatus: pieData[] = [
+        {
+            name: "On Route",
+            value: 0
+        },
+        {
+            name: "Port",
+            value: 0
+        },
+        {
+            name: "Berth",
+            value: 0
+        },
+    ];
+    timeBreakDown: pieData[] = [
+        {
+            name: "Operation Time",
+            value: 0
+        },
+        {
+            name: "Berth Time",
+            value: 0
+        },
+        {
+            name: "Waiting Time",
+            value: 0
+        },
+    ];
+    public readonly showLabels = true;
+    public readonly animations = true;
+    public readonly timeline = true;
 
-  // Charts
-  
-  public readonly showLabels = true;
-  public readonly animations = true;
-  public readonly xAxis = true;
-  public readonly yAxis = true;
-  public readonly showYAxisLabel = true;
-  public readonly showXAxisLabel = true;
-  public readonly xAxisLabel = 'Hour';
-  public readonly yAxisLabel = 'Vehicles today';
-  public readonly timeline = true;
+    readonly colorScheme: string | Color | any = {
+        domain: ['#FF922E', '#3386FE', '#1C3F47']
+    };
 
-  readonly colorScheme: string | Color | any = {
-    domain: ['#A10A28', '#BFEAF8' , '#7AA3E5', '#A27EA8']
-  };
+    readonly showLegend$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    public readonly legendPosition: LegendPosition = LegendPosition.Right;
+    public readonly pieChardData: { name: string, value: number }[] = [];
+    public view: [number, number];
 
-  readonly lineChartDataColorScheme: Color = {
-    name: 'Line Chart Color Scheme',
-    selectable: true,
-    group: ScaleType.Linear,
-    domain: ['#ffa500', '#BFEAF8' , '#7AA3E5', '#A27EA8']
-  }
+    @HostListener('window:resize', ['$event'])
+    onResize(event: any) {
+        this.innerWidth = window.innerWidth;
+        if (this.innerWidth <= 768) {
+            this.view = [this.innerWidth - 100, 320]
+        }
+        else if (this.innerWidth > 768 && this.innerWidth <= 1024) {
+            this.view = [this.innerWidth - 150, 320]
+        }
+        else {
+            this.view = [(this.innerWidth / 2) - 150, 320]
+        }
+    }
 
-  readonly showLegend$: BehaviorSubject<boolean> = new BehaviorSubject(true);
-  public readonly legendPosition: LegendPosition = LegendPosition.Right;
-  subscriberLocation: Subscription;
+    constructor(private readonly bpo: BreakpointObserver,
+        private readonly statService: StatsService,
+    ) {
+    }
 
-  public readonly lineChartData: { name: string, series: { name: string, value: number }[] }[] = [];
-  public readonly pieChardData: { name: string, value: number }[] = [];
-  public readonly view: [number, number] = [600, 280];
-  public readonly gradient = true;
-  constructor(private readonly bpo: BreakpointObserver,
-              private readonly statService: StatsService,
-              private readonly organizationService: OrganizationService,
-              private readonly partnerService: PartnerService,
-              private readonly router: Router,
-              private readonly route: ActivatedRoute
-  ) {}
+    ngOnInit(): void {
+        this.innerWidth = window.innerWidth;
+        if (this.innerWidth <= 768) {
+            this.view = [this.innerWidth - 100, 320]
+        }
+        else if (this.innerWidth > 768 && this.innerWidth <= 1024) {
+            this.view = [this.innerWidth - 150, 320]
+        }
+        else {
+            this.view = [(this.innerWidth / 2) - 150, 320]
+        }
+        this.getDashboardData()
+    }
 
-   ngOnInit(): void {
-    this.bpo.observe('(min-width:768px)')
-      .subscribe({
-        next: (bpState) => this.showLegend$.next(bpState.matches)
-      });
-      this.subscribeForLocationChanges();
-      this.retrieveClients();
-  }
-
-  retrieveClients(): void {
-    this.partnerService.list({}).subscribe((clients: PartnerModel[]) => {
-      this.clients$.next(clients);
-      this.isLoading$.next(false);
-    })
-  }
-
-  subscribeForLocationChanges(): void {
-    this.subscriberLocation = this.organizationService.organization.subscribe((locationData) => {
-      if (locationData) {
-        this.totalVehiclesToday$ = this.statService.getVehiclesToday()
-        this.totalVehiclesInside$ = this.statService.getVehiclesInside()
-        this.totalVehiclesPlanned$ = this.statService.getVehiclesPlanned()
-        this.lineChartData$ = this.statService.getHourlyVehiclesToday();
-        this.currentVehicles$ = this.statService.getVehiclesInsideByOperation();
-        this.futureVehicles$ = this.statService.getVehiclesPlannedByOperation();
-      }
-    })
-  }
-
-  redirectToPartnerDetails(event: MatAutocompleteSelectedEvent): void {
-    this.router.navigate(['../partners', 'edit', event.option.value.id], { relativeTo: this.route });
-  }
-
-  ngOnDestroy(): void {
-    this.subscriberLocation.unsubscribe();
-  }
+    getDashboardData() {
+        this.statService.getDashboardStats().subscribe({
+            next : response => {
+                this.dashboardData = response?.data?.attributes;
+                this.sidsByStatus[0].value = this.dashboardData?.sidsByStatus?.onRouteCount || 0
+                this.sidsByStatus[1].value = this.dashboardData?.ridsByStatus?.onPortQueueCount || 0
+                this.sidsByStatus[2].value = this.dashboardData?.sidsByStatus?.onBerthCount || 0
+                this.timeBreakDown[0].value = this.dashboardData?.timeBreakDown?.operationTime || 0
+                this.timeBreakDown[1].value = this.dashboardData?.timeBreakDown?.berthTime || 0
+                this.timeBreakDown[2].value = this.dashboardData?.timeBreakDown?.waitingTime || 0
+                this.isLoading$.next(false)
+            },
+            error : ()=>{
+                this.sidsByStatus[0].value = 0
+                this.sidsByStatus[1].value = 0
+                this.sidsByStatus[2].value = 0
+                this.timeBreakDown[0].value = 0
+                this.timeBreakDown[1].value = 0
+                this.timeBreakDown[2].value = 0
+                this.isLoading$.next(false)
+            }
+        })
+    }
 }

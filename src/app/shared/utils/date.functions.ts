@@ -3,6 +3,7 @@
 //     const month = date.getMonth() + 1 < 10 ? `0${date.getMonth()+1}` : date.getMonth()+1;
 //     return `${date.getFullYear()}-${month}-${day}`;
 // }
+
 import * as moment from 'moment';
 
 export const getFormattedDate = (date: Date): string => {

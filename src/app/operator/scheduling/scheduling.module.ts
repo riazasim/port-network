@@ -19,26 +19,22 @@ import { StatisticCardV2Module } from 'src/app/shared/components/cards/statistic
 import { RolePipesModule } from 'src/app/core/pipes/role-pipes.module';
 import { SchedulingCardComponent } from './scheduling-card/scheduling-card.component';
 import { SchedulingTableComponent } from './scheduling-table/scheduling-table.component';
-import { AddSchedulingComponent } from './add-scheduling/add-scheduling.component';
 import { SchedulingSuccessComponent } from './scheduling-success/scheduling-success.component';
 import { SchedulingImportModalComponent } from './scheduling-import-modal/scheduling-import-modal.component';
 import { SchedulingPlanModalComponent } from './scheduling-plan-modal/scheduling-plan-modal.component';
 import { SchedulingEditPlanComponent } from './scheduling-edit-plan/scheduling-edit-plan.component';
-import { SchedulingViewLogComponent } from './scheduling-view-log/scheduling-view-log.component';
+import { SchedulingViewModalComponent } from './scheduling-view-modal/scheduling-view-modal.component';
 import { MatIconModule } from '@angular/material/icon';
 import { SchedulingSendMessageComponent } from './scheduling-send-message/scheduling-send-message.component';
 import { SchedulingDeleteModalComponent } from './scheduling-delete-modal/scheduling-delete-modal.component';
-import { VehicleModule } from '../vehicle/vehicle.module';
 import { NoSchedulingComponent } from './no-scheduling/no-scheduling.component';
 import { SchedulingAddProductModalComponent } from './scheduling-add-product-modal/scheduling-add-product-modal.component';
-import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule, MatRippleModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatChipsModule } from '@angular/material/chips';
-import { EditSchedulingComponent } from './edit-scheduling/edit-scheduling.component';
 import { SchedulingTableBoxComponent } from './scheduling-table-box/scheduling-table-box.component';
 import { SchedulingUpgradeWarningModalComponent } from './scheduling-upgrade-warning-modal/scheduling-upgrade-warning-modal.component';
 import { SchedulingCancelModalComponent } from './scheduling-cancel-modal/scheduling-cancel-modal.component';
@@ -50,65 +46,85 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgScrollbarReachedModule } from 'ngx-scrollbar/reached-event';
 import { SchedulingShowClientSupplierCardLabelsComponent } from './scheduling-show-client-supplier-card-labels/scheduling-show-client-supplier-card-labels.component';
 import { SchedulingSearchBarComponent } from './scheduling-search-bar/scheduling-search-bar.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { PlanningListComponent } from './planning-list/planning-list.component';
+import { MaterialPanelTableModule } from 'src/app/shared/components/tables/material-panel-table/material-panel-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { CdkTableModule } from '@angular/cdk/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NoRestrictionsComponent } from './no-restrictions/no-restrictions.component';
+import { RestrictionsComponent } from './restrictions/restrictions.component';
 
 
 @NgModule({
-  declarations: [
-    DashboardComponent,
-    SchedulingComponent,
-    SchedulingCardComponent,
-    SchedulingTableComponent,
-    AddSchedulingComponent,
-    SchedulingSuccessComponent,
-    SchedulingImportModalComponent,
-    SchedulingPlanModalComponent,
-    SchedulingEditPlanComponent,
-    SchedulingViewLogComponent,
-    SchedulingSendMessageComponent,
-    SchedulingDeleteModalComponent,
-    NoSchedulingComponent,
-    SchedulingAddProductModalComponent,
-    EditSchedulingComponent,
-    SchedulingTableBoxComponent,
-    SchedulingUpgradeWarningModalComponent,
-    SchedulingCancelModalComponent,
-    SchedulingRejectModalComponent,
-    SchedulingCheckinCheckoutModalComponent,
-    SchedulingShowClientSupplierCardLabelsComponent,
-    SchedulingSearchBarComponent
-  ],
-  imports: [
-    CommonModule,
-    SchedulingRoutingModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatFormFieldModule,
-    TranslateModule,
-    MatStepperModule,
-    MatBadgeModule,
-    MatDialogModule,
-    RolePipesModule,
-    StatisticCardV2Module,
-    FontAwesomeModule,
-    SearchbarModule,
-    SharedModule,
-    DragDropModule,
-    MatSidenavModule,
-    MatIconModule,
-    VehicleModule,
-    MatMomentDateModule,
-    MatSnackBarModule,
-    MatButtonToggleModule,
-    MatMenuModule,
-    MatDatepickerModule,
-    MatChipsModule,
-    MatTooltipModule,
-    NgScrollbarModule,
-    NgScrollbarReachedModule
-  ],
-  providers: [
-    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_DATE_FORMATS }
-  ]
+    declarations: [
+        DashboardComponent,
+        SchedulingComponent,
+        SchedulingCardComponent,
+        SchedulingTableComponent,
+        SchedulingSuccessComponent,
+        SchedulingImportModalComponent,
+        SchedulingPlanModalComponent,
+        SchedulingEditPlanComponent,
+        SchedulingViewModalComponent,
+        SchedulingSendMessageComponent,
+        SchedulingDeleteModalComponent,
+        NoSchedulingComponent,
+        SchedulingAddProductModalComponent,
+        SchedulingTableBoxComponent,
+        SchedulingUpgradeWarningModalComponent,
+        SchedulingCancelModalComponent,
+        SchedulingRejectModalComponent,
+        SchedulingCheckinCheckoutModalComponent,
+        SchedulingShowClientSupplierCardLabelsComponent,
+        SchedulingSearchBarComponent,
+        PlanningListComponent,
+        NoRestrictionsComponent,
+        RestrictionsComponent
+    ],
+    imports: [
+        CommonModule,
+        SchedulingRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatStepperModule,
+        MatBadgeModule,
+        MatDialogModule,
+        RolePipesModule,
+        StatisticCardV2Module,
+        FontAwesomeModule,
+        SearchbarModule,
+        SharedModule,
+        DragDropModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatMomentDateModule,
+        MatSnackBarModule,
+        MatButtonToggleModule,
+        MatMenuModule,
+        MatDatepickerModule,
+        MatChipsModule,
+        MatTooltipModule,
+        NgScrollbarModule,
+        NgScrollbarReachedModule,
+        TranslateModule,
+        MaterialPanelTableModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        TranslateModule,
+        NgScrollbarModule,
+        NgScrollbarReachedModule,
+        CdkTableModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatCheckboxModule
+    ],
+    providers: []
 })
 export class SchedulingModule { }

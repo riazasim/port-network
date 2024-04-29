@@ -1,84 +1,48 @@
 <section *ngIf="(isLoading$ | async) || originalSource.length; else empty">
-    <div class="tw-flex tw-items-center">
-        <mat-button-toggle-group
-            class="tw-flex tw-w-full tw-justify-end tw-items-center"
-        >
-            <button
-                routerLink="../add"
-                [disabled]="(isLoading$ | async) || false"
-                class="tw-bg-primary tw-text-white  tw-py-2 tw-min-h-[35px] min-md:tw-min-w-[120px] max-sm:tw-w-full tw-rounded-l max-lg:tw-w-full"
-                type="button"
-            >
+    <div class="flex items-center">
+        <mat-button-toggle-group class="flex w-full justify-end items-center">
+            <button routerLink="../add" [disabled]="(isLoading$ | async) || false"
+                class="bg-primary text-white  py-2 min-h-[35px] min-md:min-w-[120px] max-sm:w-full rounded-l max-lg:w-full"
+                type="button">
                 Add User
             </button>
-            <button
-                [disabled]="(isLoading$ | async) || false"
-                class="tw-bg-primary tw-text-white  tw-min-h-[35px] min-md:tw-min-w-[30px] max-sm:tw-w-full tw-rounded-r"
-                type="button"
-                [matMenuTriggerFor]="menu"
-            >
-                <fa-icon
-                    [icon]="['fas', 'caret-down']"
-                    size="2x"
-                    class="tw-mx-2 tw-cursor-pointer tw-text-white"
-                >
+            <button [disabled]="(isLoading$ | async) || false"
+                class="bg-primary text-white  min-h-[35px] min-md:min-w-[30px] max-sm:w-full rounded-r" type="button"
+                [matMenuTriggerFor]="menu">
+                <fa-icon [icon]="['fas', 'caret-down']" size="2x" class="mx-2 cursor-pointer text-white">
                 </fa-icon>
             </button>
-            <mat-menu #menu="matMenu" xPosition="before" class="!tw-bg-white">
-                <button
-                    [disabled]="(isLoading$ | async) || false"
-                    (click)="openImportModal()"
-                    mat-menu-item
-                >
+            <mat-menu #menu="matMenu" xPosition="before" class="!bg-white">
+                <button [disabled]="(isLoading$ | async) || false" (click)="openImportModal()" mat-menu-item>
                     Import .xlsx
                 </button>
             </mat-menu>
         </mat-button-toggle-group>
     </div>
-    <material-panel-table
-        [showSearchbar]="false"
-        [showHeader]="true"
-        tableTitle="Users list"
-    >
-        <div table class="tw-w-full tw-shadow-lg">
+    <material-panel-table [showSearchbar]="false" [showHeader]="true" tableTitle="Users list">
+        <div table class="w-full shadow-lg">
             <ng-scrollbar track="horizontal" [autoHeightDisabled]="false">
-                <table
-                    class="material-table no-wrap tw-overflow-hidden"
-                    matSort
-                    (matSortChange)="sortData($event)"
-                    [class.loading]="isLoading$ | async"
-                    aria-label="Usage Table"
-                    cdk-table
-                    [dataSource]="dataSource"
-                >
+                <table class="material-table no-wrap overflow-hidden" matSort (matSortChange)="sortData($event)"
+                    [class.loading]="isLoading$ | async" aria-label="Usage Table" cdk-table [dataSource]="dataSource">
                     <ng-container cdkColumnDef="fullName">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col">
+                            <section class="flex flex-col">
                                 <div mat-sort-header="fullName">User name</div>
                                 <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
-                                    <input
-                                        #searchName
-                                        input
-                                        type="text"
-                                        (keyup)="
+                                    <input #searchName input type="text" (keyup)="
                                             applyFilter(
                                                 $event.target,
                                                 'fullName'
                                             )
-                                        "
-                                    />
-                                    <div
-                                        *ngIf="searchName.value"
-                                        close
-                                        (click)="
+                                        " />
+                                    <div *ngIf="searchName.value" close (click)="
                                             searchName.value = '';
                                             applyFilter(
                                                 { value: '' },
                                                 'fullName'
                                             )
-                                        "
-                                    >
+                                        ">
                                         <fa-icon icon="close"></fa-icon>
                                     </div>
                                 </searchbar>
@@ -91,13 +55,9 @@
 
                     <ng-container cdkColumnDef="status">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col">
+                            <section class="flex flex-col">
                                 <div mat-sort-header="status">Status</div>
-                                <select 
-                                class="border"
-                                    (change)="filterByStatus($event)"
-                                    filter-select
-                                >
+                                <select class="border" (change)="filterByStatus($event)" filter-select>
                                     <option value="" selected>Select</option>
                                     <option value="true">Active</option>
                                     <option value="false">Inactive</option>
@@ -105,24 +65,18 @@
                             </section>
                         </th>
                         <td cdk-cell *cdkCellDef="let row">
-                            <mat-chip
-                                [ngStyle]="{'background-color': row.user.status === true ? 'green' : 'red'}"
-                            >
+                            <mat-chip [ngStyle]="{'background-color': row.user.status === true ? 'green' : 'red'}">
                                 {{ row.user.status ? 'Active' : 'Inactive'}}
                             </mat-chip>
                         </td>
-                            <!-- {{ row.user.status ? "Active" : "Inactive" }} -->
+                        <!-- {{ row.user.status ? "Active" : "Inactive" }} -->
                     </ng-container>
 
                     <ng-container cdkColumnDef="userRole">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col">
+                            <section class="flex flex-col">
                                 <div mat-sort-header="userRole">User Role</div>
-                                <select
-                                class="border"
-                                    (change)="filterByRole($event)"
-                                    filter-select
-                                >
+                                <select class="border" (change)="filterByRole($event)" filter-select>
                                     <option value="" selected>Select</option>
                                     <option value="ADMIN">Admin</option>
                                     <option value="OPERATOR">Operator</option>
@@ -135,29 +89,17 @@
 
                     <ng-container cdkColumnDef="phone">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section
-                                class="tw-flex tw-flex-col"
-                                (keyup)="applyFilter($event.target, 'phone')"
-                            >
+                            <section class="flex flex-col" (keyup)="applyFilter($event.target, 'phone')">
                                 <div mat-sort-header="phone">Phone</div>
                                 <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
-                                    <input
-                                        #searchPhone
-                                        input
-                                        type="text"
-                                        (keyup)="
+                                    <input #searchPhone input type="text" (keyup)="
                                             applyFilter($event.target, 'phone')
-                                        "
-                                    />
-                                    <div
-                                        *ngIf="searchPhone.value"
-                                        close
-                                        (click)="
+                                        " />
+                                    <div *ngIf="searchPhone.value" close (click)="
                                             searchPhone.value = '';
                                             applyFilter({ value: '' }, 'phone')
-                                        "
-                                    >
+                                        ">
                                         <fa-icon icon="close"></fa-icon>
                                     </div>
                                 </searchbar>
@@ -168,26 +110,17 @@
 
                     <ng-container cdkColumnDef="email">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col">
+                            <section class="flex flex-col">
                                 <div mat-sort-header="email">Email</div>
                                 <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
-                                    <input
-                                        #searchEmail
-                                        input
-                                        type="text"
-                                        (keyup)="
+                                    <input #searchEmail input type="text" (keyup)="
                                             applyFilter($event.target, 'email')
-                                        "
-                                    />
-                                    <div
-                                        *ngIf="searchEmail.value"
-                                        close
-                                        (click)="
+                                        " />
+                                    <div *ngIf="searchEmail.value" close (click)="
                                             searchEmail.value = '';
                                             applyFilter({ value: '' }, 'email')
-                                        "
-                                    >
+                                        ">
                                         <fa-icon icon="close"></fa-icon>
                                     </div>
                                 </searchbar>
@@ -199,26 +132,17 @@
                     </ng-container>
                     <ng-container cdkColumnDef="department">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col">
+                            <section class="flex flex-col">
                                 <div mat-sort-header="department">Department</div>
                                 <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
-                                    <input
-                                        #searchDepartment
-                                        input
-                                        type="text"
-                                        (keyup)="
+                                    <input #searchDepartment input type="text" (keyup)="
                                             applyFilter($event.target, 'department')
-                                        "
-                                    />
-                                    <div
-                                        *ngIf="searchDepartment.value"
-                                        close
-                                        (click)="
+                                        " />
+                                    <div *ngIf="searchDepartment.value" close (click)="
                                             searchDepartment.value = '';
                                             applyFilter({ value: '' }, 'department')
-                                        "
-                                    >
+                                        ">
                                         <fa-icon icon="close"></fa-icon>
                                     </div>
                                 </searchbar>
@@ -231,81 +155,48 @@
 
                     <ng-container cdkColumnDef="actions">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
-                            <section class="tw-flex tw-flex-col">
+                            <section class="flex flex-col">
                                 <div>Actions</div>
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-primary"
-                                >
+                                <button type="button" class="btn btn-outline-primary">
                                     Mass update
                                 </button>
                             </section>
                         </th>
-                        <td
-                            cdk-cell
-                            *cdkCellDef="let row"
-                            class="tw-flex tw-justify-center tw-gap-4"
-                        >
-                            <fa-icon
-                                icon="eye"
-                                class="tw-text-primary tw-cursor-pointer"
-                                size="lg"
-                                [routerLink]="['../edit', row.user.id]"
-                            ></fa-icon>
-                            <fa-icon
-                                icon="trash-can"
-                                class="tw-text-primary tw-cursor-pointer"
-                                size="lg"
+                        <td cdk-cell *cdkCellDef="let row" class="flex justify-center gap-4">
+                            <fa-icon icon="eye" class="text-primary cursor-pointer" size="lg"
+                                [routerLink]="['../edit', row.user.id]"></fa-icon>
+                            <fa-icon icon="trash-can" class="text-primary cursor-pointer" size="lg"
                                 (click)="openDeleteModal(row.user.id)"
-                                *ngIf="data?.user?.userRole !== 'admin'"
-                            ></fa-icon>
+                                *ngIf="data?.user?.userRole !== 'admin'"></fa-icon>
                         </td>
                     </ng-container>
 
                     <!-- Header and Row Declarations -->
                     <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
-                    <tr
-                        cdk-row
-                        *cdkRowDef="let row; columns: displayedColumns"
-                    ></tr>
+                    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
                     <tr *cdkNoDataRow>
                         <td [colSpan]="displayedColumns.length">
                             <span *ngIf="isLoading$ | async">
-                                <app-loader
-                                    *ngIf="isLoading$ | async"
-                                    [isContainer]="true"
-                                    [fullScreen]="false"
-                                ></app-loader>
+                                <app-loader *ngIf="isLoading$ | async" [isContainer]="true"
+                                    [fullScreen]="false"></app-loader>
                             </span>
-                            <span
-                                *ngIf="
+                            <span *ngIf="
                                     dataSource.length === 0 &&
                                     !(isLoading$ | async)
-                                "
-                                >Nu există înregistrări</span
-                            >
-                            <span
-                                *ngIf="
+                                ">Nu există înregistrări</span>
+                            <span *ngIf="
                                     dataSource.length > 0 &&
                                     !(isLoading$ | async)
-                                "
-                                >Nicio înregistrare nu corespunde criteriilor de
-                                căutare</span
-                            >
+                                ">Nicio înregistrare nu corespunde criteriilor de
+                                căutare</span>
                         </td>
                     </tr>
                 </table>
             </ng-scrollbar>
 
-            <mat-paginator
-                [class.!tw-hidden]="dataSource.length === 0"
-                [pageSizeOptions]="pageSizeOptions"
-                [length]="length"
-                [pageIndex]="pageIndex"
-                (page)="onPaginateChange($event)"
-                [pageSize]="pageSize"
-                showFirstLastButtons
-            >
+            <mat-paginator [class.!hidden]="dataSource.length === 0" [pageSizeOptions]="pageSizeOptions"
+                [length]="length" [pageIndex]="pageIndex" (page)="onPaginateChange($event)" [pageSize]="pageSize"
+                showFirstLastButtons>
             </mat-paginator>
         </div>
     </material-panel-table>

@@ -1,86 +1,86 @@
 <section [@slideIn] [@slideOut] *ngIf="(step$ | async) === 1">
-  <h1 class="heading-2 tw-text-center tw-mb-8">Welcome! / Bun venit!</h1>
+  <h1 class="heading-2 text-center mb-8">Welcome! / Bun venit!</h1>
 
-  <div class="tw-max-w-sm tw-flex tw-flex-col tw-gap-4">
-    <p class="tw-mb-8 tw-text-center tw-text-defaultText tw-text-xl">
+  <div class="max-w-sm flex flex-col gap-4">
+    <p class="mb-8 text-center text-defaultText text-xl">
       Fill in the fields below to reset your password and make sure it is a strong password.
     </p>
 
-    <p class="tw-text-panelColor">Language / limba</p>
+    <p class="text-panelColor">Language / limba</p>
 
-    <div class="tw-flex tw-justify-center tw-gap-10">
-      <div (click)="toggleLanguage(true)" class="tw-flex tw-items-center tw-flex-col tw-gap-2 tw-cursor-pointer tw-p-4 tw-border tw-border-transparent tw-border-[3px]" [class.selected]="isEnglish$ | async">
+    <div class="flex justify-center gap-10">
+      <div (click)="toggleLanguage(true)" class="flex items-center flex-col gap-2 cursor-pointer p-4 border border-transparent border-[3px]" [class.selected]="isEnglish$ | async">
         <span [style.height.px]="170" [style.width.px]="170" class="fi fi-gb fis"></span>
         <p>English</p>
       </div>
-      <div (click)="toggleLanguage(false)" class="tw-flex tw-items-center tw-flex-col tw-gap-2 tw-cursor-pointer tw-p-4 tw-border tw-border-transparent tw-border-[3px]" [class.selected]="!(isEnglish$ | async)">
+      <div (click)="toggleLanguage(false)" class="flex items-center flex-col gap-2 cursor-pointer p-4 border border-transparent border-[3px]" [class.selected]="!(isEnglish$ | async)">
         <span [style.height.px]="170" [style.width.px]="170" class="fi fi-ro fis"></span>
         <p>Română</p>
       </div>
     </div>
 
     <div>
-      <button class="btn btn-primary tw-w-full" (click)="step$.next(2)">Continue</button>
+      <button class="btn btn-primary w-full" (click)="step$.next(2)">Continue</button>
     </div>
   </div>
 </section>
 
 <section [@slideIn] [@slideOut] *ngIf="(step$ | async) === 2">
-  <div class="tw-flex tw-flex-col tw-gap-4">
-    <h1 class="heading-2 tw-text-center tw-mb-8">GDPR</h1>
+  <div class="flex flex-col gap-4">
+    <h1 class="heading-2 text-center mb-8">GDPR</h1>
 
-    <p class="tw-mb-8 tw-text-defaultText tw-text-xl tw-max-w-[430px]">
+    <p class="mb-8 text-defaultText text-xl max-w-[430px]">
       Toate datele solicitate prin prezentul formular sunt necesare ca urmare a cerintelor legale din Romania pe zone de securitate sau pentru derularea relatiilor contractuale.
       <br><br>
       Pentru detalii suplimentare va rugam sa accesati - <a href="https://www.ursus.ro/politica-de-confidentialitate" target="_blank">https://www.ursus.ro/politica-de-confidentialitate</a>
     </p>
 
-    <div class="tw-flex tw-gap-4 tw-items-center">
-      <input id="viewed" type="checkbox" class="tw-border tw-border-defaultText tw-cursor-pointer">
+    <div class="flex gap-4 items-center">
+      <input id="viewed" type="checkbox" class="border border-defaultText cursor-pointer">
       <label for="viewed" class="heading-5">Am luat la cunostinta</label>
     </div>
 
     <div>
-      <button class="btn btn-primary tw-w-full" (click)="step$.next(3)">Continue</button>
+      <button class="btn btn-primary w-full" (click)="step$.next(3)">Continue</button>
     </div>
   </div>
 </section>
 
 <section [@slideIn] [@slideOut] *ngIf="(step$ | async) === 3">
-  <div class="tw-flex tw-flex-col tw-gap-4">
-    <h1 class="heading-2 tw-text-center tw-mb-8">Setează parola</h1>
+  <div class="flex flex-col gap-4">
+    <h1 class="heading-2 text-center mb-8">Setează parola</h1>
 
-    <p class="tw-mb-8 tw-text-defaultText tw-text-xl tw-max-w-[430px]">
+    <p class="mb-8 text-defaultText text-xl max-w-[430px]">
       Te rugam sa setezi parola contului tau care trebuie sa fie de minim 8 caractere si sa contina cel putin 3 din urmatoarele tipuri de caractere: litere mari, litere mici, cifre si semne speciale.
       <br><br>
       Ulterior, vei fi redirectionat catre pagina de login unde vei folosi adresa de email si aceasta parola pentru a accesa portalul.
     </p>
 
-    <form [formGroup]="registerForm" class="tw-w-full tw-min-w-xs tw-flex tw-flex-col tw-gap-4">
+    <form [formGroup]="registerForm" class="w-full min-w-xs flex flex-col gap-4">
 
-        <div formGroupName="userSetting" iconic-input-wrapper leftIcon="user" class="tw-w-full" [withCheckmark]="true">
-            <input formControlName="firstName" type="text" inputRef placeholder="First Name" class="tw-text-center" />
+        <div formGroupName="userSetting" iconic-input-wrapper leftIcon="user" class="w-full" [withCheckmark]="true">
+            <input formControlName="firstName" type="text" inputRef placeholder="First Name" class="text-center" />
         </div>
-        <div formGroupName="userSetting" iconic-input-wrapper leftIcon="user" class="tw-w-full" [withCheckmark]="true">
-            <input formControlName="lastName" type="text" inputRef placeholder="Last Name" class="tw-text-center" />
-        </div>
-
-        <div formGroupName="user" iconic-input-wrapper leftIcon="envelope" class="tw-w-full" [withCheckmark]="true">
-            <input formControlName="email" type="text" inputRef placeholder="Email" class="tw-text-center" />
+        <div formGroupName="userSetting" iconic-input-wrapper leftIcon="user" class="w-full" [withCheckmark]="true">
+            <input formControlName="lastName" type="text" inputRef placeholder="Last Name" class="text-center" />
         </div>
 
-      <div formGroupName="userSetting" iconic-input-wrapper [withCheckmark]="true" leftIcon="phone" class="tw-w-full">
-        <input formControlName="phone" type="tel" inputRef placeholder="Phone #" class="tw-text-center">
+        <div formGroupName="user" iconic-input-wrapper leftIcon="envelope" class="w-full" [withCheckmark]="true">
+            <input formControlName="email" type="text" inputRef placeholder="Email" class="text-center" />
+        </div>
+
+      <div formGroupName="userSetting" iconic-input-wrapper [withCheckmark]="true" leftIcon="phone" class="w-full">
+        <input formControlName="phone" type="tel" inputRef placeholder="Phone #" class="text-center">
       </div>
-      <div formGroupName="userSetting" iconic-input-wrapper [withCheckmark]="true" leftIcon="phone" class="tw-w-full">
-        <input formControlName="phoneRegionCode" type="text" inputRef placeholder="Phone Region Code" class="tw-text-center">
+      <div formGroupName="userSetting" iconic-input-wrapper [withCheckmark]="true" leftIcon="phone" class="w-full">
+        <input formControlName="phoneRegionCode" type="text" inputRef placeholder="Phone Region Code" class="text-center">
       </div>
 
 
 
-        <div class="tw-flex tw-flex-col tw-gap-4 tw-text-center">
-            <button [disabled]="isLoading$ | async" type="submit" class="btn btn-primary tw-w-full" (click)="signUp()">Sign Up</button>
-            <p class="heading-5 tw-text-textDefault tw-font-bold">Already have an account? <a class="tw-text-primary tw-cursor-pointer" routerLink="../sign-in">Sign in</a></p>
+        <div class="flex flex-col gap-4 text-center">
+            <button [disabled]="isLoading$ | async" type="submit" class="btn btn-primary w-full" (click)="signUp()">Sign Up</button>
+            <p class="heading-5 text-textDefault font-bold">Already have an account? <a class="text-primary cursor-pointer" routerLink="../sign-in">Sign in</a></p>
         </div>
     </form>
   </div>
