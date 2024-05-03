@@ -1,5 +1,6 @@
-﻿import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { CompanyModel, ContactsModel } from 'src/app/core/models/company.model';
@@ -15,10 +16,13 @@ import { PortService } from 'src/app/core/services/port.service';
 export class CompaniesAddEditComponent implements OnInit {
   companyForm: FormGroup;
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  stepOne$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  @ViewChild('stepper', { static: false }) matStepper: MatStepper;
   company$: BehaviorSubject<CompanyModel|null> = new BehaviorSubject<CompanyModel|null>(null);
   id: number;
   portId: number | null;
   ports: PortModel[] = [];
+  isLinear = true;
   constructor(private fb: UntypedFormBuilder,
               private companyService: CompanyService,
               private readonly portService: PortService,
@@ -30,6 +34,12 @@ export class CompaniesAddEditComponent implements OnInit {
     this.subscribeForQueryParams();
     this.retrievePorts();
   }
+
+  next(index: any): void {
+    if (this.matStepper) {
+      this.matStepper.selectedIndex = index;
+    }
+}
 
   subscribeForQueryParams(): void {
     this.id = this.route.snapshot.params['id'];
@@ -65,6 +75,11 @@ export class CompaniesAddEditComponent implements OnInit {
       addrCountry: this.fb.control(data?.addrCountry || '', [Validators.required]),
       addrCounty: this.fb.control(data?.addrCounty || '', [Validators.required]),
       addrZipCode: this.fb.control(data?.addrZipCode || '', [Validators.required]),
+      countryCode: this.fb.control(data?.countryCode || '', [Validators.required]),
+      companyVatNumber: this.fb.control(data?.companyVatNumber || '', [Validators.required]),
+      isTypeShipOwner: this.fb.control(data?.isTypeShipOwner || ''),
+      isTypeAgentCompany: this.fb.control(data?.isTypeAgentCompany || ''),
+      isTypeManeuveringCompany: this.fb.control(data?.isTypeManeuveringCompany || ''),
       addrTimezone: this.fb.control(data?.addrTimezone || 'Buchrest'),
       contacts: this.fb.array([]),
       imgPreview: this.fb.control(data?.imgPreview || ''),

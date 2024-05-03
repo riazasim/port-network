@@ -1,9 +1,62 @@
 ﻿<edit-container [headerTitle]="id ? 'Edit Company' : 'Add Company'">
+    <mat-stepper labelPosition="bottom" [linear]="isLinear" #stepper>
+        <mat-step label="Company type">
     <app-loader *ngIf="isLoading$ | async" [isContainer]="true" [fullScreen]="false"></app-loader>
     <form *ngIf="!(isLoading$ | async)" [formGroup]="companyForm">
         <div>
             <div>
-                <h6 class="font-bold mb-3">Details</h6>
+                <p class="mb-3">Please insert the VAT number of the company in the field below.
+                    If the company is not in our system, you will be asked to add 
+                    the details of that company. If the company is in our system, 
+                    you do not need to do anything else.</p>
+                
+                <div>
+                    <div class="min-md:flex gap-2">
+                        <div class="flex-2">
+                            <h6 class="font-bold">Country code</h6>
+                            <div iconic-input-wrapper leftIcon="location-dot">
+                                <input inputRef type="text" formControlName="countryCode" />
+                            </div>
+                        </div>
+                        <div class="flex-2">
+                            <h6 class="font-bold">Company VAT number</h6>
+                            <div iconic-input-wrapper leftIcon="location-dot">
+                                <input inputRef type="text"  formControlName="companyVatNumber" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h6 class="font-bold mb-3">Company type</h6>
+                <p class="mb-3">Tick all the options that apply for the company you want to add.</p>
+                <div class="flex gap-20">
+                    <mat-checkbox formControlName="isTypeShipOwner">Ship owner</mat-checkbox>
+                    <mat-checkbox formControlName="isTypeAgentCompany">Agent company</mat-checkbox>
+                    <mat-checkbox formControlName="isTypeManeuveringCompany">Maneuvering company</mat-checkbox>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="flex justify-center mt-10 pt-5">
+            <div class="flex gap-4">
+                <button [routerLink]="id ? '../../list' : '../list'"
+                    class="btn btn-outline-primary min-lg:min-w-[250px]" type="button" [disabled]="isLoading$ | async">
+                    Cancel
+                </button>
+                <!-- <button class="btn btn-primary" type="button" (click)="saveLocation()" [disabled]="companyForm.invalid || (isLoading$ | async)">Save</button> -->
+                <button class="btn btn-primary min-lg:min-w-[250px]" type="button" (click)="next(1)">
+                    Next
+                </button>
+            </div>
+        </div>
+    </form>
+</mat-step>
+        <mat-step label="Company details">
+    <app-loader *ngIf="isLoading$ | async" [isContainer]="true" [fullScreen]="false"></app-loader>
+    <form *ngIf="!(isLoading$ | async)" [formGroup]="companyForm">
+        <div>
+            <div>
+                <!-- <h6 class="font-bold mb-3">Details</h6> -->
                 <div class="min-xl:columns-4">
                     <h6 class="font-bold">Company Name</h6>
                     <div class="h-[75px]">
@@ -165,9 +218,9 @@
 
         <div class="flex justify-center pt-5">
             <div class="flex gap-4">
-                <button [routerLink]="id ? '../../list' : '../list'"
+                <button (click)="next(0)"
                     class="btn btn-outline-primary min-lg:min-w-[250px]" type="button" [disabled]="isLoading$ | async">
-                    Cancel
+                    Back
                 </button>
                 <!-- <button class="btn btn-primary" type="button" (click)="saveLocation()" [disabled]="companyForm.invalid || (isLoading$ | async)">Save</button> -->
                 <button class="btn btn-primary min-lg:min-w-[250px]" type="button" (click)="saveCompany()">
@@ -176,4 +229,6 @@
             </div>
         </div>
     </form>
+</mat-step>
+</mat-stepper>
 </edit-container>

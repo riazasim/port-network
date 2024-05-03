@@ -15,6 +15,11 @@ export interface CompanyModel {
     addrZipCode: string;
     addrTimezone?:string | '';
     contacts: ContactsModel[] | [];
+    countryCode: string;
+    companyVatNumber: string;
+    isTypeShipOwner: boolean;
+    isTypeAgentCompany: boolean;
+    isTypeManeuveringCompany: boolean;
     imgPreview: File;
 }
 
