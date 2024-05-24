@@ -6,8 +6,6 @@ import { PageEvent } from "@angular/material/paginator";
 import { BehaviorSubject } from "rxjs";
 import { PlanningService } from 'src/app/core/services/planning.service';
 import { PlanningModel } from 'src/app/core/models/planning.model';
-import { SchedulingDeleteModalComponent } from '../scheduling-delete-modal/scheduling-delete-modal.component';
-import { SchedulingImportModalComponent } from '../scheduling-import-modal/scheduling-import-modal.component';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -33,11 +31,7 @@ export class PlanningListComponent implements OnChanges {
     pageIndex: number;
     pageSize: number;
 
-    constructor(private readonly dialogService: MatDialog,
-        private readonly planningService: PlanningService,
-        private readonly cd: ChangeDetectorRef,
-        private readonly authService: AuthService
-    ) {
+    constructor() {
         this.dataSource = this.plannings;
         this.originalSource = this.plannings;
         this.isLoading$.next(false)
@@ -92,21 +86,21 @@ export class PlanningListComponent implements OnChanges {
     }
 
     openDeleteModal(id: number) {
-        this.dialogService.open(SchedulingDeleteModalComponent, {
-            disableClose: true,
-            data: { "id": id, "title": "planning" }
-        }).afterClosed()
-            .subscribe({
-                next: (isDelete: boolean) => {
-                    if (isDelete) {
-                        this.isTableLoading$.next(true);
-                        this.planningService.delete(id).subscribe(() => {
-                            this.retrievePlanningList('');
-                            this.cd.detectChanges();
-                        })
-                    }
-                }
-            });
+        // this.dialogService.open(SchedulingDeleteModalComponent, {
+        //     disableClose: true,
+        //     data: { "id": id, "title": "planning" }
+        // }).afterClosed()
+        //     .subscribe({
+        //         next: (isDelete: boolean) => {
+        //             if (isDelete) {
+        //                 this.isTableLoading$.next(true);
+        //                 this.planningService.delete(id).subscribe(() => {
+        //                     this.retrievePlanningList('');
+        //                     this.cd.detectChanges();
+        //                 })
+        //             }
+        //         }
+        //     });
     }
 
     applyFilter(target: any, column: string, isMultipleSearch = false): void {
@@ -183,19 +177,19 @@ export class PlanningListComponent implements OnChanges {
         });
     }
     openImportModal(): void {
-        this.isLoading$.next(true);
-        this.dialogService.open(SchedulingImportModalComponent, {
-            disableClose: true,
-            data: {}
-        }).afterClosed()
-            .subscribe({
-                next: (isImported) => {
-                    if (isImported) {
-                        this.retrievePlanningList('');
-                    } else {
-                        this.isLoading$.next(false);
-                    }
-                }
-            });
+        // this.isLoading$.next(true);
+        // this.dialogService.open(SchedulingImportModalComponent, {
+        //     disableClose: true,
+        //     data: {}
+        // }).afterClosed()
+        //     .subscribe({
+        //         next: (isImported) => {
+        //             if (isImported) {
+        //                 this.retrievePlanningList('');
+        //             } else {
+        //                 this.isLoading$.next(false);
+        //             }
+        //         }
+        //     });
     }
 }
