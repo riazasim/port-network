@@ -26,6 +26,7 @@ export class PortService {
     formData.delete('data[imgPreview]');
     formData.append('imgPreview', data.imgPreview);
     formData.append('contacts', JSON.stringify(data.contacts));
+    formData.append('zones', JSON.stringify(data.zones));
     return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/create`, formData);
   }
 
@@ -35,6 +36,7 @@ export class PortService {
     formData.delete('data[imgPreview]');
     formData.delete('data[portId]');
     formData.append('contacts', JSON.stringify(data.contacts));
+    formData.append('zones', JSON.stringify(data.zones));
     if (data.imgPreview) formData.append('imgPreview', data.imgPreview);
     return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/update`, formData);
   }
@@ -69,6 +71,13 @@ export class PortService {
         contactId:contactId
     }
   return this.http.post(`${environment.apiUrl}${environment.apiVersion}/port/contact/delete`,data)
+}
+  deleteZone(portId: number, zoneId: number): Observable<any> {
+    let data={
+        portId:portId,
+        zoneId:zoneId
+    }
+  return this.http.post(`${environment.apiUrl}${environment.apiVersion}/port/zone/delete`,data)
 }
   pagination(data: any): Observable<PortTable> {
     return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/paginate`, wrapJsonForRequest(data))

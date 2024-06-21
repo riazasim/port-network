@@ -3,7 +3,7 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ContactsModel } from 'src/app/core/models/contact.model';
-import { PortModel } from 'src/app/core/models/port.model';
+import { PortModel, ZonesModel } from 'src/app/core/models/port.model';
 import { PortService } from 'src/app/core/services/port.service';
 
 @Component({
@@ -61,6 +61,7 @@ export class PortsAddEditComponent implements OnInit {
       addrZipCode: this.fb.control(data?.addrZipCode || '', [Validators.required]),
       addrTimezone: this.fb.control(data?.addrTimezone || 'Buchrest'),
       contacts: this.fb.array([]),
+      zones: this.fb.array([]),
       imgPreview: this.fb.control(data?.imgPreview || ''),
     });
 
@@ -69,10 +70,18 @@ export class PortsAddEditComponent implements OnInit {
         this.addContact(contact);
       });
     }
+    if (data.zones) {
+      data.zones.forEach(zone => {
+        this.addZone(zone);
+      });
+    }
   }
   
   get contacts(): any {
     return this.portForm.get('contacts');
+  }
+  get zones(): any {
+    return this.portForm.get('zones');
   }
   
   addContact(contact?: ContactsModel): void {
@@ -85,29 +94,61 @@ export class PortsAddEditComponent implements OnInit {
     });
     this.contacts.push(newContact);
   }
+  addZone(zone?: ZonesModel): void {
+    const newZone = this.fb.group({
+      name: [zone?.name || '', Validators.required],
+      coordinates: [zone?.coordinates || '', Validators.required]
+    });
+    this.zones.push(newZone);
+  }
   
   removeContact(index: number): void {
     const portId = this.ports$?.value?.id;
     const contactsArray = this.ports$?.value?.contacts;
-  
+
     if (portId && contactsArray && contactsArray.length > 0) {
-      const contactId = contactsArray[index]?.id; // Get the ID of the contact at the specified index
+      const contactId = contactsArray[index]?.id;
       if (contactId !== null && contactId !== undefined && contactId > -1) {
         this.portService.deleteContact(portId, contactId).subscribe({
           next: () => {
             console.log('Contact deleted successfully');
-            this.contacts.removeAt(index); // Remove the contact from the form array
+            this.contacts.removeAt(index);
+            this.ports$.value!.contacts.splice(index, 1); // Update local contacts array
             this.cd.detectChanges();
-            return this.portForm.get('contacts');
           },
           error: error => {
             console.error('Error deleting contact:', error);
-            // Handle error, such as showing an error message to the user
           }
         });
       }
     } else {
       this.contacts.removeAt(index);
+      this.cd.detectChanges();
+    }
+  }
+
+  removeZone(index: number): void {
+    const portId = this.ports$?.value?.id;
+    const zonesArray = this.ports$?.value?.zones;
+
+    if (portId && zonesArray && zonesArray.length > 0) {
+      const zoneId = zonesArray[index]?.id;
+      if (zoneId !== null && zoneId !== undefined && zoneId > -1) {
+        this.portService.deleteZone(portId, zoneId).subscribe({
+          next: () => {
+            console.log('Zone deleted successfully');
+            this.zones.removeAt(index);
+            this.ports$.value!.zones.splice(index, 1); // Update local zones array
+            this.cd.detectChanges();
+          },
+          error: error => {
+            console.error('Error deleting zone:', error);
+          }
+        });
+      }
+    } else {
+      this.zones.removeAt(index);
+      this.cd.detectChanges();
     }
   }
 

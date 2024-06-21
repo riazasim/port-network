@@ -11,6 +11,7 @@ export type PortModel = {
     addrZipCode: string;
     addrTimezone?:string | '';
     contacts: ContactsModel[] | [];
+    zones: ZonesModel[] | [];
     imgPreview: File;
 }
 
@@ -34,6 +35,11 @@ export interface ContactsModel {
    occupiedCapacity: number;
    client: string;
    product: string;
+}
+export interface ZonesModel {
+    id?: number;
+   name:string;
+   coordinates:string;
 }
 
 export interface ContactsTable {
