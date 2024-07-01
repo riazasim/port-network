@@ -44,23 +44,23 @@ export class BrandingComponent implements OnInit {
     //   this.retrieveOrganization();
     //   this.origin = location?.origin;
     // })
-      let data={
-          "start": 0,
-          "length": 0,
-          "filters": ["","","","","",""],//["firstname/lastname", "status", "role", "phone", "email"]
-          "order": [{"dir": "DESC", "column": 0}]
-      }
+      // let data={
+      //     "start": 0,
+      //     "length": 0,
+      //     "filters": ["","","","","",""],
+      //     "order": [{"dir": "DESC", "column": 0}]
+      // }
 
-      this.locationService.pagination(data).subscribe((response: LocationTable) => {
-         // this.locations = response;
+      // this.locationService.pagination(data).subscribe((response: LocationTable) => {
+      //    // this.locations = response;
           this.retrieveOrganization();
-          this.origin = location?.origin;
-      })
+      //     this.origin = location?.origin;
+      // })
   }
 
-  retrieveLocations(): Observable<LocationModel[]> {
-    return this.locationService.list({});
-  }
+  // retrieveLocations(): Observable<LocationModel[]> {
+  //   return this.locationService.list({});
+  // }
 
   retrieveOrganization(): void {
     this.organizationService.get().subscribe((response: OrganizationModel|null) => {

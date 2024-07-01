@@ -22,27 +22,35 @@ export class OrganizationService {
   get(): Observable<OrganizationModel|null> {
     if (this.organization.getValue()) return of(this.organization.getValue());
 
-    return this.http.get<any>(`${environment.apiUrl}${environment.apiVersion}${this.route}`)
-    .pipe(
-      map((response: any) => {
-        const parsed = {
-          ...response.data.organization.attributes,
-          locationId: response.data.locationId,
-          locationName: response.data.locationName,
-          userId: response.data.userId
-        }
-
-        switch (parsed.id) {
-          case 7: this.isChimpexOrganization$.next(true); break;
-          case 8: this.isComvexOrganization$.next(true); break;
-          case 30: this.isUmexOrganization$.next(true); break;
-        }
-
-        this.organization.next(parsed);
-        return parsed;
-      })
-      ).pipe(shareReplay())
+    return this.http.post<ResponseItemWrapper<OrganizationModel>>(`${environment.apiUrl}${environment.apiVersion}/organization/get`,null)
+        .pipe(pluckItemWrapperData<OrganizationModel, ResponseItemWrapper<OrganizationModel>>());
   }
+
+  // get(): Observable<OrganizationModel|null> {
+  //   if (this.organization.getValue()) return of(this.organization.getValue());
+
+  //   return this.http.get<any>(`${environment.apiUrl}${environment.apiVersion}/organization/get`)
+  //   .pipe(
+  //     map((response: any) => {
+  //       debugger
+  //       const parsed = {
+  //         ...response.data.organization.attributes,
+  //         locationId: response.data.locationId,
+  //         locationName: response.data.locationName,
+  //         userId: response.data.userId
+  //       }
+
+  //       switch (parsed.id) {
+  //         case 7: this.isChimpexOrganization$.next(true); break;
+  //         case 8: this.isComvexOrganization$.next(true); break;
+  //         case 30: this.isUmexOrganization$.next(true); break;
+  //       }
+
+  //       this.organization.next(parsed);
+  //       return parsed;
+  //     })
+  //     ).pipe(shareReplay())
+  // }
 
   updateLogo(id: number, file: File): Observable<OrganizationModel> {
     const data = new FormData();

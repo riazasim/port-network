@@ -6,7 +6,7 @@
                 <div iconic-select-wrapper [rightIcon]="['fas', 'caret-down']">
                     <select [disabled]="!!contact" inputRef name="contact" id="contact" (change)="setContact($event)" [(ngModel)]="contactId">
                         <option [value]="null" selected disabled>Select contact</option>
-                        <option *ngFor="let contact of data.contacts" [value]="contact.id">{{contact.name}}</option>
+                        <option *ngFor="let contact of data.contacts" [value]="contact.id">{{contact.firstName}}</option>
                     </select>
                 </div>
             </div>
@@ -19,27 +19,17 @@
                 <p class="text-columnCell font-bold pb-3">contact details</p>
                 <div>
                     <div iconic-input-wrapper>
-                        <input inputRef type="text" placeholder="contact name" [(ngModel)]="contact.name">
+                        <input inputRef type="text" placeholder="contact name" [(ngModel)]="contact.firstName">
                     </div>
                 </div>
                 <div>
                     <div iconic-input-wrapper>
-                        <input inputRef type="text" placeholder="Size" [(ngModel)]="contact.capacity">
+                        <input inputRef type="text" placeholder="Size" [(ngModel)]="contact.lastName">
                     </div>
                 </div>
                 <div>
                     <div iconic-input-wrapper>
-                        <input inputRef type="text" placeholder="Brand" [(ngModel)]="contact.occupiedCapacity">
-                    </div>
-                </div>
-                <div>
-                    <div iconic-input-wrapper>
-                        <input inputRef type="number" placeholder="Amount" [(ngModel)]="contact.client">
-                    </div>
-                </div>
-                <div>
-                    <div iconic-input-wrapper>
-                        <input inputRef type="number" placeholder="Weight" [(ngModel)]="contact.product">
+                        <input inputRef type="text" placeholder="Brand" [(ngModel)]="contact.phoneNumber">
                     </div>
                 </div>
             </div>

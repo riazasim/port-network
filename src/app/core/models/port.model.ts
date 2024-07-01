@@ -30,11 +30,11 @@ export interface PortCustomField {
 export interface ContactsModel {
     id?: number;
    contactId?: number;
-   name:string;
-   capacity: number;
-   occupiedCapacity: number;
-   client: string;
-   product: string;
+   firstName:string;
+   lastName: string;
+   phoneNumber: string;
+//    client: string;
+//    product: string;
 }
 export interface ZonesModel {
     id?: number;

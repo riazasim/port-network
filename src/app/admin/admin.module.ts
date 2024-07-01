@@ -27,6 +27,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { HttpClientModule } from "@angular/common/http";
 import { TranslateModule } from "@ngx-translate/core";
 import { GoogleMapsModule } from '@angular/google-maps';
+import { NoLocationWarningComponent } from './no-location-warning/no-location-warning.component';
 
 
 
@@ -40,6 +41,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
         BrandingComponent,
         LocationSettingsComponent,
         ChangeLocationModalComponent,
+        NoLocationWarningComponent
     ],
     imports: [
         CommonModule,

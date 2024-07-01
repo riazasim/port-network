@@ -109,11 +109,11 @@ export class CompaniesAddEditComponent implements OnInit {
 
   addContact(contact?: ContactsModel): void {
     const newContact = this.fb.group({
-      name: [contact?.name || '', Validators.required],
-      capacity: [contact?.capacity || '', Validators.required],
-      occupiedCapacity: [contact?.occupiedCapacity || '', Validators.required],
-      client: [contact?.client || '', Validators.required],
-      product: [contact?.product || '', Validators.required],
+      firstName: [contact?.firstName || '', Validators.required],
+      lastName: [contact?.lastName || '', Validators.required],
+      phoneNumber: [contact?.phoneNumber || '', Validators.required],
+      // client: [contact?.client || '', Validators.required],
+      // product: [contact?.product || '', Validators.required],
     });
     this.contacts.push(newContact);
   }

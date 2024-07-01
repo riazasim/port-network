@@ -173,34 +173,49 @@
                     <table class="table border border-lightgray">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Capacity</th>
-                                <th>Occupied Capacity</th>
-                                <th>Client</th>
-                                <th>Product</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Phone Number</th>
+                                <!-- <th>Client</th>
+                                <th>Product</th> -->
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody formArrayName="contacts">
-                            <tr *ngFor="
+                            <tr
+                                *ngFor="
                                     let contact of contacts.controls;
                                     let i = index
-                                " [formGroupName]="i">
+                                "
+                                [formGroupName]="i"
+                            >
                                 <td>
-                                    <input class="text-center" matInput formControlName="name" />
+                                    <input
+                                        class="text-center"
+                                        matInput
+                                        formControlName="firstName"
+                                    />
                                 </td>
                                 <td>
-                                    <input class="text-center" matInput formControlName="capacity" />
+                                    <input
+                                        class="text-center"
+                                        matInput
+                                        formControlName="lastName"
+                                    />
                                 </td>
                                 <td>
-                                    <input matInput class="text-center" formControlName="occupiedCapacity" />
+                                    <input
+                                        matInput
+                                        class="text-center"
+                                        formControlName="phoneNumber"
+                                    />
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <input matInput class="text-center" formControlName="client" />
                                 </td>
                                 <td>
                                     <input matInput class="text-center" formControlName="product" />
-                                </td>
+                                </td> -->
                                 <td>
                                     <!-- <fa-icon  icon="pen" class="text-primary cursor-pointer"></fa-icon> -->
                                     <fa-icon icon="trash" (click)="removeContact(i)"

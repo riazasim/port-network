@@ -59,4 +59,11 @@ export class RolesService<T extends string = string> {
     return isUserInEveryRole(this.getUserRoles(), roles);
   }
 
+  public removeUserRoles(): any {
+    let role = localStorage.getItem('role');
+    if(role) localStorage.removeItem('role');
+    let userRole = localStorage.getItem('userRole');
+    if(userRole) localStorage.removeItem('userRole');
+}
+
 }

@@ -1,6 +1,6 @@
+<app-loader [isContainer]="false" *ngIf="(isLoading$ | async)" [fullScreen]="true" message="Logining Out"></app-loader>
 <div operator-layout version="latest">
-
-    <operator-header header optionsTitle="Menu" [companyName$]="companyName$">
+    <operator-header header optionsTitle="Menu" [locationName$]="(locationName$ | async)!">
         <ul menu class="header-menu-list">
             <li class="header-menu-list-item">
                 <fa-icon icon="bell" size="lg" class="menu-icon" tabindex="0" role="button">
@@ -24,8 +24,6 @@
 
     <navigation-menu aside [logoSrc]="logoImgSrc">
     </navigation-menu>
-
-
     <div main class="p-4 min-md:px-10 min-md:pb-8 min-h-full flex flex-col">
         <router-outlet class="hidden"></router-outlet>
     </div>

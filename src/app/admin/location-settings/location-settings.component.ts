@@ -18,10 +18,12 @@ export class LocationSettingsComponent {
   }, {
     name: 'Operations',
     link: '../operations'
-  }, {
+  },
+   {
     name: 'Locations',
     link: '../locations'
-  }, {
+  },
+   {
     name: 'Partners',
     link: '../partners'
   }, {

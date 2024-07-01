@@ -78,15 +78,32 @@ export class LocationService {
 
 
 
-
-
   getLocationsByUser(): Observable<any> {
-    return this.http.get<ResponseArrayWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}${this.locations}`).pipe(pluckArrayWrapperData<any, ResponseArrayWrapper<any>>());
+    return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/list`, wrapJsonForRequest({}))
+      .pipe(pluckArrayPaginationWrapperData<any, ResponseArrayPaginationWrapper<any>>(),
+        map((u: any) => {
+          return u;
+        })
+      );
   }
 
-  changeLocation(id: number): Observable<any> {
-    return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.locations}/${id}`, {});
+  changeLocation(id: number): Observable<LocationModel> {
+    const data = { portId: id };
+    return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/change`, wrapJsonForRequest(data))
+      .pipe(pluckArrayPaginationWrapperData<any, ResponseArrayPaginationWrapper<any>>(),
+        map((u: any) => {
+          return u;
+        })
+      );
   }
+
+  // getLocationsByUser(): Observable<any> {
+  //   return this.http.get<ResponseArrayWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}${this.locations}`).pipe(pluckArrayWrapperData<any, ResponseArrayWrapper<any>>());
+  // }
+
+  // changeLocation(id: number): Observable<any> {
+  //   return this.http.post(`${environment.apiUrl}${environment.apiVersion}${this.locations}/${id}`, {});
+  // }
 
   pagination(data: any): Observable<LocationTable> {
     return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/paginateLocations`, wrapJsonForRequest(data))

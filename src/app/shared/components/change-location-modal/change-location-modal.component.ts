@@ -13,6 +13,7 @@ export class ChangeLocationModalComponent {
   constructor(private readonly dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
 
+    
     selectLocation(index: number, id: number) {
       this.selectedLocations.length = 0;
       this.selectedLocations[index] = id;

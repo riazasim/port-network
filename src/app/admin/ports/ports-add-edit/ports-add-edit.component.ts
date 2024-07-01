@@ -2,8 +2,7 @@
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { ContactsModel } from 'src/app/core/models/contact.model';
-import { PortModel, ZonesModel } from 'src/app/core/models/port.model';
+import { ContactsModel, PortModel, ZonesModel } from 'src/app/core/models/port.model';
 import { PortService } from 'src/app/core/services/port.service';
 
 @Component({
@@ -86,11 +85,11 @@ export class PortsAddEditComponent implements OnInit {
   
   addContact(contact?: ContactsModel): void {
     const newContact = this.fb.group({
-      name: [contact?.name || '', Validators.required],
-      capacity: [contact?.capacity || '', Validators.required],
-      occupiedCapacity: [contact?.occupiedCapacity || '', Validators.required],
-      client: [contact?.client || '', Validators.required],
-      product: [contact?.product || '', Validators.required],
+      firstName: [contact?.firstName || '', Validators.required],
+      lastName: [contact?.lastName || '', Validators.required],
+      phoneNumber: [contact?.phoneNumber || '', Validators.required],
+      // client: [contact?.client || '', Validators.required],
+      // product: [contact?.product || '', Validators.required],
     });
     this.contacts.push(newContact);
   }

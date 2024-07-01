@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CustomFieldModel } from 'src/app/core/models/custom-field.model';
-import { ContactsModel } from 'src/app/core/models/contact.model';
 import { PortCustomField } from 'src/app/core/models/port.model';
 import { CompanyCustomField } from 'src/app/core/models/company.model';
 import { CompanyService } from 'src/app/core/services/company.service';
@@ -12,14 +11,14 @@ import { CompanyService } from 'src/app/core/services/company.service';
   styleUrls: ['./companies-add-contact-modal.component.scss']
 })
 export class CompanyAddContactModalComponent {
-  contact: ContactsModel|null;
+  contact: any|null;
   contactId: number|null = null;
   contactList: any
   constructor(private readonly dialogRef: MatDialogRef<any>,
               private readonly companyService: CompanyService,
               @Inject(MAT_DIALOG_DATA) public data: {
-                contact: ContactsModel, 
-                contacts: ContactsModel[],
+                contact: any, 
+                contacts: any[],
                 customFieldCompanyData: CompanyCustomField[],
                 companyData: CustomFieldModel[]
               }) {
@@ -32,7 +31,7 @@ export class CompanyAddContactModalComponent {
 
   setContact(event: Event): void {
     const contact = this.data.contacts.find(p => p.id === +(event.target as any).value);
-    this.contact = {...<ContactsModel>contact};
+    this.contact = {...<any>contact};
   //   this.contactService.pagination({
   //     "start": 0,
   //     "length": 0,
