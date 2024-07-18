@@ -1,6 +1,6 @@
 {
     "/api": {
-        "target": "http://54.235.153.233:8080",
+        "target": "https://ports.lares.ro/",
         "secure": false,
         "logLevel": "debug",
         "changeOrigin": true

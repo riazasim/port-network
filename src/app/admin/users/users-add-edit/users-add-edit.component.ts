@@ -77,7 +77,7 @@ export class UsersAddEditComponent {
           user:this.fb.group({
               email:this.fb.control(data?.user?.email || '',{nonNullable: false}),
              // data?.user?.roles
-              userRole: this.fb.control( data?.user?.userRole || '',{nonNullable: false}),
+              userRole: this.fb.control( data?.user?.userRole || 'ROLE_USER_OPERATOR',{nonNullable: false}),
               status: this.fb.control(data?.user?.status || '',{nonNullable: false}),
           }),
           userSetting:this.fb.group({
