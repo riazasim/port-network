@@ -52,15 +52,13 @@ export class PortsAddEditComponent implements OnInit {
       // portId: this.fb.control(data?.id),
       name: this.fb.control(data?.name || '', [Validators.required]),
       addrCoordinates: this.fb.control(data?.addrCoordinates || '', [Validators.required]),
-      addrStreet: this.fb.control(data?.addrStreet || '', [Validators.required]),
-      addrStreetNo: this.fb.control(data?.addrStreetNo || '', [Validators.required]),
       addrCity: this.fb.control(data?.addrCity || '', [Validators.required]),
       addrCountry: this.fb.control(data?.addrCountry || '', [Validators.required]),
       addrCounty: this.fb.control(data?.addrCounty || '', [Validators.required]),
       addrZipCode: this.fb.control(data?.addrZipCode || '', [Validators.required]),
-      addrTimezone: this.fb.control(data?.addrTimezone || 'Buchrest'),
+      // addrTimezone: this.fb.control(data?.addrTimezone || 'Buchrest'),
       contacts: this.fb.array([]),
-      zones: this.fb.array([]),
+      // zones: this.fb.array([]),
       imgPreview: this.fb.control(data?.imgPreview || ''),
     });
 
@@ -69,11 +67,11 @@ export class PortsAddEditComponent implements OnInit {
         this.addContact(contact);
       });
     }
-    if (data.zones) {
-      data.zones.forEach(zone => {
-        this.addZone(zone);
-      });
-    }
+    // if (data.zones) {
+    //   data.zones.forEach(zone => {
+    //     this.addZone(zone);
+    //   });
+    // }
   }
   
   get contacts(): any {
@@ -93,13 +91,13 @@ export class PortsAddEditComponent implements OnInit {
     });
     this.contacts.push(newContact);
   }
-  addZone(zone?: ZonesModel): void {
-    const newZone = this.fb.group({
-      name: [zone?.name || '', Validators.required],
-      coordinates: [zone?.coordinates || '', Validators.required]
-    });
-    this.zones.push(newZone);
-  }
+  // addZone(zone?: ZonesModel): void {
+  //   const newZone = this.fb.group({
+  //     name: [zone?.name || '', Validators.required],
+  //     coordinates: [zone?.coordinates || '', Validators.required]
+  //   });
+  //   this.zones.push(newZone);
+  // }
   
   removeContact(index: number): void {
     const portId = this.ports$?.value?.id;
@@ -126,30 +124,30 @@ export class PortsAddEditComponent implements OnInit {
     }
   }
 
-  removeZone(index: number): void {
-    const portId = this.ports$?.value?.id;
-    const zonesArray = this.ports$?.value?.zones;
+  // removeZone(index: number): void {
+  //   const portId = this.ports$?.value?.id;
+  //   const zonesArray = this.ports$?.value?.zones;
 
-    if (portId && zonesArray && zonesArray.length > 0) {
-      const zoneId = zonesArray[index]?.id;
-      if (zoneId !== null && zoneId !== undefined && zoneId > -1) {
-        this.portService.deleteZone(portId, zoneId).subscribe({
-          next: () => {
-            console.log('Zone deleted successfully');
-            this.zones.removeAt(index);
-            this.ports$.value!.zones.splice(index, 1); // Update local zones array
-            this.cd.detectChanges();
-          },
-          error: error => {
-            console.error('Error deleting zone:', error);
-          }
-        });
-      }
-    } else {
-      this.zones.removeAt(index);
-      this.cd.detectChanges();
-    }
-  }
+  //   if (portId && zonesArray && zonesArray.length > 0) {
+  //     const zoneId = zonesArray[index]?.id;
+  //     if (zoneId !== null && zoneId !== undefined && zoneId > -1) {
+  //       this.portService.deleteZone(portId, zoneId).subscribe({
+  //         next: () => {
+  //           console.log('Zone deleted successfully');
+  //           this.zones.removeAt(index);
+  //           this.ports$.value!.zones.splice(index, 1); // Update local zones array
+  //           this.cd.detectChanges();
+  //         },
+  //         error: error => {
+  //           console.error('Error deleting zone:', error);
+  //         }
+  //       });
+  //     }
+  //   } else {
+  //     this.zones.removeAt(index);
+  //     this.cd.detectChanges();
+  //   }
+  // }
 
   setImgPreview(target: any, input: any): void {
     if (target.files.item(0)) {

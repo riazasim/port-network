@@ -3,15 +3,13 @@ export type PortModel = {
     portId?: number;
     name: string;
     addrCoordinates: string;
-    addrStreet: string;
-    addrStreetNo: string;
     addrCity: string;
     addrCountry: string;
     addrCounty: string;
     addrZipCode: string;
-    addrTimezone?:string | '';
+    // addrTimezone?:string | '';
     contacts: ContactsModel[] | [];
-    zones: ZonesModel[] | [];
+    // zones: ZonesModel[] | [];
     imgPreview: File;
 }
 

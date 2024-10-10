@@ -81,6 +81,7 @@ export class CompaniesAddEditComponent implements OnInit {
       isTypeShipOwner: this.fb.control(data?.isTypeShipOwner || ''),
       isTypeAgentCompany: this.fb.control(data?.isTypeAgentCompany || ''),
       isTypeManeuveringCompany: this.fb.control(data?.isTypeManeuveringCompany || ''),
+      isTypePortOperator: this.fb.control(data?.isTypePortOperator || ''),
       addrTimezone: this.fb.control(data?.addrTimezone || 'Buchrest'),
       contacts: this.fb.array([]),
       imgPreview: this.fb.control(data?.imgPreview || ''),
@@ -111,9 +112,8 @@ export class CompaniesAddEditComponent implements OnInit {
     const newContact = this.fb.group({
       firstName: [contact?.firstName || '', Validators.required],
       lastName: [contact?.lastName || '', Validators.required],
+      phoneRegionCode: [contact?.phoneRegionCode || '', Validators.required],
       phoneNumber: [contact?.phoneNumber || '', Validators.required],
-      // client: [contact?.client || '', Validators.required],
-      // product: [contact?.product || '', Validators.required],
     });
     this.contacts.push(newContact);
   }

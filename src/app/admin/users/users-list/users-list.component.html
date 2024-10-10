@@ -19,7 +19,7 @@
             </mat-menu>
         </mat-button-toggle-group>
     </div>
-    <material-panel-table [showSearchbar]="false" [showHeader]="true" tableTitle="Users list">
+    <material-panel-table [showSearchbar]="false" [showHeader]="true" tableTitle="Users List">
         <div table class="w-full shadow-lg">
             <ng-scrollbar track="horizontal" [autoHeightDisabled]="false">
                 <table class="material-table no-wrap overflow-hidden" matSort (matSortChange)="sortData($event)"
@@ -27,7 +27,7 @@
                     <ng-container cdkColumnDef="fullName">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="flex flex-col">
-                                <div mat-sort-header="fullName">User name</div>
+                                <div mat-sort-header="fullName">User Name</div>
                                 <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
                                     <input #searchName input type="text" (keyup)="
