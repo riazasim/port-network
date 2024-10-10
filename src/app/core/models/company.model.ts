@@ -20,6 +20,7 @@ export interface CompanyModel {
     isTypeShipOwner: boolean;
     isTypeAgentCompany: boolean;
     isTypeManeuveringCompany: boolean;
+    isTypePortOperator: boolean;
     imgPreview: File;
 }
 
@@ -40,6 +41,7 @@ export interface ContactsModel {
    contactId?: number;
    firstName:string;
    lastName: string;
+   phoneRegionCode: string;
    phoneNumber: string;
 //    client: string;
 //    product: string;

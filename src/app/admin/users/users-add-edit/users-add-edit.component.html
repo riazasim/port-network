@@ -1,5 +1,5 @@
 <!--<edit-container headerTitle="Add user - users details">-->
-    <edit-container [headerTitle]="id ?  'Edit users details':'Add users details'">
+    <edit-container [headerTitle]="id ?  'Edit Users Details':'Add Users Details'">
     <app-loader *ngIf="isLoading$ | async" [isContainer]="true" [fullScreen]="false"></app-loader>
     <form [formGroup]="userForm" *ngIf="!(isLoading$ | async)">
             <div class="flex flex-col mx-auto max-w-[440px] gap-5">
