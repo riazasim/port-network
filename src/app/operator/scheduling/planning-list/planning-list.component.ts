@@ -1,4 +1,4 @@
-﻿import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+﻿import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { compare } from 'src/app/shared/utils/sort.function';
@@ -7,7 +7,9 @@ import { BehaviorSubject } from "rxjs";
 import { PlanningService } from 'src/app/core/services/planning.service';
 import { PlanningModel } from 'src/app/core/models/planning.model';
 import { AuthService } from 'src/app/core/services/auth.service';
-
+import { MatSidenav } from '@angular/material/sidenav';
+import { SchedulingDeleteModalComponent } from '../scheduling-delete-modal/scheduling-delete-modal.component';
+import { SchedulingImportModalComponent } from '../scheduling-import-modal/scheduling-import-modal.component';
 @Component({
     selector: 'app-planning-list',
     templateUrl: './planning-list.component.html',
@@ -15,23 +17,30 @@ import { AuthService } from 'src/app/core/services/auth.service';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlanningListComponent implements OnChanges {
+
     @Output() triggerOpenLogs: EventEmitter<{ view: string, id: number, planning: PlanningModel, modal: string }> = new EventEmitter();
     @Output() onPaginate: EventEmitter<any> = new EventEmitter();
     @Output() retrievePlannings: EventEmitter<any> = new EventEmitter();
     @Input() isTableLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
     @Input() userRole: string;
-    @Input() plannings: PlanningModel[] = [];
+    @Input() transportMode: string;
+    @Input() plannings: any;
     @Input() length: number;
     isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    displayedColumns: string[] = ['id', 'manevre', 'vesselId', 'berth', 'products', 'estimatedTimeArrival', 'relativeTimeArrival', 'delay', 'coordinates', 'shipmentStatus', 'actions'];
-    dataSource: PlanningModel[] = [];
-    originalSource: PlanningModel[] = [];
+    displayedColumns: string[] = ['rid', 'sid', 'manevre', 'vesselId', 'berth', 'products', 'estimatedTimeArrival', 'relativeTimeArrival', 'delay', 'coordinates', 'shipmentStatus'];
+    dataSource: any[] = [];
+    originalSource: any[] = [];
     appliedFilters: any = {};
     pageSizeOptions: number[] = [5, 10, 12, 15];
     pageIndex: number;
     pageSize: number;
+    logId: number;
+    logModal: string;
 
-    constructor() {
+    constructor(private readonly dialogService: MatDialog,
+        private readonly planningService: PlanningService,
+        private readonly cd: ChangeDetectorRef,
+    ) {
         this.dataSource = this.plannings;
         this.originalSource = this.plannings;
         this.isLoading$.next(false)
@@ -45,62 +54,28 @@ export class PlanningListComponent implements OnChanges {
 
     retrievePlanningList(filterDate: string): void {
         this.retrievePlannings.emit();
-        // this.pageIndex = 0;
-        // this.pageSize = 5;
-        // let data = {
-        //     "start": this.pageIndex,
-        //     "length": this.pageSize,
-        //     "filters": [filterDate, "", "", "", "", ""],
-        //     "order": [{ "dir": "DESC", "column": 0 }]
-        // }
-        // this.planningService.pagination(data).subscribe({
-        //     next: response => {
-        //         this.dataSource = response.items;
-        //         this.originalSource = response.items;
-        //         this.length = response.noTotal;
-        //         this.cd.detectChanges();
-        //         this.isLoading$.next(false);
-        //     }
-        // })
     }
 
     onPaginateChange(event: PageEvent) {
         this.onPaginate.emit({ start: event.pageIndex ? event.pageIndex * event.pageSize : event.pageIndex, length: event.pageSize })
-        // let data = {
-        //     "start": event.pageIndex ? event.pageIndex * event.pageSize : event.pageIndex,
-        //     "length": event.pageSize,
-        //     "filters": ["", "", "", "", "", ""],
-        //     "order": [{ "dir": "DESC", "column": 0 }]
-        // }
-        // this.planningService.pagination(data).subscribe({
-        //     next: response => {
-        //         this.dataSource = response.items;
-        //         this.originalSource = response.items;
-        //         this.cd.detectChanges();
-        //     }
-        // })
-    }
-
-    OnEmit(row: any, modal: string) {
-        this.triggerOpenLogs.emit({ view: 'view', id: row.planning.id, planning: row, modal: modal })
     }
 
     openDeleteModal(id: number) {
-        // this.dialogService.open(SchedulingDeleteModalComponent, {
-        //     disableClose: true,
-        //     data: { "id": id, "title": "planning" }
-        // }).afterClosed()
-        //     .subscribe({
-        //         next: (isDelete: boolean) => {
-        //             if (isDelete) {
-        //                 this.isTableLoading$.next(true);
-        //                 this.planningService.delete(id).subscribe(() => {
-        //                     this.retrievePlanningList('');
-        //                     this.cd.detectChanges();
-        //                 })
-        //             }
-        //         }
-        //     });
+        this.dialogService.open(SchedulingDeleteModalComponent, {
+            disableClose: true,
+            data: { "id": id, "title": "planning" }
+        }).afterClosed()
+            .subscribe({
+                next: (isDelete: boolean) => {
+                    if (isDelete) {
+                        this.isTableLoading$.next(true);
+                        this.planningService.deleteConvoy(id).subscribe(() => {
+                            this.retrievePlanningList('');
+                            this.cd.detectChanges();
+                        })
+                    }
+                }
+            });
     }
 
     applyFilter(target: any, column: string, isMultipleSearch = false): void {
@@ -177,19 +152,19 @@ export class PlanningListComponent implements OnChanges {
         });
     }
     openImportModal(): void {
-        // this.isLoading$.next(true);
-        // this.dialogService.open(SchedulingImportModalComponent, {
-        //     disableClose: true,
-        //     data: {}
-        // }).afterClosed()
-        //     .subscribe({
-        //         next: (isImported) => {
-        //             if (isImported) {
-        //                 this.retrievePlanningList('');
-        //             } else {
-        //                 this.isLoading$.next(false);
-        //             }
-        //         }
-        //     });
+        this.isLoading$.next(true);
+        this.dialogService.open(SchedulingImportModalComponent, {
+            disableClose: true,
+            data: {}
+        }).afterClosed()
+            .subscribe({
+                next: (isImported) => {
+                    if (isImported) {
+                        this.retrievePlanningList('');
+                    } else {
+                        this.isLoading$.next(false);
+                    }
+                }
+            });
     }
 }

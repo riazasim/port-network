@@ -1,20 +1,34 @@
 ﻿<section>
     <section *ngIf="(isTableLoading$ | async) || originalSource.length; else empty">
-        <material-panel-table [showSearchbar]="false" [showHeader]="false">
+        <material-panel-table [showSearchbar]="false" [showHeader]="false" microService>
             <div table class="w-full overflow-hidden">
                 <ng-scrollbar track="horizontal" [autoHeightDisabled]="false" style="scrollbar-width: none;">
                     <table class="material-table no-wrap overflow-hidden" matSort (matSortChange)="sortData($event)"
                         [class.loading]="isTableLoading$ | async" aria-label="Usage Table" cdk-table
                         [dataSource]="dataSource">
 
-                        <ng-container cdkColumnDef="id">
+                        <ng-container cdkColumnDef="rid">
                             <th cdk-header-cell *cdkHeaderCellDef scope="col" class="max-w-40">
                                 <section class="flex flex-col gap-4">
-                                    <div mat-sort-header="id">SID</div>
+                                    <div mat-sort-header="rid">RID</div>
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{row?.planning?.rId || '-'}}
+                                {{row?.planningWater?.rId || '-'}}
+                            </td>
+                            <td cdk-footer-cell *cdkFooterCellDef [colSpan]="displayedColumns.length"
+                                class="py-4 font-bold text-center">
+                                {{'messages.there-no-more-items' | translate}}
+                            </td>
+                        </ng-container>
+                        <ng-container cdkColumnDef="sid">
+                            <th cdk-header-cell *cdkHeaderCellDef scope="col" class="max-w-40">
+                                <section class="flex flex-col gap-4">
+                                    <div mat-sort-header="sid">SID</div>
+                                </section>
+                            </th>
+                            <td cdk-cell *cdkCellDef="let row">
+                                {{row?.sId || '-'}}
                             </td>
                             <td cdk-footer-cell *cdkFooterCellDef [colSpan]="displayedColumns.length"
                                 class="py-4 font-bold text-center">
@@ -28,7 +42,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planning?.manevre || "-" }}
+                                {{ row?.planningWater?.manevre || "-" }}
                             </td>
                         </ng-container>
 
@@ -39,7 +53,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planning?.vesselId || "-" }}
+                                {{ row?.planningWater?.vesselId || "-" }}
                             </td>
                         </ng-container>
 
@@ -52,7 +66,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planning?.berth || "-" }}
+                                {{ row?.berth || "-" }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="products">
@@ -63,8 +77,8 @@
                                     </div>
                                 </section>
                             </th>
-                            <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planning?.products || "-" }}
+                            <td cdk-cell *cdkCellDef="let row;">
+                                {{ row?.productCount || "-" }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="estimatedTimeArrival">
@@ -76,7 +90,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planning?.estimatedTimeArrival || "-" }}
+                                {{ row?.planningWater?.estimatedTimeArrival || "-" }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="relativeTimeArrival">
@@ -88,7 +102,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planning?.relativeTimeArrival || "-" }}
+                                {{ row?.planningWater?.relativeTimeArrival || "-" }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="delay">
@@ -100,7 +114,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planning?.delay || "-" }}
+                                {{ row?.planningWater?.delay || "-" }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="coordinates">
@@ -112,7 +126,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planning?.coordinates || "-" }}
+                                {{ row?.sidCoordinates || "-" }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="shipmentStatus">
@@ -124,40 +138,10 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                <mat-chip [ngStyle]="{'background-color': row?.planning?.planningStatus?.color}">
-                                    {{ row?.planning?.planningStatus?.name }}
+                                <mat-chip [ngStyle]="{'background-color': row?.planningWaterShipmentStatus?.color}">
+                                    {{ row?.planningWaterShipmentStatus?.name }}
+                                    <!-- {{ row?.planningWater?.planningWaterStatus?.color }} -->
                                 </mat-chip>
-                            </td>
-                        </ng-container>
-
-                        <ng-container cdkColumnDef="actions">
-                            <th cdk-header-cell *cdkHeaderCellDef scope="col" class="min-w-40">
-                                <section class="flex flex-col gap-4">
-                                    <div mat-sort-header="actions">Actions</div>
-                                </section>
-                            </th>
-                            <td cdk-cell *cdkCellDef="let row" class="flex justify-center gap-4 w-max-content">
-                                <div class="flex gap-4">
-                                    <a class="text-primary" href="javascript:void(0)"
-                                        (click)="OnEmit(row , 'transfer')"><img
-                                            src="assets/images/left-right-list-icon.png" alt="icon"
-                                            class="cursor-pointer"></a>
-                                    <fa-icon icon="xmark" class="text-[#17A0B5] cursor-pointer" size="lg"
-                                        *ngIf="userRole === 'ROLE_USER_TRANSPORT'"
-                                        (click)="openDeleteModal(row.planning.id)"></fa-icon>
-                                </div>
-                                <div class="flex gap-4">
-                                    <fa-icon icon="eye" class="text-[#17A0B5] cursor-pointer" size="lg"
-                                        *ngIf="userRole === 'ROLE_USER_TRANSPORT'"
-                                        [routerLink]="['../edit', row?.planning?.id]"></fa-icon>
-                                    <img src="assets/images/boat.svg" alt="icon" class="cursor-pointer max-w-5 max-h-5"
-                                        *ngIf="userRole === 'ROLE_USER_TRANSPORT'"
-                                        [routerLink]="['../route',row?.planning?.id ,'convoy-list']">
-                                    <a class="text-primary" href="javascript:void(0)"
-                                        (click)="OnEmit(row , 'shipment')"><img
-                                            src="assets/images/rotate-left-list-icon.svg" alt="icon"
-                                            class="cursor-pointer"></a>
-                                </div>
                             </td>
                         </ng-container>
 
@@ -166,19 +150,14 @@
                         <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
                         <tr *cdkNoDataRow>
                             <td [colSpan]="displayedColumns.length">
-                                <span *ngIf="isLoading$ | async">
-                                    <app-loader *ngIf="isLoading$ | async" [isContainer]="true"
+                                <span *ngIf="(isTableLoading$ | async)">
+                                    <app-loader *ngIf="(isTableLoading$ | async)" [isContainer]="true"
                                         [fullScreen]="false"></app-loader>
                                 </span>
-                                <span *ngIf="
-                                        dataSource.length === 0 &&
-                                        !(isLoading$ | async)
-                                    ">No results found</span>
-                                <span *ngIf="
-                                        dataSource.length > 0 &&
-                                        !(isLoading$ | async)
-                                    ">Nicio înregistrare nu corespunde criteriilor de
-                                    căutare</span>
+                                <span *ngIf="dataSource.length === 0 && !(isTableLoading$ | async)">No results
+                                    found</span>
+                                <span *ngIf="dataSource.length > 0  && !(isTableLoading$ | async)">Nicio înregistrare nu
+                                    corespunde criteriilor de căutare</span>
                             </td>
                         </tr>
                     </table>

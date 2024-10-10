@@ -125,6 +125,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         else {
             let data = {
+                "transportMode": "WATER",
                 "start": this.pageSettings.start,
                 "length": this.pageSettings.length,
                 "filters": [this.formatDate(this.filterDate), "", "", "", "", ""],
@@ -303,7 +304,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getCardDetails()
     }
 
-    onPaginateChange(ev : any) {
+    onPaginateChange(ev: any) {
         this.isTableLoading$.next(true);
         let data = {
             "start": ev.start,
@@ -507,6 +508,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     retrievePlanningList(): void {
         this.isTableLoading$.next(true);
         let data = {
+            "transportMode": "WATER",
             "start": this.pageSettings.start,
             "length": this.pageSettings.length,
             "filters": [this.formatDate(this.filterDate), "", "", "", "", ""],
