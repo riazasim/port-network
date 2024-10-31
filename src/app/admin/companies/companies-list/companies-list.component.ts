@@ -8,6 +8,7 @@ import {BehaviorSubject} from "rxjs";
 import {CompaniesImportModalComponent} from "../companies-import-modal/companies-import-modal.component";
 import { CompanyModel } from 'src/app/core/models/company.model';
 import { CompanyService } from 'src/app/core/services/company.service';
+import { OrganizationService } from 'src/app/core/services/organization.service';
 
 @Component({
   selector: 'app-companies-list',
@@ -21,7 +22,7 @@ export class CompaniesListComponent {
     dataSource: CompanyModel[] = [];
     originalSource: CompanyModel[] = [];
     appliedFilters: any = {};
-
+    portId: string | null;
     pageSizeOptions: number[] = [5, 10, 12, 15];
     pageIndex: number;
     pageSize: number;
@@ -29,7 +30,9 @@ export class CompaniesListComponent {
 
   constructor(private readonly dialogService: MatDialog,
               private readonly companyService: CompanyService,
+              private readonly organizationService: OrganizationService,
               private readonly cd: ChangeDetectorRef) {
+                this.portId = organizationService.getPort();
                 this.retrieveCompanies();
                }
     retrieveCompanies(): void {
@@ -37,6 +40,7 @@ export class CompaniesListComponent {
         this.pageSize=5;
 
         let data={
+            "portId":this.portId,
             "start": this.pageIndex,
             "length": this.pageSize,
             "filters": ["","","","","",""],//["firstname/lastname", "status", "role", "phone", "email"]
@@ -54,6 +58,7 @@ export class CompaniesListComponent {
     onPaginateChange(event: PageEvent) {
         this.isLoading$.next(true);
         let data={
+          "portId":this.portId,
           "start": event.pageIndex ? event.pageIndex * event.pageSize : event.pageIndex,
 
             "length": event.pageSize,

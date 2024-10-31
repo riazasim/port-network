@@ -9,6 +9,7 @@ import { BehaviorSubject } from "rxjs";
 import { BerthsImportModalComponent } from "../berths-import-modal/berths-import-modal.component";
 import { BerthService } from 'src/app/core/services/berth.service';
 import { BerthModel } from 'src/app/core/models/berth.model';
+import { OrganizationService } from 'src/app/core/services/organization.service';
 
 @Component({
   selector: 'app-berths-list',
@@ -22,7 +23,7 @@ export class BerthsListComponent {
   dataSource: BerthModel[] = [];
   originalSource: BerthModel[] = [];
   appliedFilters: any = {};
-
+  portId: string | null;
   pageSizeOptions: number[] = [5, 10, 12, 15];
   pageIndex: number;
   pageSize: number;
@@ -32,7 +33,9 @@ export class BerthsListComponent {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly berthService: BerthService,
+    private readonly organizationService: OrganizationService,
     private readonly cd: ChangeDetectorRef) {
+      this.portId = organizationService.getPort();
     this.retrieveBerths();
   }
   
@@ -44,6 +47,7 @@ export class BerthsListComponent {
     this.pageSize = 5;
 
     let data = {
+      "portId":this.portId,
       "start": this.pageIndex,
       "length": this.pageSize,
       "filters": ["", "", "", "", "", ""],
@@ -61,6 +65,7 @@ export class BerthsListComponent {
   onPaginateChange(event: PageEvent) {
     this.isLoading$.next(true);
     let data = {
+      "portId":this.portId,
       "start": event.pageIndex ? event.pageIndex * event.pageSize : event.pageIndex,
 
       "length": event.pageSize,

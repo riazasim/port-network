@@ -5,6 +5,7 @@ import { BehaviorSubject} from 'rxjs';
 import { BerthModel } from 'src/app/core/models/berth.model';
 import { PortModel } from 'src/app/core/models/port.model';
 import { BerthService } from 'src/app/core/services/berth.service';
+import { OrganizationService } from 'src/app/core/services/organization.service';
 import { PortService } from 'src/app/core/services/port.service';
 
 @Component({
@@ -17,21 +18,19 @@ export class BerthsAddEditComponent implements OnInit {
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   berth$: BehaviorSubject<BerthModel | null> = new BehaviorSubject<BerthModel | null>(null);
   id: number;
-  portId: number | null;
-  ports: PortModel[] = [];
+  portId: string | null;
   creatingNewPort: boolean = true;
   constructor(private fb: UntypedFormBuilder,
     private berthService: BerthService,
-    private readonly portService: PortService,
     private router: Router,
     private route: ActivatedRoute,
+    private readonly organizationService: OrganizationService,
     private readonly cd: ChangeDetectorRef) {
-
+      this.portId = organizationService.getPort();
   }
 
   ngOnInit(): void {
     this.subscribeForQueryParams();
-    this.retrievePorts();
   }
   
   subscribeForQueryParams(): void {
@@ -51,9 +50,9 @@ export class BerthsAddEditComponent implements OnInit {
 
   initForm(data: BerthModel = <BerthModel>{}): void {
     this.berthForm = this.fb.group({
+      portId: this.fb.control(data?.port?.id || this.portId, [Validators.required]),
       name: this.fb.control(data?.name || '', [Validators.required]),
       addrCoordinates: this.fb.control(data?.addrCoordinates || '', [Validators.required]),
-      portId: this.fb.control(data?.port?.id || '', [Validators.required]),
       length: this.fb.control(data?.length || '', [Validators.required]),
       // width: this.fb.control(data?.width || '', [Validators.required]),
       depth: this.fb.control(data?.depth || '', [Validators.required]),
@@ -61,25 +60,6 @@ export class BerthsAddEditComponent implements OnInit {
       // status: this.fb.control(data?.status || 'Activate', [Validators.required]),
     });
 
-  }
-  onPortChange(value: any) {
-    this.subscribeForPortChanges(value.target.value);
-  }
-
-  subscribeForPortChanges(data: any): void {
-    this.berthForm.get('portId')?.setValue(data);
-  }
-
-  retrievePorts() {
-    this.portService.pagination({
-      "start": 0,
-      "length": 0,
-      "filters": ["", "", "", "", "", "", "", "", ""],
-      "order": [{ "dir": "DESC", "column": 0 }]
-    }).subscribe(response => {
-      this.ports = response.items
-      this.cd.detectChanges();
-    })
   }
 
   saveBerth(): void {

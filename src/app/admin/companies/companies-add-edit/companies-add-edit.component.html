@@ -29,7 +29,7 @@
                 <h6 class="font-bold mb-3">Company type</h6>
                 <p class="mb-3">Tick all the options that apply for the company you want to add.</p>
                 <div class="flex gap-20">
-                    <mat-checkbox formControlName="isTypeShipOwner">Ship owner</mat-checkbox>
+                    <!-- <mat-checkbox formControlName="isTypeShipOwner">Ship owner</mat-checkbox> -->
                     <mat-checkbox formControlName="isTypeAgentCompany">Agent company</mat-checkbox>
                     <mat-checkbox formControlName="isTypeManeuveringCompany">Maneuvering company</mat-checkbox>
                     <mat-checkbox formControlName="isTypePortOperator">Port Operator</mat-checkbox>
@@ -58,7 +58,7 @@
         <div>
             <div>
                 <!-- <h6 class="font-bold mb-3">Details</h6> -->
-                <div class="min-xl:columns-4">
+                <div class="min-xl:columns-3">
                     <h6 class="font-bold">Company Name</h6>
                     <div class="h-[75px]">
                         <div iconic-input-wrapper leftIcon="location-dot">
@@ -71,17 +71,16 @@
                             <input inputRef type="text" formControlName="addrCoordinates" />
                         </div>
                     </div>
-                    <h6 class="font-bold">Port</h6>
+                    <!-- <h6 class="font-bold">Port</h6>
                     <div class="h-[75px]">
                         <div iconic-select-wrapper leftSvg="./assets/images/port-anchor.svg"
                             [rightIcon]="['fas', 'caret-down']">
                             <select spAccessInputRef name="portId" id="portId" formControlName="portId"
                                 (change)="onPortChange($event)">
-                                <!-- <option value="null" disabled>Port*</option> -->
                                 <option *ngFor="let port of ports;" [value]="port.id">{{port.name}}</option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
                     <h6 class="font-bold">Picture (480 x 300 px)</h6>
                     <div class="h-[75px]">
                         <div *ngIf="(company$ | async)?.imgPreview">

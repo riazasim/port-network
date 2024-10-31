@@ -5,23 +5,23 @@
             <p>You can also search for a specific port or choose from the list below</p>
             <searchbar [minWidth]="500">
                 <fa-icon icon="search" leftIcon></fa-icon>
-                <input input type="text" placeholder="Port" [(ngModel)]="search">
+                <input input type="text" placeholder="Search ports" [(ngModel)]="search">
             </searchbar>
         </div>
         <div class="flex flex-wrap max-xl:flex-col justify-center items-center w-full h-full gap-4 p-2"
             *ngIf="data?.locations && data?.locations?.length">
-            <div (click)="selectLocation(i, item?.attributes?.id)"
+            <div (click)="selectLocation(i, item?.attributes?.port?.id)"
                 [ngClass]="{'border border-primary': selectedLocations.includes(item?.attributes?.id)}"
                 class="flex grow min-xl:w-1/4 flex-col shadow-lg cursor-pointer min-lg:max-w-[390px] max-md:w-full"
-                *ngFor="let item of data.locations | filter: search : 'attributes?.name'; let i = index;">
+                *ngFor="let item of data.locations | filter: search : 'attributes?.port?.name'; let i = index;">
                 <div class="text-center">
-                    <div [title]="item?.attributes?.name" class="bg-center bg-no-repeat bg-cover min-h-[219px] min-md:min-w-[320px]"
-                        [style.background-image]="'url(' + item?.attributes?.imgPreview?.fullpath + ')'"></div>
+                    <div [title]="item?.attributes?.port?.name" class="bg-center bg-no-repeat bg-cover min-h-[219px] min-md:min-w-[320px]"
+                        [style.background-image]="'url(' + item?.attributes?.port?.imgPreview?.fullpath + ')'"></div>
                 </div>
-                <div class="font-bold text-center py-4">{{item?.attributes?.name}}</div>
+                <div class="font-bold text-center py-4">{{item?.attributes?.port?.name}}</div>
             </div>
             <div class="w-full" *ngIf="(data?.locations | filter: search : 'name').length === 0">
-                <p class="text-center text-columnCell">No Location Found</p>
+                <p class="text-center text-columnCell">No Port Found</p>
             </div>
         </div>
     </div>

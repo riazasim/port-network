@@ -1,0 +1,156 @@
+<edit-container [headerTitle]="'Recommended integrations'">
+    <mat-stepper #stepper [linear]="true" class="tw-h-[calc(100vh - 261px)]">
+        <mat-step *ngIf="!id" label="Choose integration type">
+            <app-loader *ngIf="(isLoading$ | async)" [isContainer]="true" [fullScreen]="false"></app-loader>
+            <section *ngIf="!(isLoading$ | async)" class="tw-h-[calc(100dvh-290px)] tw-flex tw-flex-col tw-justify-between">
+                    <div class="tw-flex tw-gap-5 tw-h-[calc(100%-100px)]">
+                        <div class="card slide-in-bottom tw-rounded-lg tw-border tw-bg-white" 
+                            (click)="selectIntegrationType('transport')" [ngClass]="selectedIntegrationType == 'transport' ? 'selected-location' : ' '">
+                            <div class="tw-flex tw-justify-center tw-p-10 tw-border tw-border-gray tw-rounded-full tw-h-[150px] tw-w-[150px] tw-items-center tw-mx-auto">
+                                <img src="assets/images/transport.svg" />
+                            </div>
+                            <div class="tw-flex tw-justify-center tw-py-5">
+                                <h4 class="heading-3 tw-text-panelColor">Lares Transport</h4>
+                            </div>
+                        </div>
+                        
+                        <div class="card tw-pointer-events-none tw-bg-[#D3D3D3] slide-in-bottom tw-rounded-lg tw-border" 
+                            (click)="selectIntegrationType('access')" [ngClass]="selectedIntegrationType == 'access' ? 'selected-location' : ' '">
+                            <div class="tw-flex tw-justify-center tw-p-10 tw-border tw-border-gray tw-rounded-full tw-h-[150px] tw-w-[150px] tw-items-center tw-mx-auto">
+                                <img src="assets/images/barrier.svg" />
+                            </div>
+                            <div class="tw-flex tw-justify-center tw-py-5">
+                                <h4 class="heading-3 tw-text-panelColor">Lares Access</h4>
+                            </div>
+                        </div>
+                        
+                        <div class="card tw-pointer-events-none tw-bg-[#D3D3D3] slide-in-bottom tw-rounded-lg tw-border"
+                            (click)="selectIntegrationType('3rdparty')" [ngClass]="selectedIntegrationType == '3rdparty' ? 'selected-location' : ' '">
+                            <div class="tw-flex tw-justify-center tw-p-10 tw-border tw-border-gray tw-rounded-full tw-h-[150px] tw-w-[150px] tw-items-center tw-mx-auto">
+                                <img src="assets/images/3party.svg" />
+                            </div>
+                            <div class="tw-flex tw-justify-center tw-py-5">
+                                <h4 class="heading-3 tw-text-panelColor">3rd party app</h4>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="tw-flex tw-justify-center max-sm:tw-flex-col min-sm:tw-gap-10 tw-gap-4 max-sm:tw-w-full">
+                            <button class="btn btn-outline-primary system-button max-sm:tw-w-full" type="button" [disabled]="(isLoading$ | async)" [routerLink]="id ? '../../' : '../'">{{'button.cancel' | translate}}</button>
+                            <button class="btn btn-primary system-button max-sm:tw-w-full" type="button" [disabled]="!selectedIntegrationType" (click)="stepper.next()">{{'button.next' | translate}}</button>
+                        </div>
+            </section>
+        </mat-step>
+        <mat-step label="Integration details">
+            <app-loader *ngIf="(isLoading$ | async)" [isContainer]="true" [fullScreen]="false"></app-loader>
+            <div *ngIf="!(isLoading$ | async) && integrationForm" class="tw-flex">
+                <!-- left side -->
+                <div class="tw-bg-[#F4F6F8] tw-flex tw-flex-col tw-basis-4/12 tw-p-8 tw-rounded-sm">
+                    <div class="tw-flex tw-gap-5 tw-mb-4">
+                        <img src="assets/images/integration-icon.svg" width="37px" height="50px"/>
+                        <h1 class="tw-text-[30px] tw-font-medium">{{'integrations.title' | translate}}</h1>
+                    </div>
+                    <p class="tw-text-[#68687C] tw-text-[20px]">{{'integrations.info-1' | translate}}</p><br>
+                    <p class="tw-text-[#68687C] tw-text-[20px]">{{'integrations.info-2' | translate}}</p><br>
+                    <p class="tw-text-[#68687C] tw-text-[20px]">{{'integrations.info-3' | translate}}</p><br>
+                    <p class="tw-text-[#68687C] tw-text-[20px]">{{'integrations.info-4' | translate}}</p><br>
+                    <b class="tw-text-[#68687C] tw-text-[20px]">{{'integrations.info-5' | translate}}</b>
+                    <b class="tw-text-[#68687C] tw-text-[20px]">{{'integrations.info-6' | translate}}</b>
+                </div>
+                <!-- right side -->
+                <form [formGroup]="integrationForm" class="tw-w-full tw-flex tw-flex-col tw-basis-8/12 tw-p-4 tw-pl-6">
+                    <h1 class="tw-text-[24px] tw-font-medium tw-pb-2 tw-border-b-2">{{'integrations.details' | translate}}</h1>
+                    <div class="tw-mt-2">
+                        <label for="name">{{'generics.naming' | translate}}</label>
+                        <div iconic-input-wrapper >
+                            <input inputRef type="text" id="name" formControlName="name">
+                        </div>
+                    </div>
+                    <div class="tw-mt-2">
+                        <label for="partner">{{'generics.partner' | translate}}</label>
+                        <div iconic-input-wrapper>
+                            <input inputRef type="text" id="partner" formControlName="partner">
+                        </div>
+                    </div>
+                    <div class="tw-mt-2">
+                        <label for="location">{{'location.title' | translate}}</label>
+                        <div iconic-select-wrapper [rightIcon]="['fas', 'caret-down']">
+                            <select inputRef name="location" id="location" formControlName="locationId">
+                                <option value="null" disabled>{{'button.select-name' | translate: {'name': 'location.title' | translate | lowercase } }}</option>
+                                <option *ngFor="let location of ($locations | async)" [value]="location.id">{{location.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="tw-mt-2">
+                        <label for="key">{{'integrations.api-key' | translate}}</label>
+                        <div class="tw-flex tw-gap-4">
+                            <input inputRef type="text" id="key" formControlName="apiKey"
+                                   class="tw-w-full tw-border-2 tw-border-[#A0A0A0] tw-rounded-[10px] tw-h-[53px] tw-p-[0.5rem] tw-bg-[#A0A0A0]">
+                            <button disabled type="button" class="btn btn-outline-primary tw-px-4 tw-min-w-[150px]">Test</button>
+                        </div>
+                    </div>
+                    <h1 class="tw-text-[24px] tw-font-medium tw-pb-2 tw-border-b-2 tw-mt-4">{{'integrations.permissions' | translate}}</h1>
+                    <div class="tw-grid tw-col-span-2 tw-grid-cols-1 min-md:tw-grid-cols-2 tw-gap-3 tw-mt-5 tw-justify between">
+                        <div>
+                            <app-toggle [field]="'create'" [model]="scopes.includes(integrationPermissionEnum.CREATE_BOOKINGS)" toggleHeight="22px" toggleWidth="38px" 
+                                        circleSize="14px" leftCircleSize="17px" (onModelChange)="toggleScope($event, integrationPermissionEnum.CREATE_BOOKINGS)"></app-toggle>
+                            <label class="tw-ml-3">Create booking</label>
+                        </div>
+                        <div>
+                            <app-toggle [field]="'update'" [model]="scopes.includes(integrationPermissionEnum.UPDATE_BOOKINGS)" toggleHeight="22px" toggleWidth="38px" 
+                                        circleSize="14px" leftCircleSize="17px" (onModelChange)="toggleScope($event, integrationPermissionEnum.UPDATE_BOOKINGS)"></app-toggle>
+                            <label class="tw-ml-3">Update booking</label>
+                        </div>
+                        <div>
+                            <app-toggle [field]="'initiate'" [model]="scopes.includes(integrationPermissionEnum.INITIATE_VALIDATION)" toggleHeight="22px" toggleWidth="38px" 
+                                        circleSize="14px" leftCircleSize="17px" (onModelChange)="toggleScope($event, integrationPermissionEnum.INITIATE_VALIDATION)"></app-toggle>
+                            <label class="tw-ml-3">Initiate validation</label>
+                        </div>
+                        <div>
+                            <app-toggle [field]="'parent'" [model]="scopes.includes(integrationPermissionEnum.PARENT_LOCATION)" toggleHeight="22px" toggleWidth="38px" 
+                                        circleSize="14px" leftCircleSize="17px" (onModelChange)="toggleScope($event, integrationPermissionEnum.PARENT_LOCATION)"></app-toggle>
+                            <label class="tw-ml-3">Parent location</label>
+                        </div>
+                        <div>
+                            <app-toggle [field]="'checkin'" [model]="scopes.includes(integrationPermissionEnum.CHECKIN_VISITS)" toggleHeight="22px" toggleWidth="38px" 
+                                        circleSize="14px" leftCircleSize="17px" (onModelChange)="toggleScope($event, integrationPermissionEnum.CHECKIN_VISITS)"></app-toggle>
+                            <label class="tw-ml-3">Checkin visits</label>
+                        </div>
+                        <div>
+                            <app-toggle [field]="'checkout'" [model]="scopes.includes(integrationPermissionEnum.CHECKOUT_VISITS)" toggleHeight="22px" toggleWidth="38px" 
+                                        circleSize="14px" leftCircleSize="17px" (onModelChange)="toggleScope($event, integrationPermissionEnum.CHECKOUT_VISITS)"></app-toggle>
+                            <label class="tw-ml-3">Checkout visits</label>
+                        </div>
+                        <div>
+                            <app-toggle [field]="'cancel'" [model]="scopes.includes(integrationPermissionEnum.CANCEL_VISITS)" toggleHeight="22px" toggleWidth="38px" 
+                                        circleSize="14px" leftCircleSize="17px" (onModelChange)="toggleScope($event, integrationPermissionEnum.CANCEL_VISITS)"></app-toggle>
+                            <label class="tw-ml-3">Cancel visits</label>
+                        </div>
+                        <div>
+                            <app-toggle [field]="'reject'" [model]="scopes.includes(integrationPermissionEnum.REJECT_VISITS)" toggleHeight="22px" toggleWidth="38px" 
+                                        circleSize="14px" leftCircleSize="17px" (onModelChange)="toggleScope($event, integrationPermissionEnum.REJECT_VISITS)"></app-toggle>
+                            <label class="tw-ml-3">Reject visits</label>
+                        </div>
+                        <div>
+                            <app-toggle [field]="'waiting'" [model]="scopes.includes(integrationPermissionEnum.SET_VISIT_WAITING)" toggleHeight="22px" toggleWidth="38px" 
+                                        circleSize="14px" leftCircleSize="17px" (onModelChange)="toggleScope($event, integrationPermissionEnum.SET_VISIT_WAITING)"></app-toggle>
+                            <label class="tw-ml-3">Set visit waiting</label>
+                        </div>
+                        <div>
+                            <app-toggle [field]="'planned'" [model]="scopes.includes(integrationPermissionEnum.SET_VISIT_PLANNED)" toggleHeight="22px" toggleWidth="38px" 
+                                        circleSize="14px" leftCircleSize="17px" (onModelChange)="toggleScope($event, integrationPermissionEnum.SET_VISIT_PLANNED)"></app-toggle>
+                            <label class="tw-ml-3">Set visit planned</label>
+                        </div>
+                        <div>
+                            <app-toggle [field]="'pending'" [model]="scopes.includes(integrationPermissionEnum.SET_VISIT_PENDING)" toggleHeight="22px" toggleWidth="38px" 
+                                        circleSize="14px" leftCircleSize="17px" (onModelChange)="toggleScope($event, integrationPermissionEnum.SET_VISIT_PENDING)"></app-toggle>
+                            <label class="tw-ml-3">Set visit pending</label>
+                        </div>
+                        <div>
+                            <button [disabled]="isLoading$ | async" type="button" class="btn btn-primary tw-min-w-[150px] tw-float-right" (click)="saveIntegration()">{{'button.save' | translate}}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </mat-step>
+    </mat-stepper>
+ </edit-container>

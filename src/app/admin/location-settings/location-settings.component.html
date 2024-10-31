@@ -1,4 +1,4 @@
-<div class="flex-grow flex flex-col gap-8">
+<div class="flex-grow flex flex-col gap-8" *ngIf="userRole === 'ADMIN'">
     <div class="flex sm:justify-center md:flex-row max-md:flex-col">
         <h4 class="heading-4 mr-3">Settings</h4>
     </div>
@@ -25,6 +25,12 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="flex-grow flex flex-col gap-8" *ngIf="userRole !== 'ADMIN'">
+    <div class="flex sm:justify-center md:flex-row max-md:flex-col">
+        <h4 class="heading-4 mr-3">Settings</h4>
+    </div>
     <div class="flex justify-center mt-10 max-md:grid gap-8 min-lg:columns-2 max-md:columns-1">
         <div routerLink="../berths"
             class="slide-in-bottom max-w-[300px] rounded-lg overflow-hidden shadow-lg bg-white p-20 min-h-[400px] cursor-pointer">
@@ -48,4 +54,39 @@
             </div>
         </div>
     </div>
+    <div class="flex justify-center mt-10 max-md:grid gap-8 min-lg:columns-2 max-md:columns-1">
+        <div routerLink="../integrations"
+            class="slide-in-bottom max-w-[300px] rounded-lg overflow-hidden shadow-lg bg-white p-20 min-h-[400px] cursor-pointer">
+            <div
+                class="flex justify-center p-10 border border-gray rounded-full h-[150px] w-[150px] items-center m-auto">
+                <img src="assets/images/integration.svg">
+            </div>
+            <div class="flex justify-center pt-5 pb-10">
+                <h4 class="heading-4 text-gray">Integration</h4>
+            </div>
+        </div>
+        <div routerLink="../products"
+            class="slide-in-bottom max-w-[300px] rounded-lg overflow-hidden shadow-lg bg-white p-20 min-h-[400px] cursor-pointer">
+            <div
+                class="flex justify-center p-10 border border-gray rounded-full h-[150px] w-[150px] items-center m-auto">
+                <img src="assets/images/product.svg">
+            </div>
+            <div class="flex justify-center pt-5 pb-10">
+                <h4 class="heading-4 text-gray">Products</h4>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-center mt-10 max-md:grid gap-8 min-lg:columns-2 max-md:columns-1">
+        <div routerLink="../area"
+            class="slide-in-bottom max-w-[300px] rounded-lg overflow-hidden shadow-lg bg-white p-20 min-h-[400px] cursor-pointer">
+            <div
+                class="flex justify-center p-10 border text-primary border-gray rounded-full h-[150px] w-[150px] items-center m-auto">
+                <fa-icon icon="location-dot" size="3x"></fa-icon>
+            </div>
+            <div class="flex justify-center pt-5 pb-10">
+                <h4 class="heading-4 text-gray">Area</h4>
+            </div>
+        </div>
+    </div>
 </div>
+

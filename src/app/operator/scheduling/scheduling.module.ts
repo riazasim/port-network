@@ -18,11 +18,9 @@ import { SearchbarModule } from 'src/app/shared/components/searchbar/searchbar.c
 import { StatisticCardV2Module } from 'src/app/shared/components/cards/statistic-card-v2/statistic-card-v2.component';
 import { RolePipesModule } from 'src/app/core/pipes/role-pipes.module';
 import { SchedulingCardComponent } from './scheduling-card/scheduling-card.component';
-import { SchedulingTableComponent } from './scheduling-table/scheduling-table.component';
 import { SchedulingSuccessComponent } from './scheduling-success/scheduling-success.component';
 import { SchedulingImportModalComponent } from './scheduling-import-modal/scheduling-import-modal.component';
 import { SchedulingPlanModalComponent } from './scheduling-plan-modal/scheduling-plan-modal.component';
-import { SchedulingEditPlanComponent } from './scheduling-edit-plan/scheduling-edit-plan.component';
 import { SchedulingViewModalComponent } from './scheduling-view-modal/scheduling-view-modal.component';
 import { MatIconModule } from '@angular/material/icon';
 import { SchedulingSendMessageComponent } from './scheduling-send-message/scheduling-send-message.component';
@@ -45,7 +43,6 @@ import { SchedulingCheckinCheckoutModalComponent } from './scheduling-checkin-ch
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgScrollbarReachedModule } from 'ngx-scrollbar/reached-event';
 import { SchedulingShowClientSupplierCardLabelsComponent } from './scheduling-show-client-supplier-card-labels/scheduling-show-client-supplier-card-labels.component';
-import { SchedulingSearchBarComponent } from './scheduling-search-bar/scheduling-search-bar.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PlanningListComponent } from './planning-list/planning-list.component';
 import { MaterialPanelTableModule } from 'src/app/shared/components/tables/material-panel-table/material-panel-table.component';
@@ -57,6 +54,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NoRestrictionsComponent } from './no-restrictions/no-restrictions.component';
 import { RestrictionsComponent } from './restrictions/restrictions.component';
+import { FeatureModulesModule } from 'src/app/shared/feature-modules/feature-modules.module';
 
 
 @NgModule({
@@ -64,11 +62,9 @@ import { RestrictionsComponent } from './restrictions/restrictions.component';
         DashboardComponent,
         SchedulingComponent,
         SchedulingCardComponent,
-        SchedulingTableComponent,
         SchedulingSuccessComponent,
         SchedulingImportModalComponent,
         SchedulingPlanModalComponent,
-        SchedulingEditPlanComponent,
         SchedulingViewModalComponent,
         SchedulingSendMessageComponent,
         SchedulingDeleteModalComponent,
@@ -80,7 +76,6 @@ import { RestrictionsComponent } from './restrictions/restrictions.component';
         SchedulingRejectModalComponent,
         SchedulingCheckinCheckoutModalComponent,
         SchedulingShowClientSupplierCardLabelsComponent,
-        SchedulingSearchBarComponent,
         PlanningListComponent,
         NoRestrictionsComponent,
         RestrictionsComponent
@@ -123,7 +118,8 @@ import { RestrictionsComponent } from './restrictions/restrictions.component';
         MatFormFieldModule,
         MatInputModule,
         MatDatepickerModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        FeatureModulesModule
     ],
     providers: []
 })

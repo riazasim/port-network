@@ -47,14 +47,15 @@ export class OperatorComponent {
        checkLocation(): void {
         this.organizationService.get().subscribe({
           next: (organization: any | null) => {
-            this.locationName$.next(organization?.port?.name || 'Transport');
+            
+            this.locationName$.next(organization?.port?.name || 'Port Network');
             const temp: any = organization?.imgLogo;
             this.logoImgSrc = temp?.fullpath;
             if (!organization?.id || !organization.port?.name) {
               this.locationService.getLocationsByUser().subscribe({
                 next: (locations: LocationModel[]) => {
                   if (!locations.length) {
-                    this.router.navigate(['locations', 'list'], { relativeTo: this.route.parent });
+                    this.router.navigate(['list-management', 'list'], { relativeTo: this.route.parent });
                     this.isLoading$.next(false);
                   } else if (locations.length === 1 && !this.locationName$.getValue()) {
                     this.changeLocation(<number>locations[0].locationId);

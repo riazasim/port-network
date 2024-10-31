@@ -79,7 +79,7 @@ export class LocationService {
 
 
   getLocationsByUser(): Observable<any> {
-    return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/list`, wrapJsonForRequest({}))
+    return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/assigned/list`, wrapJsonForRequest({}))
       .pipe(pluckArrayPaginationWrapperData<any, ResponseArrayPaginationWrapper<any>>(),
         map((u: any) => {
           return u;
@@ -89,7 +89,7 @@ export class LocationService {
 
   changeLocation(id: number): Observable<LocationModel> {
     const data = { portId: id };
-    return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/change`, wrapJsonForRequest(data))
+    return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/user/select-port-to-use`, wrapJsonForRequest(data))
       .pipe(pluckArrayPaginationWrapperData<any, ResponseArrayPaginationWrapper<any>>(),
         map((u: any) => {
           return u;
