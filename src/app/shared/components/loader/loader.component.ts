@@ -25,4 +25,7 @@ export class LoaderComponent {
 
     @Input()
     public isWhite: boolean;
+
+    @Input()
+    public isOverlayWhite = false;
 }

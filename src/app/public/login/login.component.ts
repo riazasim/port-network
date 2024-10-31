@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { handleError } from 'src/app/shared/utils/error-handling.function';
 import { handleSuccess } from "../../shared/utils/success-handling.function";
 import { SESSION_TOKEN } from 'src/app/core/constants/auth.constant';
+import { OrganizationService } from 'src/app/core/services/organization.service';
 
 @Component({
     selector: 'app-login',
@@ -33,6 +34,7 @@ export class LoginComponent {
         private readonly snackBar: MatSnackBar,
         private readonly auth: AuthService,
         private loaderService: LoaderOrchestratorService,
+        private readonly organizationService: OrganizationService,
         private readonly rolesService: RolesService) {
         this.preCompleteSignIn();
     }
@@ -62,6 +64,8 @@ export class LoginComponent {
             next: (response) => {
                 this.auth.saveAuth(response);
                 this.rolesService.setUserRoles([response.roles])
+                this.organizationService.setUserRole(response?.userRole || "");
+                this.organizationService.setPort(response?.port || "");
                 // const redirectRoute = !isTutorialTrue ? '../onboarding' : response.roles.includes("ROLE_ADMIN") ? '../admin' : '../operator';
                 this.router.navigate(['../operator'], { relativeTo: this.route }).then(() => {
                     this.loginForm.enable();

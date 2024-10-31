@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faCheck } from '@fortawesome/pro-regular-svg-icons';
+import { faCheck, faXmark } from '@fortawesome/pro-regular-svg-icons';
 import { GenericRef } from '../../directives/generic-ref';
 
 
@@ -13,6 +13,7 @@ export class GenericWrapperComponent<T1, T2 extends GenericRef<T1>> {
     protected _inputRef: T2 | undefined;
 
     protected readonly _checkmark = faCheck;
+    protected readonly _xmark = faXmark;
 
     @Input()
     public showValidation = true;
@@ -34,6 +35,9 @@ export class GenericWrapperComponent<T1, T2 extends GenericRef<T1>> {
 
     set inputRef(ref: T2) {
         this._inputRef = ref;
+    }
+    get xmark(): IconProp {
+        return this._xmark as IconProp;
     }
 
     get checkmark(): IconProp {

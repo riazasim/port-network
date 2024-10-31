@@ -53,6 +53,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { InputRefDirective } from './directives/input-ref.directive';
+import { IconicSelectSearchComponent } from './components/select-search/iconic-select-search.component';
 
 
 export const MY_FORMATS = {
@@ -95,6 +96,7 @@ export const MY_FORMATS = {
         GenericWrapperComponent,
         InputRefDirective,
         SelectRefDirective,
+        IconicSelectSearchComponent,
     ],
     imports: [
         FontAwesomeModule,
@@ -108,7 +110,8 @@ export const MY_FORMATS = {
         MatRadioModule,
         CommonModule,
         MatFormFieldModule,
-        MatInputModule
+        MatInputModule,
+        MatSelectModule
     ],
     exports: [
         IconicInputWrapperComponent,
@@ -162,7 +165,8 @@ export const MY_FORMATS = {
         FontAwesomeModule,
         FormsModule,
         ReactiveFormsModule,
-        TranslateModule
+        TranslateModule,
+        IconicSelectSearchComponent
     ],
     providers: [
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

@@ -28,6 +28,14 @@ const routes: Routes = [
                 loadChildren: () => import('./fleet/fleet.module').then(m => m.FleetModule),
             },
             {
+                path: 'integration',
+                loadChildren: () => import('./integration/integration.module').then(m => m.IntegrationModule),
+            },
+            {
+                path: 'integrations',
+                loadChildren: () => import('./integrations/integration.module').then(m => m.IntegrationModule),
+            },
+            {
                 path: 'users',
                 loadChildren: () => import('./users/users.module').then(m => m.UsersModule),
             },
@@ -43,6 +51,14 @@ const routes: Routes = [
                 path: 'companies',
                 loadChildren: () => import('./companies/companies.module').then(m => m.CompaniesModule),
             },
+            {
+                path: 'products',
+                loadChildren: () => import('./product/products.module').then(m => m.ProductsModule),
+              },
+            {
+                path: 'area',
+                loadChildren: () => import('./area/area.module').then(m => m.AreaModule),
+              },
             {
                 path: 'list-management',
                 loadChildren: () => import('./list-management/list-management.module').then(m => m.ListManagementModule),

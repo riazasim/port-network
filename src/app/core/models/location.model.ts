@@ -2,6 +2,7 @@ import { BuildingModel } from "./building.model";
 import { ResponseDataItem } from "./response-wrappers.types";
 
 export type LocationModel = {
+    id?: number;
     locationId?: number;
     name: string;
     addrCoordinates: string;

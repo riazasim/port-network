@@ -11,7 +11,9 @@ export class ChangeLocationModalComponent {
   search: string;
   id: number;
   constructor(private readonly dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {}
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+      console.log(data,'portsList')
+    }
 
     
     selectLocation(index: number, id: number) {

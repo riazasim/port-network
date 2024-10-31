@@ -22,5 +22,6 @@ export interface OrganizationModel {
     locationName: string;
     locationId: number;
     userId: number;
+    userRole: string | null ;
     organization?: any;
 }

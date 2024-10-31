@@ -41,6 +41,7 @@ export class AdminHeaderComponent {
   public readonly closeBtnIcon = faTimes as any;
 
   public isMenuClosed = true;
+  userRole: string | null; 
 
   constructor(public readonly activatedRoute: ActivatedRoute,
     private readonly dialogService: MatDialog,
@@ -48,6 +49,7 @@ export class AdminHeaderComponent {
     private readonly snackBar: MatSnackBar,
     private readonly organizationService: OrganizationService,
     public localizeService: LocalizeRouterService) {
+      this.userRole = organizationService.getUserRole();
     this.language$ = localizeService.routerEvents.asObservable().pipe(startWith(localizeService.parser.currentLang))
   }
 

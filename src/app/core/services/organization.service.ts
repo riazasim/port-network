@@ -26,6 +26,21 @@ export class OrganizationService {
         .pipe(pluckItemWrapperData<OrganizationModel, ResponseItemWrapper<OrganizationModel>>());
   }
 
+  setUserRole(role: any): void {
+    localStorage.setItem("userRole", role);
+  }
+
+  getUserRole(): string | null {
+    return localStorage.getItem("userRole");
+  }
+  setPort(port: any): void {
+    localStorage.setItem("portId", port?.id);
+  }
+
+  getPort(): string | null {
+    return localStorage.getItem("portId");
+  }
+
   // get(): Observable<OrganizationModel|null> {
   //   if (this.organization.getValue()) return of(this.organization.getValue());
 

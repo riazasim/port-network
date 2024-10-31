@@ -40,6 +40,7 @@ export class OperatorHeaderComponent {
   public readonly closeBtnIcon = faTimes as any;
 
   public isMenuClosed = true;
+  userRole: string | null;
 
   constructor(public readonly activatedRoute: ActivatedRoute,
     private readonly dialogService: MatDialog,
@@ -47,6 +48,7 @@ export class OperatorHeaderComponent {
     private readonly snackBar: MatSnackBar,
     private readonly organizationService: OrganizationService,
     public localizeService: LocalizeRouterService) {
+      this.userRole = organizationService.getUserRole();
     this.language$ = localizeService.routerEvents.asObservable().pipe(startWith(localizeService.parser.currentLang))
   }
 
@@ -68,7 +70,6 @@ export class OperatorHeaderComponent {
                 this.isLoading$.next(true);
                 this.locationService.changeLocation(id).subscribe({
                   next: (location: any) => {
-                    debugger
                     this.locationName$ = location?.port?.name;
                     this.organizationService.organization.next({
                       ...<any>this.organizationService.organization.getValue(),
