@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AreaComponent } from '@swimlane/ngx-charts';
+import { RouterModule, Routes } from '@angular/router';
 import { AreaAddEditComponent } from './area-add-edit/area-add-edit.component';
 import { AreaListComponent } from './area-list/area-list.component';
 import { AreaSuccessComponent } from './area-success/area-success.component';
+import { AreaComponent } from './area.component';
 
 const routes: Routes = [
   {

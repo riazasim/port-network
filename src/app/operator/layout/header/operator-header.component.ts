@@ -70,11 +70,12 @@ export class OperatorHeaderComponent {
                 this.isLoading$.next(true);
                 this.locationService.changeLocation(id).subscribe({
                   next: (location: any) => {
-                    this.locationName$ = location?.port?.name;
+                    // debugger
+                    this.locationName$ = location?.name;
                     this.organizationService.organization.next({
                       ...<any>this.organizationService.organization.getValue(),
-                      locationName: location?.port?.name,
-                      locationId: <number>location?.port?.id
+                      locationName: location?.name,
+                      locationId: <number>location?.id
                     });
                     this.snackBar.open('Port changed!', 'Success', {
                       duration: 3000,

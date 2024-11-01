@@ -1,13 +1,13 @@
-<success-container [headerTitle]="'button.add-name' | translate: { 'name': ('integrations.title' | translate) }">
+<success-container [headerTitle]="'Integration'">
     <div>
-        <h4 class="heading-4 tw-py-10 tw-text-center">{{'generics.success' | translate}}</h4>
-        <p class="text-center heading-6 tw-max-w-[929px] tw-mx-auto" [innerHTML]="'integrations.success' | translate"></p>
+        <h4 class="heading-4 py-10 text-center">Success!</h4>
+        <p class="text-center heading-6 max-w-[929px] mx-auto" [innerHTML]="'Your integration was succesfully created. Please make sure to follow the progress in this platform'"></p>
     </div>
-    <div class="tw-text-center tw-py-5">
-        <fa-icon icon="party-horn" class="tw-text-primary min-md:tw-text-[270px] tw-text-[90px]"></fa-icon>
+    <div class="text-center py-5">
+        <fa-icon icon="party-horn" class="text-primary min-md:text-[270px] text-[90px]"></fa-icon>
     </div>
-    <div class="tw-flex max-md:tw-flex-col min-xl:tw-px-40 max-md:tw-px-0 tw-mx-auto tw-gap-4">
-        <button type="button" class="btn btn-primary system-button max-md:tw-w-full" routerLink="../../">{{'generics.home' | translate}}</button>
-        <button type="button" class="btn btn-primary system-button max-md:tw-w-full" routerLink="../add">{{'integrations.new-integration' | translate}}</button>
+    <div class="flex max-md:flex-col min-xl:px-40 max-md:px-0 mx-auto gap-4">
+        <button type="button" class="btn btn-primary system-button max-md:w-full" routerLink="../">Home</button>
+        <button type="button" class="btn btn-primary system-button max-md:w-full" routerLink="../add">New Integration</button>
     </div>
 </success-container>

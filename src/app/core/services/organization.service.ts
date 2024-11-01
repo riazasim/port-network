@@ -22,7 +22,7 @@ export class OrganizationService {
   get(): Observable<OrganizationModel|null> {
     if (this.organization.getValue()) return of(this.organization.getValue());
 
-    return this.http.post<ResponseItemWrapper<OrganizationModel>>(`${environment.apiUrl}${environment.apiVersion}/organization/get`,null)
+    return this.http.post<ResponseItemWrapper<OrganizationModel>>(`${environment.apiUrl}${environment.apiVersion}/checkAPICredentials`,null)
         .pipe(pluckItemWrapperData<OrganizationModel, ResponseItemWrapper<OrganizationModel>>());
   }
 

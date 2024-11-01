@@ -54,10 +54,11 @@ export class OperatorComponent {
             if (!organization?.id || !organization.port?.name) {
               this.locationService.getLocationsByUser().subscribe({
                 next: (locations: LocationModel[]) => {
-                  if (!locations.length) {
-                    this.router.navigate(['list-management', 'list'], { relativeTo: this.route.parent });
-                    this.isLoading$.next(false);
-                  } else if (locations.length === 1 && !this.locationName$.getValue()) {
+                  // if (!locations.length) {
+                  //   this.router.navigate(['llocation-settings', 'location-settings'], { relativeTo: this.route.parent });
+                  //   this.isLoading$.next(false);
+                  // } else 
+                  if (locations.length === 1 && !this.locationName$.getValue()) {
                     this.changeLocation(<number>locations[0].locationId);
                   } else if (locations.length > 1 && !this.locationName$.getValue()) {
                     this.openLocationSelectModal(locations);

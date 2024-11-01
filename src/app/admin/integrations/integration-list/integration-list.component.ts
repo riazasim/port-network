@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { IntegrationDeleteModalComponent } from '../integration-delete-modal/integration-delete-modal.component';
 import { handleError } from 'src/app/shared/utils/error-handling.function';
 import { BehaviorSubject } from 'rxjs';
@@ -19,32 +19,52 @@ import { IntegrationService } from 'src/app/core/services/integration.service';
 })
 export class IntegrationListComponent {
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  displayedColumns: string[] = ['type', 'name', 'partner', 'locationName', 'apiKey', 'status', 'actions'];
-  dataSource: IntegrationModel[] = [];
-  originalSource: IntegrationModel[] = [];
+  // displayedColumns: string[] = ['type', 'name', 'partner', 'locationName', 'apiKey', 'status', 'actions'];
+  displayedColumns: string[] = [ 'name', 'portName', 'apiKey', 'actions'];
+  dataSource: any[] = [];
+  originalSource: any[] = [];
   appliedFilters: any = {};
   pageSettings: PageSettingsModel = {...defaultPageSettings};
   locationId: number;
+  portId: string | null;
 
   constructor(private readonly dialogService: MatDialog,
               private readonly snackBar: MatSnackBar,
+              private readonly cd: ChangeDetectorRef,
               private readonly organizationService: OrganizationService,
-              private readonly integrationService: IntegrationService) {}
+              private readonly integrationService: IntegrationService) {
+                this.portId = organizationService.getPort();
+              }
 
   ngOnInit(): void {
+    this.retrieveIntegrations()
     this.subscribeForOrganizationChanges();
   }
 
   retrieveIntegrations(): void {
-    this.integrationService.list({...this.appliedFilters, ...this.pageSettings }).subscribe({
-        next: (response: IntegrationModel[]) => {
-          this.dataSource = response;
-          this.originalSource = response;
-          this.isLoading$.next(false);
-        }, 
-        error: (body) => {
-      handleError(this.snackBar, body, this.isLoading$);
-    }})
+    let data = {
+      "portId":this.portId,
+      "start": 0,
+      "length": 0,
+      "filters": ["", "", "", "", "", ""],
+      "order": [{ "dir": "DESC", "column": 0 }]
+    }
+    this.integrationService.pagination(data).subscribe(response => {
+      this.dataSource = response.items;
+      this.originalSource = response.items;
+      // this.length = response.noTotal;
+      this.isLoading$.next(false);
+      this.cd.detectChanges();
+    })
+    // this.integrationService.list({...this.appliedFilters, ...this.pageSettings }).subscribe({
+    //     next: (response: IntegrationModel[]) => {
+    //       this.dataSource = response;
+    //       this.originalSource = response;
+    //       this.isLoading$.next(false);
+    //     }, 
+    //     error: (body) => {
+    //   handleError(this.snackBar, body, this.isLoading$);
+    // }})
   }
 
   openDeleteModal(integration: any) {

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { IntegrationModel } from 'src/app/core/models/integration.model';
 import { LocationModel } from 'src/app/core/models/location.model';
 import { IntegrationService } from 'src/app/core/services/integration.service';
 import { LocationService } from 'src/app/core/services/location.service';
+import { OrganizationService } from 'src/app/core/services/organization.service';
 import { handleError } from 'src/app/shared/utils/error-handling.function';
 
 const MAX_SCOPES = Object.keys(IntegrationPermissionEnum).length
@@ -30,15 +31,20 @@ export class IntegrationAddEditComponent implements OnInit {
   scopes: string[] = [];                             
   selectedIntegrationType: string;
   id: number;
+  portId: string | null;
   integrationPermissionEnum = IntegrationPermissionEnum;
+  
 
   constructor(private readonly fb: FormBuilder,
               private readonly translate: TranslateService,
               private readonly locationService: LocationService,
               private readonly integrationService: IntegrationService,
+              private readonly organizationService: OrganizationService,
               private readonly route: ActivatedRoute,
               private readonly router: Router,
-              private readonly snackBar: MatSnackBar) {}
+              private readonly snackBar: MatSnackBar) {
+                this.portId = organizationService.getPort();
+              }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
@@ -66,8 +72,8 @@ export class IntegrationAddEditComponent implements OnInit {
   initForm(integration: any = <IntegrationModel>{}): void {
     this.integrationForm = this.fb.group({
       // type: this.fb.control('', [requiredValidation(this.translate)]),
-      name: this.fb.control(integration.name || '', [requiredValidation(this.translate)]),
-      locationId: this.fb.control(integration.targetEntity || null, [requiredValidation(this.translate)]),
+      name: this.fb.control(integration.name || '', [Validators.required]),
+      portId: this.fb.control(this.portId, [Validators.required]),
       apiKey: this.fb.control({ disabled: true, value: '' }),
       partner: this.fb.control({ disabled: true, value: '' }),
       scopes: this.fb.control(integration.jsonData || this.scopes),
@@ -112,7 +118,7 @@ export class IntegrationAddEditComponent implements OnInit {
   private parseData(data: any) {
     return {
       name: data.name,
-      locationId: data.locationId,
+      portId: data.portId,
       scopes: this.scopes.length === MAX_SCOPES ? [] : this.scopes 
     }
   }

@@ -1,98 +1,169 @@
 ﻿<section *ngIf="(isLoading$ | async) || originalSource.length; else empty">
     <div class="flex items-center">
-        <mat-button-toggle-group class="flex w-full justify-end items-center">
-            <button routerLink="../add" [disabled]="(isLoading$ | async) || false"
+        <mat-button-toggle-group
+            class="flex w-full justify-end items-center"
+        >
+            <button
+                routerLink="../add"
+                [disabled]="(isLoading$ | async) || false"
                 class="bg-primary text-white py-2 min-h-[35px] min-md:min-w-[120px] max-sm:w-full rounded-l max-lg:w-full"
-                type="button">
+                type="button"
+            >
                 Add Area
             </button>
-            <!-- <button [disabled]="(isLoading$ | async) || false"
-                class="bg-primary text-white  min-h-[35px] min-md:min-w-[30px] max-sm:w-full rounded-r" type="button"
-                [matMenuTriggerFor]="menu">
-                <fa-icon [icon]="['fas', 'caret-down']" size="2x" class="mx-2 cursor-pointer text-white">
+            <!-- <button
+                [disabled]="(isLoading$ | async) || false"
+                class="bg-primary text-white min-h-[35px] min-md:min-w-[30px] max-sm:w-full rounded-r"
+                type="button"
+                [matMenuTriggerFor]="menu"
+            >
+                <fa-icon
+                    [icon]="['fas', 'caret-down']"
+                    size="2x"
+                    class="mx-2 cursor-pointer text-white"
+                >
                 </fa-icon>
-            </button> -->
-            <!-- <mat-menu #menu="matMenu" xPosition="before" class="!bg-white">
-                <button [disabled]="(isLoading$ | async) || false" (click)="openImportModal()" mat-menu-item>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before" class="!bg-white">
+                <button
+                    [disabled]="(isLoading$ | async) || false"
+                    (click)="openImportModal()"
+                    mat-menu-item
+                >
                     Import .xlsx
                 </button>
             </mat-menu> -->
         </mat-button-toggle-group>
     </div>
-    <material-panel-table [showSearchbar]="false" [showHeader]="true" tableTitle="Area List">
+    <material-panel-table
+        [showSearchbar]="false"
+        [showHeader]="true"
+        tableTitle="Area List"
+    >
         <div table class="w-full shadow-lg">
             <ng-scrollbar track="horizontal" [autoHeightDisabled]="false">
-                <table class="material-table no-wrap overflow-hidden" matSort (matSortChange)="sortData($event)"
-                    [class.loading]="isLoading$ | async" aria-label="Usage Table" cdk-table [dataSource]="dataSource">
-
+                <table
+                    class="material-table no-wrap overflow-hidden"
+                    matSort
+                    (matSortChange)="sortData($event)"
+                    [class.loading]="isLoading$ | async"
+                    aria-label="Usage Table"
+                    cdk-table
+                    [dataSource]="dataSource"
+                >
                     <ng-container cdkColumnDef="name">
-                        <th cdk-header-cell *cdkHeaderCellDef scope="col" class="max-w-40">
-                            <section class="flex flex-col gap-4">
-                                <div mat-sort-header="name">Area Name</div>
+                        <th cdk-header-cell *cdkHeaderCellDef scope="col">
+                            <section
+                                class="flex flex-col justify-center gap-4"
+                            >
+                                <div mat-sort-header="name">Name</div>
                                 <searchbar>
                                     <fa-icon leftIcon icon="search"></fa-icon>
-                                    <input #searchName input type="text" (keyup)="
+                                    <input
+                                        #searchName
+                                        input
+                                        type="text"
+                                        (keyup)="
                                             applyFilter($event.target, 'name')
-                                        " />
-                                    <div [style.visibility]="
+                                        "
+                                    />
+                                    <div
+                                        [style.visibility]="
                                             searchName.value
                                                 ? 'visible'
                                                 : 'hidden'
-                                        " close (click)="
+                                        "
+                                        close
+                                        (click)="
                                             searchName.value = '';
                                             applyFilter({ value: '' }, 'name')
-                                        ">
+                                        "
+                                    >
                                         <fa-icon icon="close"></fa-icon>
                                     </div>
                                 </searchbar>
                             </section>
                         </th>
-                        <td cdk-cell *cdkCellDef="let row">{{ row.name }}</td>
+                        <td class="w-6/12" cdk-cell *cdkCellDef="let row">
+                            {{ row.name }}
+                        </td>
                     </ng-container>
-
                     <ng-container cdkColumnDef="actions">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="flex flex-col gap-4">
                                 <div>Actions</div>
-                                <button type="button" class="btn btn-outline-primary">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-primary"
+                                >
                                     Mass update
                                 </button>
                             </section>
                         </th>
-                        <td cdk-cell *cdkCellDef="let row" class="flex justify-center gap-4">
-                            <fa-icon icon="eye" class="custom-btn-clr cursor-pointer" size="lg"
-                                [routerLink]="['../edit', row.id]"></fa-icon>
-                            <fa-icon icon="trash-can" class="custom-btn-clr cursor-pointer" size="lg"
-                                (click)="openDeleteModal(row.id)"></fa-icon>
+                        <td
+                            cdk-cell
+                            *cdkCellDef="let row"
+                            class="flex justify-center gap-4"
+                        >
+                            <fa-icon
+                                icon="eye"
+                                class="text-primary cursor-pointer"
+                                size="lg"
+                                [routerLink]="['../edit', row.id]"
+                            ></fa-icon>
+                            <fa-icon
+                                icon="trash-can"
+                                class="text-primary cursor-pointer"
+                                size="lg"
+                                (click)="openDeleteModal(row.id)"
+                            ></fa-icon>
                         </td>
                     </ng-container>
 
                     <!-- Header and Row Declarations -->
                     <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
-                    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+                    <tr
+                        cdk-row
+                        *cdkRowDef="let row; columns: displayedColumns"
+                    ></tr>
                     <tr *cdkNoDataRow>
                         <td [colSpan]="displayedColumns.length">
                             <span *ngIf="isLoading$ | async">
-                                <app-loader *ngIf="isLoading$ | async" [isContainer]="true"
-                                    [fullScreen]="false"></app-loader>
+                                <app-loader
+                                    *ngIf="isLoading$ | async"
+                                    [isContainer]="true"
+                                    [fullScreen]="false"
+                                ></app-loader>
                             </span>
-                            <span *ngIf="
+                            <span
+                                *ngIf="
                                     dataSource.length === 0 &&
                                     !(isLoading$ | async)
-                                ">Nu există înregistrări</span>
-                            <span *ngIf="
+                                "
+                                >Nu există înregistrări</span
+                            >
+                            <span
+                                *ngIf="
                                     dataSource.length > 0 &&
                                     !(isLoading$ | async)
-                                ">Nicio înregistrare nu corespunde criteriilor de
-                                căutare</span>
+                                "
+                                >Nicio înregistrare nu corespunde criteriilor de
+                                căutare</span
+                            >
                         </td>
                     </tr>
                 </table>
             </ng-scrollbar>
 
-            <mat-paginator [class.!hidden]="dataSource.length === 0" [pageSizeOptions]="pageSizeOptions"
-                [length]="length" [pageIndex]="pageIndex" (page)="onPaginateChange($event)" [pageSize]="pageSize"
-                showFirstLastButtons>
+            <mat-paginator
+                [class.!hidden]="dataSource.length === 0"
+                [pageSizeOptions]="pageSizeOptions"
+                [length]="length"
+                [pageIndex]="pageIndex"
+                (page)="onPaginateChange($event)"
+                [pageSize]="pageSize"
+                showFirstLastButtons
+            >
             </mat-paginator>
         </div>
     </material-panel-table>

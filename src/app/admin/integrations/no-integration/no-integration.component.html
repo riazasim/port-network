@@ -1,15 +1,14 @@
 <full-empty-container>
-    <div class="tw-flex tw-justify-center">
+    <div class="flex justify-center">
         <img src="assets/images/integration-icon.svg" />
     </div>
 
-    <div class="tw-mt-10">
-        <h4 class="heading-4 tw-text-center tw-pb-10">{{'integrations.title' | translate}}</h4>
-        <p class="heading-6 tw-text-center tw-text-gray" [innerHTML]="'integrations.add-integrations' | translate"></p>
-        <div class="tw-text-center tw-pt-10 tw-flex tw-justify-center tw-px-10">
-            <button routerLink="../add" type="button" class="btn btn-primary tw-flex-grow tw-h-[50px] tw-max-w-[200px]">
-                <span class="tw-text-lg">{{'button.add-name' | translate: {
-                    'name' : 'integrations.title' | translate} }}</span>
+    <div class="mt-10">
+        <h4 class="heading-4 text-center pb-10">Integrations</h4>
+        <p class="heading-6 text-center text-gray" [innerHTML]="'This is the section where you set integrations<br> with other platforms and applications'"></p>
+        <div class="text-center pt-10 flex justify-center px-10">
+            <button routerLink="../add" type="button" class="btn btn-primary flex-grow h-[50px] max-w-[200px]">
+                <span class="text-lg">Add Integrations</span>
             </button>
         </div>
     </div>

@@ -29,7 +29,7 @@ import { AreaComponent } from './area.component';
     AreaDeleteModalComponent,
     AreaSuccessComponent,
     NoAreaComponent,
-    AreaImportModalComponent,
+    AreaImportModalComponent
   ],
     imports: [
         CommonModule,

@@ -1,20 +1,41 @@
-﻿<edit-container [headerTitle]="id ?  'Edit Area Details':'Add Area Details'">
-        <app-loader *ngIf="isLoading$ | async" [isContainer]="true" [fullScreen]="false"></app-loader>
-        <form [formGroup]="areaForm" *ngIf="!(isLoading$ | async)">
-                <div class="flex flex-col mx-auto max-w-[440px] gap-5">
-                    <div>
-                        <div iconic-input-wrapper leftIcon="user">
-                            <input inputRef type="text" id="name" placeholder="Name" formControlName="name">
-                        </div>
+﻿<edit-container [headerTitle]="id ? 'Edit Area' : 'Add Area'">
+    <app-loader
+        *ngIf="isLoading$ | async"
+        [isContainer]="true"
+        [fullScreen]="false"
+    ></app-loader>
+    <form *ngIf="!(isLoading$ | async)" [formGroup]="areaForm">
+        <div class="flex flex-col mx-auto max-w-[440px] gap-5">
+                    <div iconic-input-wrapper leftIcon="user">
+                        <input
+                            inputRef
+                            type="text"
+                            id="AreaName"
+                            placeholder="Name"
+                            formControlName="name"
+                        />
                     </div>
-                </div>
-    
-                <div class="flex justify-center pt-5">
-                    <div class="flex gap-4">
-                        <button [routerLink]="id ? '../../list': '../list'" class="btn btn-outline-primary min-lg:min-w-[250px]" type="button">Cancel</button>
-                        <button class="btn btn-primary min-lg:min-w-[250px]" type="button" (click)="saveArea()" [disabled]="areaForm.invalid || (isLoading$ | async)">Save</button>
-                    </div>
-                </div>
-        </form>
-    </edit-container>
-    
+        <div class="flex justify-center pt-5">
+            <div class="flex gap-4">
+                <button
+                    [routerLink]="id ? '../../list' : '../list'"
+                    class="btn btn-outline-primary min-lg:min-w-[250px]"
+                    type="button"
+                    [disabled]="isLoading$ | async"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    class="btn btn-primary min-lg:min-w-[250px]"
+                    type="button"
+                    (click)="saveArea()"
+                    [disabled]="areaForm.invalid || (isLoading$ | async)"
+                >
+                    Save
+                </button>
+            </div>
+        </div>
+        </div>
+    </form>
+</edit-container>
