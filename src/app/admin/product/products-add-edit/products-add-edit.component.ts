@@ -123,7 +123,7 @@ export class ProductsAddEditComponent {
             combineLatest([
                 this.productService.get(this.id)
             ]).subscribe(([product]: [any]) => {
-                this.retrieveCategories(product?.type)
+                this.retrieveCategories("",0,product?.category?.type)
                 this.retrieveSubCategories(product?.category?.id)
                 this.initForm(product);
                 this.isOptionSelected = true;
@@ -146,7 +146,7 @@ export class ProductsAddEditComponent {
 
     initForm(data: any = <any>{}): void {
         this.productForm = this.fb.group({
-            portId: this.fb.control(data?.portId || this.portId, [Validators.required]),
+            portId: this.fb.control(this.portId, [Validators.required]),
             type: this.fb.control(data?.type || '', [Validators.required]),
             name: this.fb.control(data?.name || '', [Validators.required]),
             productCode: this.fb.control(data?.productCode || '', [Validators.required]),
