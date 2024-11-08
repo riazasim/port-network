@@ -105,22 +105,22 @@ export class SchedulingViewModalComponent implements OnChanges {
     }
 
     onAssign(): void {
-        this.isLoading$.next(true)
-        this.planningService.assignTransferData({
-            "planningId": this.id,
-            "userId": this.userId
-        }).subscribe({
-            next: () => {
-                this.isLoading$.next(false)
-                this.step$.next(1);
-                handleSuccess(this.snackBar, { message: "Assigned successfully" }, this.isLoading$);
-            },
-            error : (body) =>{
-                this.isLoading$.next(false)
-                this.step$.next(1)
-                handleError(this.snackBar, body, this.isLoading$);
-            }
-        })
+        // this.isLoading$.next(true)
+        // this.planningService.assignTransferData({
+        //     "planningId": this.id,
+        //     "userId": this.userId
+        // }).subscribe({
+        //     next: () => {
+        //         this.isLoading$.next(false)
+        //         this.step$.next(1);
+        //         handleSuccess(this.snackBar, { message: "Assigned successfully" }, this.isLoading$);
+        //     },
+        //     error : (body) =>{
+        //         this.isLoading$.next(false)
+        //         this.step$.next(1)
+        //         handleError(this.snackBar, body, this.isLoading$);
+        //     }
+        // })
     }
 
 }

@@ -72,6 +72,7 @@ export class AdminHeaderComponent {
                 this.locationService.changeLocation(id).subscribe({
                   next: (location: any) => {
                     // debugger
+                    this.organizationService.setPort(location || "")
                     this.locationName$.next(location?.name);
                     this.organizationService.organization.next({
                       ...<any>this.organizationService.organization.getValue(),

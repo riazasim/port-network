@@ -4,7 +4,7 @@ export interface UserModel {
         email?: string;
         roles:  [];
         userRole?: string;
-        status: string;
+        status: Boolean;
     },
     userSetting:{
         timezone?: string;

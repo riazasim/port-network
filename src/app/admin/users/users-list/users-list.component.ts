@@ -22,7 +22,7 @@ import { UsersImportModalComponent } from '../userss-import-modal/users-import-m
 })
 export class UsersListComponent {
     isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    displayedColumns = ['fullName', 'status', 'userRole', 'phone', 'email', 'department', 'actions'];
+    displayedColumns = ['fullName', 'status', 'phone', 'email', 'department', 'actions'];
     dataSource: UserModel[] = []
     originalSource: UserModel[] = [];
     appliedFilters: any = {};

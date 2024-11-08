@@ -18,7 +18,7 @@ import { Nullable } from 'src/app/core/models/navigation-menu.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OperatorHeaderComponent {
- 
+
   isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   language$: Observable<string>;
 
@@ -48,7 +48,7 @@ export class OperatorHeaderComponent {
     private readonly snackBar: MatSnackBar,
     private readonly organizationService: OrganizationService,
     public localizeService: LocalizeRouterService) {
-      this.userRole = organizationService.getUserRole();
+    this.userRole = organizationService.getUserRole();
     this.language$ = localizeService.routerEvents.asObservable().pipe(startWith(localizeService.parser.currentLang))
   }
 
@@ -72,6 +72,7 @@ export class OperatorHeaderComponent {
                   next: (location: any) => {
                     // debugger
                     this.locationName$ = location?.name;
+                    this.organizationService.setPort(location || "")
                     this.organizationService.organization.next({
                       ...<any>this.organizationService.organization.getValue(),
                       locationName: location?.name,

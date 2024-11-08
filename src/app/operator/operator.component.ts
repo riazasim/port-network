@@ -41,7 +41,6 @@ export class OperatorComponent {
     }
     ngOnInit(): void {
         this.checkLocation();
-        this.subscribeForLocationChanges()
        }
     
        checkLocation(): void {
@@ -91,7 +90,9 @@ export class OperatorComponent {
         subscribeForLocationChanges() {
           this.organizationService.organization.subscribe((response: OrganizationModel | null) => {
             if (response) {
-              this.locationName$.next(response.locationName)
+              this.locationName$.next(response.locationName),
+              this.organizationService.setPort (response.locationId || "")
+
             }
           })
         }

@@ -72,18 +72,18 @@
                         <!-- {{ row.user.status ? "Active" : "Inactive" }} -->
                     </ng-container>
 
-                    <ng-container cdkColumnDef="userRole">
+                    <!-- <ng-container cdkColumnDef="userRole">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">
                             <section class="flex flex-col">
                                 <div mat-sort-header="userRole">User Role</div>
                                 <select class="border" (change)="filterByRole($event)" filter-select>
                                     <option value="" selected>Select</option>
                                     <option value="ADMIN">Admin</option>
-                                    <option value="OPERATOR">Operator</option>
+                                    <option value="PORT_ADMIN">Operator</option>
                                 </select>
                             </section>
-                        <td cdk-cell *cdkCellDef="let row">{{row.user.userRole === 'ROLE_USER_OPERATOR' ? 'OPERATOR' : 'ADMIN'}}</td>
-                    </ng-container>
+                        <td cdk-cell *cdkCellDef="let row">{{row.user.userRole === 'ROLE_PORT_ADMIN' ? 'PORT_ADMIN' : 'ADMIN'}}</td>
+                    </ng-container> -->
 
                     <ng-container cdkColumnDef="phone">
                         <th cdk-header-cell *cdkHeaderCellDef scope="col">

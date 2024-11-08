@@ -1,4 +1,4 @@
-﻿import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+﻿import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { compare } from 'src/app/shared/utils/sort.function';
@@ -9,13 +9,17 @@ import { PortsImportModalComponent } from "../ports-import-modal/ports-import-mo
 import { PortModel } from 'src/app/core/models/port.model';
 import { PortService } from 'src/app/core/services/port.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
     selector: 'app-ports-list',
     templateUrl: './ports-list.component.html',
+    styleUrl: './ports-list.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PortsListComponent {
+    @ViewChild('sidenav') sidenav: MatSidenav;
+    readonly componentName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
     isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
     displayedColumns: string[] = ['name', 'addrCity', 'addrCountry', 'addrZipCode', 'addrCoordinates', 'actions'];
     // originalColumns: string[] = ['id', 'name', 'addrStreet', 'addrNumber', 'addrCounty', 'addrCity', 'addrCountry', 'addrZipCode', 'contact', 'actions'];
@@ -76,6 +80,11 @@ export class PortsListComponent {
             this.isLoading$.next(false);
             this.cd.detectChanges();
         })
+    }
+
+    OnEmit(row: any) {
+        console.log(this.sidenav)
+        this.sidenav.open()
     }
 
     openDeleteModal(id: number) {

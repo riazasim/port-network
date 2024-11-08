@@ -150,8 +150,8 @@ export class PlanningService {
             );
     }
 
-    assignTransferData(data: any): Observable<any> {
-        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/assignPlanningToUser`, data);
+    assignPorts(data: any): Observable<any> {
+        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/user/assigntoport`, data);
     }
 
 

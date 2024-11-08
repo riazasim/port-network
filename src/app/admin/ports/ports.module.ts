@@ -21,6 +21,8 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { NoPortsComponent } from './no-ports/no-ports.component';
 import { PortAddContactModalComponent } from './ports-add-contact-modal/ports-add-contact-modal.component';
+import { AssignPortsModalComponent } from './assign-ports-modal/assign-ports-modal.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { PortAddContactModalComponent } from './ports-add-contact-modal/ports-ad
     PortsSuccessComponent,
     NoPortsComponent,
     PortsImportModalComponent,
-    PortAddContactModalComponent
+    PortAddContactModalComponent,
+    AssignPortsModalComponent
   ],
     imports: [
         CommonModule,
@@ -48,7 +51,8 @@ import { PortAddContactModalComponent } from './ports-add-contact-modal/ports-ad
         FontAwesomeModule,
         MatButtonToggleModule,
         MatMenuModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatSidenavModule
     ]
 })
 export class PortsModule { }

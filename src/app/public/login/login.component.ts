@@ -51,7 +51,7 @@ export class LoginComponent {
             this.loginForm = new UntypedFormGroup({
                 // username: new UntypedFormControl('mrumari@gmail.com', [Validators.required, Validators.email]),
                 // password: new UntypedFormControl('12345678', [Validators.required, Validators.pattern('')]),
-                username: new UntypedFormControl('iqbalchannar796@gmail.com', [Validators.required, Validators.email]),
+                username: new UntypedFormControl('portadmin@lowis.ro', [Validators.required, Validators.email]),
                 password: new UntypedFormControl('12345678', [Validators.required, Validators.pattern('')]),
             })
         }
