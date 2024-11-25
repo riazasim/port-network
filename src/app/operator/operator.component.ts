@@ -22,6 +22,7 @@ export class OperatorComponent {
     optionsTitle: string = 'Options';
     isMenuClosed: boolean = true
     isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    userRole: string | null;
     logoSrc: string = '';
     logoImgSrc: string = '';
     logoRedirect: string = '';
@@ -37,6 +38,7 @@ export class OperatorComponent {
         public readonly route: ActivatedRoute,
         private readonly dialogService: MatDialog,
         private router: Router) {
+          this.userRole = organizationService.getUserRole();
             this.showLoader$ = this.loaderService.getLoaderStatus();
     }
     ngOnInit(): void {

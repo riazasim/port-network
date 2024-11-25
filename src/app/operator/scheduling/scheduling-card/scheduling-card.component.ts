@@ -21,13 +21,13 @@ export class SchedulingCardComponent {
     @Input() isloading: BehaviorSubject<boolean>;
     @Input() userRole: string;
     @Output() readonly triggerSideNav = new EventEmitter<{ view: string, id: number, sId: number, modal: string }>();
-    @Output() readonly triggerDeletion: EventEmitter<PlanningModel | null> = new EventEmitter<PlanningModel | null>();
-    @Output() readonly triggerCancellation: EventEmitter<PlanningModel> = new EventEmitter<PlanningModel>();
-    @Output() readonly triggerReject: EventEmitter<PlanningModel> = new EventEmitter<PlanningModel>();
+    @Output() readonly triggerDeletion: EventEmitter<any | null> = new EventEmitter<any | null>();
+    @Output() readonly triggerCancellation: EventEmitter<any> = new EventEmitter<any>();
+    @Output() readonly triggerReject: EventEmitter<any> = new EventEmitter<any>();
     @Output() readonly triggerAccept: EventEmitter<any> = new EventEmitter<any>();
-    @Output() readonly triggerCheckIn: EventEmitter<PlanningModel> = new EventEmitter<PlanningModel>();
-    @Output() readonly triggerCheckOut: EventEmitter<PlanningModel> = new EventEmitter<PlanningModel>();
-    @Output() triggerOpenLogs: EventEmitter<{ view: string, id: number, planning: PlanningModel, modal: string }> = new EventEmitter();
+    @Output() readonly triggerCheckIn: EventEmitter<any> = new EventEmitter<any>();
+    @Output() readonly triggerCheckOut: EventEmitter<any> = new EventEmitter<any>();
+    @Output() triggerOpenLogs: EventEmitter<{ view: string, id: number, planning: any, modal: string }> = new EventEmitter();
     @Input() statuses: StatusListModel[] = [];
 
     isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
@@ -50,6 +50,7 @@ export class SchedulingCardComponent {
         this.pageSize = 0;
 
         let data = {
+            "transportMode":"WATER",
             "start": this.pageIndex,
             "length": this.pageSize,
             "filters": ["", "", "", "", "", ""],//["firstname/lastname", "status", "role", "phone", "email"]
@@ -97,7 +98,7 @@ export class SchedulingCardComponent {
     //     return this.planning.products.length ? (<SchedulingProduct[]>this.planning.products).map(p => p.productName).join(', ') : '-';
     // }
 
-    handleTriggerAction(planning: PlanningModel): void {
+    handleTriggerAction(planning: any): void {
         //     if (planning.status.toLowerCase() === 'created') {
         //         this.triggerReject.emit(planning);
         //     }

@@ -131,10 +131,10 @@ export class PlanningService {
         return this.http.post(`${environment.apiUrl}${environment.apiVersion}/deletePlanningConvoy`, wrapJsonForRequest(data))
     }
 
-    pagination(data: any): Observable<PlanningTable> {
+    pagination(data: any): Observable<any> {
         return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/getPaginatePlannings`, wrapJsonForRequest(data))
             .pipe(pluckArrayPaginationWrapperData<any, ResponseArrayPaginationWrapper<any>>(),
-                map((u: PlanningTable) => {
+                map((u: any) => {
                     u.items = (<any>u.items).map(((c: CustomFieldData) => c.attributes));
                     return u;
                 })

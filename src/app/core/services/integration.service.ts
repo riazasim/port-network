@@ -34,10 +34,10 @@ export class IntegrationService {
     return this.http.post(`${environment.apiUrl}${environment.apiVersion}/integration/apikey/delete`, wrapJsonForRequest(data))
   }
 
-  pagination(data: any): Observable<PortTable> {
+  pagination(data: any): Observable<any> {
     return this.http.post<ResponseArrayPaginationWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/integration/apikey/paginate`, wrapJsonForRequest(data))
         .pipe(pluckArrayPaginationWrapperData<any, ResponseArrayPaginationWrapper<any>>(),
-            map((u: PortTable) => {
+            map((u: any) => {
               u.items = (<any>u.items).map(((c: CustomFieldData) => c.attributes));
               return u;
             })

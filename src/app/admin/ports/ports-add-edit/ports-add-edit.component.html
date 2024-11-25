@@ -124,8 +124,6 @@
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Phone Number</th>
-                                <!-- <th>Client</th>
-                                <th>Product</th> -->
                                 <th></th>
                             </tr>
                         </thead>
@@ -158,20 +156,6 @@
                                         formControlName="phoneNumber"
                                     />
                                 </td>
-                                <!-- <td>
-                                    <input
-                                        matInput
-                                        class="text-center"
-                                        formControlName="client"
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        matInput
-                                        class="text-center"
-                                        formControlName="product"
-                                    />
-                                </td> -->
                                 <td>
                                     <!-- <fa-icon  icon="pen" class="text-primary cursor-pointer"></fa-icon> -->
                                     <fa-icon
@@ -192,59 +176,7 @@
                     </button>
                 </div>
             </div>
-            <!-- <div>
-                <h6 class="font-bold">Zone</h6>
-                <div class="mt-10">
-                    <table class="table border border-lightgray">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Coordinates</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody formArrayName="zones">
-                            <tr
-                                *ngFor="
-                                    let zone of zones.controls;
-                                    let i = index
-                                "
-                                [formGroupName]="i"
-                            >
-                                <td>
-                                    <input
-                                        class="text-center"
-                                        matInput
-                                        formControlName="name"
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        class="text-center"
-                                        matInput
-                                        formControlName="coordinates"
-                                    />
-                                </td>
-                                <td>
-                                    <fa-icon
-                                        icon="trash"
-                                        (click)="removeZone(i)"
-                                        class="text-primary cursor-pointer"
-                                    ></fa-icon>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button
-                        type="button"
-                        class="text-primary font-bold py-5"
-                        (click)="addZone()"
-                    >
-                        <fa-icon icon="circle-plus"></fa-icon> Add New zone
-                    </button>
-                </div>
-            </div> -->
-        </div>
+            </div>
 
         <div class="flex justify-center pt-5">
             <div class="flex gap-4">

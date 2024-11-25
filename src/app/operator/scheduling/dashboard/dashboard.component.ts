@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SchedulingImportModalComponent } from '../scheduling-import-modal/scheduling-import-modal.component';
 import { SchedulingPlanModalComponent } from '../scheduling-plan-modal/scheduling-plan-modal.component';
 import { PlanningService } from 'src/app/core/services/planning.service';
-import { PlanningModel, UpdatePlanningDock } from 'src/app/core/models/planning.model';
+import {  UpdatePlanningDock } from 'src/app/core/models/planning.model';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { SchedulingDeleteModalComponent } from '../scheduling-delete-modal/scheduling-delete-modal.component';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -42,13 +42,13 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     readonly isToggleOpened$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     readonly isMobileCardList$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     readonly isTimeSlotFilterMode$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    readonly editPlanning$: BehaviorSubject<PlanningModel | null> = new BehaviorSubject<PlanningModel | null>(null);
+    readonly editPlanning$: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
     readonly hasReachedEndPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     readonly sortBy$: BehaviorSubject<number> = new BehaviorSubject<number>(12);
     readonly sortOrder$: BehaviorSubject<string> = new BehaviorSubject('DESC');
     readonly isComvexReorder$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     isTableLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    plannings: PlanningModel[] = []
+    plannings: any[] = []
     filterDate: Date = new Date();
     filterTypeEnum = FilterTypeENum;
     userRole: string;
@@ -128,12 +128,12 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
                 "transportMode": "WATER",
                 "start": this.pageSettings.start,
                 "length": this.pageSettings.length,
-                "filters": [this.formatDate(this.filterDate), "", "", "", "", ""],
+                "filters": ["", "", "", "", "", ""],
                 "order": [{ "dir": "DESC", "column": 0 }],
             };
             this.planningService.pagination(data).subscribe({
                 next: (res) => {
-                    this.planning = res.items[0]?.planning;
+                    this.planning = res.items[0]?.planningWater;
                     this.isCardDetailsLoading$.next(false)
 
                     console.log(this.planning)
@@ -307,9 +307,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     onPaginateChange(ev: any) {
         this.isTableLoading$.next(true);
         let data = {
+            "transportMode":"WATER",
             "start": ev.start,
             "length": ev.length,
-            "filters": [this.formatDate(this.filterDate), "", "", "", "", ""],
+            "filters": ["", "", "", "", "", ""],
             "order": [{ "dir": "DESC", "column": 0 }]
         }
         this.planningService.pagination(data).subscribe({
@@ -373,7 +374,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    openCancellationModal(planning: PlanningModel): void {
+    openCancellationModal(planning: any): void {
         this.dialogService.open(SchedulingCancelModalComponent, {
             disableClose: true,
             data: planning
@@ -388,7 +389,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    openRejectModal(planning: PlanningModel): void {
+    openRejectModal(planning: any): void {
         this.dialogService.open(SchedulingRejectModalComponent, {
             disableClose: true,
             data: planning
@@ -437,7 +438,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         })
     }
 
-    openCheckinModal(planning: PlanningModel): void {
+    openCheckinModal(planning: any): void {
         this.dialogService.open(SchedulingCheckinCheckoutModalComponent, {
             disableClose: true,
             data: {
@@ -455,7 +456,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    openCheckOutModal(planning: PlanningModel): void {
+    openCheckOutModal(planning: any): void {
         this.dialogService.open(SchedulingCheckinCheckoutModalComponent, {
             disableClose: true,
             data: {
@@ -511,13 +512,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             "transportMode": "WATER",
             "start": this.pageSettings.start,
             "length": this.pageSettings.length,
-            "filters": [this.formatDate(this.filterDate), "", "", "", "", ""],
+            "filters": ["", "", "", "", "", ""],
             "order": [{ "dir": "DESC", "column": 0 }],
         };
 
         this.planningService.pagination(data).subscribe((response: any) => {
-            this.plannings = response.items;
-            this.length = response.noFiltered;
+            console.log(response)
+            this.plannings = response?.items;
+            this.length = response?.noFiltered;
             this.isTableLoading$.next(false);
             this.newCardsLoading$.next(false);
             this.cd.detectChanges();
@@ -576,7 +578,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.updatePlanning(<any>{
                             assigningDate: getFormattedDate(this.filterDate),
                             hour: this.getHour(data.index),
-                            planning: <number>(<PlanningModel>planning).id,
+                            planning: <number>(<any>planning).id,
                             dock: data.dock,
                             statusListStatus: plannedStatus.id,
                             timeSlot: this.getHour(data.index)
@@ -626,7 +628,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    toggleSidenav(data: { view: string, id: number, planning?: PlanningModel, modal: string }) {
+    toggleSidenav(data: { view: string, id: number, planning?: any, modal: string }) {
         this.logModal = data.modal
         switch (data.view) {
             case 'copy':
@@ -656,7 +658,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    openDeleteModal(planning: PlanningModel | ComvexPlanningList | null): void {
+    openDeleteModal(planning: any | ComvexPlanningList | null): void {
         if (!planning) return;
 
         this.dialogService.open(SchedulingDeleteModalComponent, {

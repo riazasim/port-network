@@ -10,13 +10,27 @@ export class StatsService {
     private readonly route: string = '/admin/stats/vehicles';
     constructor(private readonly http: HttpClient) { }
 
+    // getDashboardStats(): Observable<any> {
+        
+    //     return this.http.post(`${environment.apiUrl}${environment.apiVersion}/getDashboardStats`, {}).pipe(
+    //         map((x: any) => {
+    //             return x
+    //         })
+    //     )
+    // }
     getDashboardStats(): Observable<any> {
-        return this.http.post(`${environment.apiUrl}${environment.apiVersion}/getDashboardStats`, {}).pipe(
-            map((x: any) => {
-                return x
+        const data = {
+            organizationId: null,
+            transportMode: "WATER"
+        };
+    
+        return this.http.post(`${environment.apiUrl}${environment.apiVersion}/getDashboardStats`, data).pipe(
+            map((response: any) => {
+                return response;
             })
-        )
+        );
     }
+    
 
     getVehiclesToday(): Observable<any> {
         return this.http.get(`${environment.apiUrl}${environment.apiVersion}${this.route}/today`)

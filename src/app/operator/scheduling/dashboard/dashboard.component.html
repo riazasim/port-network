@@ -26,11 +26,16 @@
                     </h3>
                     <!-- <app-scheduling-search-bar (emitFilterChange)="setSingleSearchFilter($event)">
                             </app-scheduling-search-bar> -->
-                    <div class="w-full">
+                    <!-- <div class="w-full">
                         <datepicker matTooltipClass="drop-shadow-lg" matTooltipPosition="above"
                             [matTooltip]="'Planning date' | translate" (dateChanged)="handleDateChange($event)"
                             [model]="filterDate" [isHeaderPosition]="true" [height]="37"></datepicker>
-                    </div>
+                    </div> -->
+                    <!-- <div class="w-full">
+                        <datepicker matTooltipClass="drop-shadow-lg" matTooltipPosition="above"
+                            [matTooltip]="'Planning date' | translate" (dateChanged)="handleDateChange($event)"
+                             [isHeaderPosition]="true" [height]="37"></datepicker>
+                    </div> -->
                     <div *ngIf="isComvexOrganization$ | async" class="flex items-center gap-2 h-[37px] w-full">
                         <app-toggle (onModelChange)="isComvexReorder$.next($event)"
                             [model]="!!(isComvexReorder$ | async)" class="h-[30px]"></app-toggle>
@@ -72,10 +77,10 @@
                             </button>
                         </mat-menu>
                     </mat-button-toggle-group>
-                    <fa-icon icon="truck" size="2x" [matMenuTriggerFor]="sidType" #trigger="matMenuTrigger"
+                    <!-- <fa-icon icon="truck" size="2x" [matMenuTriggerFor]="sidType" #trigger="matMenuTrigger"
                         matTooltipClass="drop-shadow-lg" matTooltipPosition="above" [matTooltip]="'truck' | translate"
                         class="mx-2 cursor-pointer hover:text-primary">
-                    </fa-icon>
+                    </fa-icon> -->
                     <mat-menu #sidType="matMenu" class="!bg-white" xPosition="before">
                         <menu mat-menu-item>
                             {{ "ship" | translate }}

@@ -8,8 +8,8 @@ import { PlanningService } from 'src/app/core/services/planning.service';
 import { PlanningModel } from 'src/app/core/models/planning.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { MatSidenav } from '@angular/material/sidenav';
-import { SchedulingDeleteModalComponent } from '../scheduling-delete-modal/scheduling-delete-modal.component';
-import { SchedulingImportModalComponent } from '../scheduling-import-modal/scheduling-import-modal.component';
+
+
 @Component({
     selector: 'app-planning-list',
     templateUrl: './planning-list.component.html',
@@ -60,23 +60,9 @@ export class PlanningListComponent implements OnChanges {
         this.onPaginate.emit({ start: event.pageIndex ? event.pageIndex * event.pageSize : event.pageIndex, length: event.pageSize })
     }
 
-    openDeleteModal(id: number) {
-        this.dialogService.open(SchedulingDeleteModalComponent, {
-            disableClose: true,
-            data: { "id": id, "title": "planning" }
-        }).afterClosed()
-            .subscribe({
-                next: (isDelete: boolean) => {
-                    if (isDelete) {
-                        this.isTableLoading$.next(true);
-                        this.planningService.deleteConvoy(id).subscribe(() => {
-                            this.retrievePlanningList('');
-                            this.cd.detectChanges();
-                        })
-                    }
-                }
-            });
-    }
+
+
+
 
     applyFilter(target: any, column: string, isMultipleSearch = false): void {
         if (target.value) {
@@ -150,21 +136,5 @@ export class PlanningListComponent implements OnChanges {
                 default: return 0;
             }
         });
-    }
-    openImportModal(): void {
-        this.isLoading$.next(true);
-        this.dialogService.open(SchedulingImportModalComponent, {
-            disableClose: true,
-            data: {}
-        }).afterClosed()
-            .subscribe({
-                next: (isImported) => {
-                    if (isImported) {
-                        this.retrievePlanningList('');
-                    } else {
-                        this.isLoading$.next(false);
-                    }
-                }
-            });
     }
 }

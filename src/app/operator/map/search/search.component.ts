@@ -41,7 +41,7 @@ export class SearchComponent {
     length: number = 0;
     timeFilter: any = {};
     ports: any[] = [];
-    portId: number = 0;
+    portId = null;
     companyId: number = 0;
     arrivalPortId: number = 0;
     departurePortId: number = 0;
@@ -63,6 +63,7 @@ export class SearchComponent {
     ) {
         this.getResults();
         this.retrivePorts();
+        this.retriveCompanines()
         this.initForms();
         this.OnDateChange(this.dateModal);
     }
@@ -74,21 +75,21 @@ export class SearchComponent {
     }
 
     retrivePorts() {
-        this.microService.getPorts().subscribe({
-            next: res => {
-                res?.forEach((item: any) => {
-                    this.ports.push(item?.attributes);
-                });
-                this.isPortsLoading$.next(false)
-            },
-            error: err => {
-                throw err;
-            }
-        })
+        // this.microService.getPorts().subscribe({
+        //     next: res => {
+        //         res?.forEach((item: any) => {
+        //             this.ports.push(item?.attributes);
+        //         });
+        //         this.isPortsLoading$.next(false)
+        //     },
+        //     error: err => {
+        //         throw err;
+        //     }
+        // })
     }
 
-    retriveCompanines(ev: any) {
-        this.portId = ev?.target?.value;
+    retriveCompanines() {
+
         this.microService.getCompanies(this.portId).subscribe({
             next: res => {
                 res?.forEach((item: any) => {
@@ -108,7 +109,7 @@ export class SearchComponent {
         }
         if (action === "delete") {
             this.companyId = 0;
-            this.portId = 0;
+            this.portId = null;
             this.initCompanyFiterForm();
             this.isCompaniesLoading$.next(true);
         }
@@ -202,9 +203,10 @@ export class SearchComponent {
         this.isLoading$.next(true);
         console.log(this.timeFilter)
         let data = {
+            "transportMode": "WATER",
             "start": 0,
             "length": 5,
-            "filters": [this.portId, "", this.companyId, this.statusFilters, date, this.departurePortId, this.arrivalPortId, this.timeFilter],
+            "filters": [null, "", this.companyId, this.statusFilters, date, this.departurePortId, this.arrivalPortId, this.timeFilter],
             "order": [{ "dir": "DESC", "column": 0 }]
         }
         this.microService.getMicroPlanningConvoyes(data).subscribe({
@@ -232,6 +234,7 @@ export class SearchComponent {
         this.mapLoading$.emit(true);
         this.isLoading$.next(true);
         let data = {
+            "transportMode": "WATER",
             "start": event.pageIndex ? event.pageIndex * event.pageSize : event.pageIndex,
             "length": event.pageSize,
             "filters": ["", "", "", this.statusFilters, "", "", "", this.timeFilter],
@@ -274,7 +277,7 @@ export class SearchComponent {
     }
     initCompanyFiterForm() {
         this.companiesFilterForm = this.fb.group({
-            portId: this.fb.control('', [...createRequiredValidators()]),
+            portId: this.fb.control(null),
             companyId: this.fb.control('', [...createRequiredValidators()]),
         });
     }

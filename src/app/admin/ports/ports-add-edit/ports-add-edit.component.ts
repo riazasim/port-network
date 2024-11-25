@@ -47,7 +47,7 @@ export class PortsAddEditComponent implements OnInit {
     this.portForm.get('imgPreview')?.patchValue(null);
   }
 
-  initForm(data: PortModel = <PortModel>{}): void {
+  initForm(data: any = <any>{}): void {
     this.portForm = this.fb.group({
       // portId: this.fb.control(data?.id),
       name: this.fb.control(data?.name || '', [Validators.required]),
@@ -56,22 +56,18 @@ export class PortsAddEditComponent implements OnInit {
       addrCountry: this.fb.control(data?.addrCountry || '', [Validators.required]),
       addrCounty: this.fb.control(data?.addrCounty || '', [Validators.required]),
       addrZipCode: this.fb.control(data?.addrZipCode || '', [Validators.required]),
+      status: this.fb.control(data?.status || true, [Validators.required]),
       // addrTimezone: this.fb.control(data?.addrTimezone || 'Buchrest'),
       contacts: this.fb.array([]),
-      // zones: this.fb.array([]),
       imgPreview: this.fb.control(data?.imgPreview || ''),
+      // imgPreview: this.fb.control(data?.imgPreview?.fullpath || data?.imgPreview || ''),
     });
 
     if (data.contacts) {
-      data.contacts.forEach(contact => {
+      data.contacts.forEach((contact:any) => {
         this.addContact(contact);
       });
     }
-    // if (data.zones) {
-    //   data.zones.forEach(zone => {
-    //     this.addZone(zone);
-    //   });
-    // }
   }
   
   get contacts(): any {
@@ -91,13 +87,6 @@ export class PortsAddEditComponent implements OnInit {
     });
     this.contacts.push(newContact);
   }
-  // addZone(zone?: ZonesModel): void {
-  //   const newZone = this.fb.group({
-  //     name: [zone?.name || '', Validators.required],
-  //     coordinates: [zone?.coordinates || '', Validators.required]
-  //   });
-  //   this.zones.push(newZone);
-  // }
   
   removeContact(index: number): void {
     const portId = this.ports$?.value?.id;
@@ -124,31 +113,6 @@ export class PortsAddEditComponent implements OnInit {
     }
   }
 
-  // removeZone(index: number): void {
-  //   const portId = this.ports$?.value?.id;
-  //   const zonesArray = this.ports$?.value?.zones;
-
-  //   if (portId && zonesArray && zonesArray.length > 0) {
-  //     const zoneId = zonesArray[index]?.id;
-  //     if (zoneId !== null && zoneId !== undefined && zoneId > -1) {
-  //       this.portService.deleteZone(portId, zoneId).subscribe({
-  //         next: () => {
-  //           console.log('Zone deleted successfully');
-  //           this.zones.removeAt(index);
-  //           this.ports$.value!.zones.splice(index, 1); // Update local zones array
-  //           this.cd.detectChanges();
-  //         },
-  //         error: error => {
-  //           console.error('Error deleting zone:', error);
-  //         }
-  //       });
-  //     }
-  //   } else {
-  //     this.zones.removeAt(index);
-  //     this.cd.detectChanges();
-  //   }
-  // }
-
   setImgPreview(target: any, input: any): void {
     if (target.files.item(0)) {
       input.value = target.files.item(0).name
@@ -169,9 +133,11 @@ export class PortsAddEditComponent implements OnInit {
 
   parseData(port: any): any {
     const data = {...port};
-    if (!data.imgPreview) {
+    if (typeof data.imgPreview === 'object' && data.imgPreview?.fullpath) {
       delete data.imgPreview;
     }
-    return port;
+  
+    return data;
+    // return port;
   }
 }

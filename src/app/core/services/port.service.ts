@@ -30,12 +30,13 @@ export class PortService {
     return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/create`, formData);
   }
 
-  edit(id:number,data: PortModel): Observable<any> {
+  edit(id:number,data: any): Observable<any> {
     data['portId']=id;
     const formData = convertJsonToFormData(data, '');
     formData.delete('data[imgPreview]');
     formData.delete('data[portId]');
     formData.append('contacts', JSON.stringify(data.contacts));
+    
     // formData.append('zones', JSON.stringify(data.zones));
     if (data.imgPreview) formData.append('imgPreview', data.imgPreview);
     return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/port/update`, formData);
