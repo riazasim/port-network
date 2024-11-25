@@ -28,7 +28,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{row?.planningWater?.planningWaterShipments[0]?.sId | json}}
+                                {{row?.planningWater?.planningWaterShipments[0]?.sId || '-'}}
                             </td>
                             <td cdk-footer-cell *cdkFooterCellDef [colSpan]="displayedColumns.length"
                                 class="py-4 font-bold text-center">
@@ -42,7 +42,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planningWater?.planningWaterShipments[0]?.maneuvering |json }}
+                                {{ row?.planningWater?.planningWaterShipments[0]?.maneuvering || '-' }}
                             </td>
                         </ng-container>
 
@@ -53,7 +53,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planningWater?.planningWater?.planningWaterShipments[0]?.vesselId |json }}
+                                {{ row?.planningWater?.planningWater?.planningWaterShipments[0]?.vesselId || '-' }}
                             </td>
                         </ng-container>
 
@@ -66,7 +66,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planningWater?.planningWaterShipments[0]?.berth |json }}
+                                {{ row?.planningWater?.planningWaterShipments[0]?.berth || '-' }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="products">
@@ -78,7 +78,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row;">
-                                {{ row?.planningWater?.planningWaterShipments[0]?.productCount |json }}
+                                {{ row?.planningWater?.planningWaterShipments[0]?.productCount || '-' }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="estimatedTimeArrival">
@@ -90,7 +90,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planningWater?.departureTime |json }}
+                                {{ row?.planningWater?.departureTime || '-' }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="relativeTimeArrival">
@@ -102,7 +102,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planningWater?.arrivalTime |json }}
+                                {{ row?.planningWater?.arrivalTime || '-' }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="delay">
@@ -114,7 +114,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planningWater?.delay |json }}
+                                {{ row?.planningWater?.delay || '-' }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="coordinates">
@@ -126,7 +126,7 @@
                                 </section>
                             </th>
                             <td cdk-cell *cdkCellDef="let row">
-                                {{ row?.planningWater?.planningWaterShipments[0]?.sidCoordinates |json }}
+                                {{ row?.planningWater?.planningWaterShipments[0]?.sidCoordinates || '-' }}
                             </td>
                         </ng-container>
                         <ng-container cdkColumnDef="shipmentStatus">

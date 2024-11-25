@@ -15,7 +15,12 @@ export class SearchComponent {
     @Output() results: EventEmitter<any> = new EventEmitter()
     @Output() mapLoading$: EventEmitter<boolean> = new EventEmitter(true)
     isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(true)
-    isPortsLoading$: BehaviorSubject<boolean> = new BehaviorSubject(true)
+    companies: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    departurePorts: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    arrivalPorts: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    isContentLoading$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+    isDeparturePortsLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    isArrivalPortsLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
     isCompaniesLoading$: BehaviorSubject<boolean> = new BehaviorSubject(true)
 
     timeOptions: any[] = [
@@ -34,7 +39,7 @@ export class SearchComponent {
     dateModal: Date = new Date("");
     dateVal: string;
     resultsArray: any[] = [];
-    companies: any[] = [];
+    // companies: any[] = [];
     statusFilters: number[] = [];
     pageIndex: number;
     pageSize: number;
@@ -45,6 +50,15 @@ export class SearchComponent {
     companyId: number = 0;
     arrivalPortId: number = 0;
     departurePortId: number = 0;
+    departurePortStart: number = 0;
+    departurePortQuery: string = "";
+    selctedArrivalPortId: number = 0;
+    arrivalPortStart: number = 0;
+    arrivalPortQuery: string = "";
+    
+    companyStart: number = 0;
+    companyQuery: string = "";
+    
 
     private formatDateObject(date: Date): string {
         const year = date.getFullYear();
@@ -62,7 +76,8 @@ export class SearchComponent {
         private fb: FormBuilder,
     ) {
         this.getResults();
-        this.retrivePorts();
+        this.retriveDeparturePorts();
+        this.retriveArrivalPorts();
         this.retriveCompanines()
         this.initForms();
         this.OnDateChange(this.dateModal);
@@ -74,7 +89,7 @@ export class SearchComponent {
         this.initSIDFilterForm();
     }
 
-    retrivePorts() {
+    // retrivePorts() {
         // this.microService.getPorts().subscribe({
         //     next: res => {
         //         res?.forEach((item: any) => {
@@ -86,18 +101,117 @@ export class SearchComponent {
         //         throw err;
         //     }
         // })
-    }
+    // }
 
-    retriveCompanines() {
+    // retriveCompanines() {
 
-        this.microService.getCompanies(this.portId).subscribe({
+    //     this.microService.getCompanies(this.portId).subscribe({
+    //         next: res => {
+    //             res?.forEach((item: any) => {
+    //                 this.companies.push(item?.attributes);
+    //             });
+    //             this.isCompaniesLoading$.next(false);
+    //         },
+    //         error: err => {
+    //             throw err
+    //         }
+    //     })
+    // }
+
+    retriveDeparturePorts(query?: any, len?: any, portId?: any) {
+            this.isContentLoading$.next(true);
+            // this.selctedDeparturePortId = portId !== undefined ? Number(portId) : 0;
+            this.departurePortQuery = query !== undefined ? String(query) : "";
+            this.departurePortStart = len !== undefined ? Number(len) : 0; 
+            const data = {
+                // selectedId: this.selctedDeparturePortId,
+                start: this.departurePortStart > 0 ? this.departurePortStart : 0,
+                length: 20,
+                filter: this.departurePortQuery,
+            };
+    
+            this.microService.getPorts(data).subscribe({
+                next: res => {
+                    if (res.length > 0) {
+                        let temp: any[] = [];
+                        res?.forEach((item: any) => {
+                            temp.push(item?.attributes);
+                        });
+                            this.departurePorts.next(temp)
+                        
+                        this.cd.detectChanges();
+                    }
+                    this.isContentLoading$.next(false);
+                    this.isDeparturePortsLoading$.next(false);
+                },
+                error: err => {
+                    this.isContentLoading$.next(false);
+                    throw err;
+                }
+            })
+        }
+        
+        retriveArrivalPorts(query?: any, len?: any, portId?: any) {
+            this.isContentLoading$.next(true);
+            // this.selctedArrivalPortId = portId !== undefined ? Number(portId) : 0;
+            this.arrivalPortQuery = query !== undefined ? String(query) : "";
+            this.arrivalPortStart = len !== undefined ? Number(len) : 0; 
+            const data = {
+                // selectedId: this.selctedArrivalPortId,
+                start: this.arrivalPortStart > 0 ? this.arrivalPortStart : 0,
+                length: 20,
+                filter: this.arrivalPortQuery,
+            };
+    
+            this.microService.getPorts(data).subscribe({
+                next: res => {
+                    if (res.length > 0) {
+                        let temp: any[] = [];
+                        res?.forEach((item: any) => {
+                            temp.push(item?.attributes);
+                        });
+                            this.arrivalPorts.next(temp)
+                        
+                        this.cd.detectChanges();
+                    }
+                    this.isContentLoading$.next(false);
+                    this.isArrivalPortsLoading$.next(false);
+                },
+                error: err => {
+                    this.isContentLoading$.next(false);
+                    throw err;
+                }
+            })
+        }
+
+    retriveCompanines(query?: any, len?: any): void {
+        this.isContentLoading$.next(true);
+        this.companyQuery = query !== undefined ? String(query) : ""
+        this.companyStart += len !== undefined ? Number(len) : 0
+
+        let data = {
+            "portId": "",
+            "start": this.companyStart > 0 ? this.companyStart : 0,
+            "length": 20,
+            "filter": this.companyQuery,
+        }
+        this.microService.getCompanies(data).subscribe({
             next: res => {
-                res?.forEach((item: any) => {
-                    this.companies.push(item?.attributes);
-                });
-                this.isCompaniesLoading$.next(false);
+                if (res.length > 0) {
+                    let temp: any[] = [];
+                    res?.forEach((item: any) => {
+                        temp.push(item?.attributes);
+                    });
+                    this.companies.next(temp);
+                    this.cd.detectChanges();
+                }
+                // if (this.products.length === 0) {
+                //     this.stepTwoForm.patchValue({ products: null })
+                // }
+                this.isContentLoading$.next(false);
             },
             error: err => {
+                this.isContentLoading$.next(false);
                 throw err
             }
         })

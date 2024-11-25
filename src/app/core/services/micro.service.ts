@@ -20,16 +20,17 @@ export class MicroService {
                 })
             );
     }
-    getPorts(id: any = {}): Observable<any> {
-        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/getPorts`, { "organizationId": id })
+    getPorts(data: any ): Observable<any> {
+        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/micro/port/list`, data )
             .pipe(pluckItemWrapperData<any, ResponseItemWrapper<any>>(),
                 map((p: any) => {
                     return p;
                 })
             )
     }
-    getCompanies(id: any): Observable<any> {
-        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/micro/company/list`, { "portId": id })
+    
+    getCompanies(data: any): Observable<any> {
+        return this.http.post<ResponseItemWrapper<any>>(`${environment.apiUrl}${environment.apiVersion}/micro/company/list`, data )
             .pipe(pluckItemWrapperData<any, ResponseItemWrapper<any>>(),
                 map((p: any) => {
                     return p;

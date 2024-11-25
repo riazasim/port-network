@@ -29,6 +29,7 @@ export class AdminComponent {
   logoImgSrc: string = '';
   logoRedirect: string = '';
   currentLocation: string = '';
+  userRole: string | null;
   companyName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   locationName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   constructor(
@@ -41,6 +42,7 @@ export class AdminComponent {
     public readonly route: ActivatedRoute,
     private readonly dialogService: MatDialog,
     private router: Router) {
+      this.userRole = organizationService.getUserRole();
     this.showLoader$ = this.loaderService.getLoaderStatus();
   }
 
@@ -55,7 +57,7 @@ export class AdminComponent {
         this.locationName$.next(organization?.port?.name || 'Port Network');
         const temp: any = organization?.imgLogo;
         this.logoImgSrc = temp?.fullpath;
-        if (!organization?.id || !organization.port?.name) {
+        if (this.userRole === 'ROLE_USER_PORTADMIN' && (!organization?.id || !organization.port?.name)) {
           this.locationService.getLocationsByUser().subscribe({
             next: (locations: LocationModel[]) => {
               // if (!locations.length) {

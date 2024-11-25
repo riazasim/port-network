@@ -52,7 +52,7 @@ export class OperatorComponent {
             this.locationName$.next(organization?.port?.name || 'Port Network');
             const temp: any = organization?.imgLogo;
             this.logoImgSrc = temp?.fullpath;
-            if (!organization?.id || !organization.port?.name) {
+            if (this.userRole === 'ROLE_USER_PORTADMIN' && (!organization?.id || !organization.port?.name)) {
               this.locationService.getLocationsByUser().subscribe({
                 next: (locations: LocationModel[]) => {
                   // if (!locations.length) {
